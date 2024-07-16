@@ -3,7 +3,6 @@ import React, { useState} from 'react';
 import {Navigate} from "react-router-dom";
 import DomainUrl from '../Configuration/Index'
 import { FaRegUserCircle } from "react-icons/fa";
-import Imagecreater from '../helper/imagecreater'
 import{ toast } from 'react-hot-toast';
 const SignupForm = () => {
   const [isLogin,setIsLogin] = useState(true)
