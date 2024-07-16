@@ -1,0 +1,30 @@
+//impoted iteams   
+
+
+  import {Routes, Route } from "react-router-dom";
+ import {Sidebar} from './components/sidebar'
+ import {Header} from './components/header'
+import {Allusers} from './pages/allusers'
+import {Additeams} from './pages/additeams'
+import {Alliteams} from './pages/allitems'
+import {Categrays} from './pages/categrays' 
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css'
+  
+  //components iteams
+  
+     <Header />
+    <div className='main'> 
+      <Sidebar/> 
+      <div className='route'  > 
+            <Routes>
+            <Route path='/allusers' element={<Allusers />} />
+            <Route path='/additeams' element={<Additeams />} />
+            <Route path='/alliteams' element={<Alliteams />} />
+            <Route path='/categrays' element={<Categrays />} />
+          </Routes> 
+      </div> 
+    </div>
+    
+     <ToastContainer />
