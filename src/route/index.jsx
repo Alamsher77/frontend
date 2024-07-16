@@ -9,7 +9,6 @@ import SignupForm from '../pages/SignupForm'
 import AddCategry from '../pages/addCategry'
 import Product from '../pages/product'
 import Cart from '../pages/cart'
- const usersData = JSON.parse(localStorage.getItem('users'))
 const router = createBrowserRouter([
   { 
     path: "/", 
