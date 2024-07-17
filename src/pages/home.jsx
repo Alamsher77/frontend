@@ -1,4 +1,4 @@
-import Section1 from '../components/section1/section1'
+
 import ProductIteam from '../components/productIteam/productIteam'
 import {useState,useEffect, useContext} from 'react'
 import {ContestContext} from '../api/ContestContext'

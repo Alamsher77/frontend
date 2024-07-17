@@ -93,25 +93,7 @@ const SignupForm = () => {
 
   }
  
- const imageHandler = async (e)=>{
-    try{
- const image = e.target.files[0]
-  
-  const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setUsers({profilePic:reader.result});
-    };
-
-    if (image) {
-      reader.readAsDataURL(image);
-    }
-  
-    }catch(error){
-      console.log('catch',error)
-    }
-}
-
+ 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -139,21 +121,6 @@ const SignupForm = () => {
     </form>
     ): (
       <>
-       <div className="w-20 h-20 flex justify-center  items-center   m-auto rounded-full">
-         
-           <div className="inputfle">
-           <label htmlFor="file-name">
-            {
-              users.profilePic !== '' ? (
-                <img src={users.profilePic}  alt="imag"/>
-              ):(
-               <div className="text-7xl" ><FaRegUserCircle /></div>
-              )
-            }
-           </label>
-           <input type="file" onClick={imageHandler} id="file-name" hidden />  
-         </div>
-        </div>
       <form onSubmit={signupHandler}>
             <div className="mb-4">
               <label htmlFor="name" className="block text-gray-700">Name</label>
