@@ -2,6 +2,7 @@
  import DomainUrl from '../Configuration/Index'
  import CartIteam from "../components/cart.iteam"
  import { DNA } from 'react-loader-spinner'
+ import{ toast } from 'react-hot-toast';
 const Cart = () => {
  const [ cartProductView,setCartProductView] = useState([])
  const [islodding,setIslodding] = useState(false)
@@ -28,7 +29,7 @@ const Cart = () => {
    },[])
 
 const checkOutHandler = ()=>{
-  alert('product order successfull')
+  toast.success('product order successfull')
 }
   return (
    <>

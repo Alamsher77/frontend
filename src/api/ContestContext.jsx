@@ -8,6 +8,7 @@ export const ContestContext = createContext(null);
 export const ContestProvider =  ({ children }) => {
   // fetch api state
   const [allProduct, setAllProducts] = useState([]);
+  const [lodding,setLodding] = useState(false)
   const [allProductsCategry, setAllProductsCategry] = useState([]);
   const[userDetails,setUserDetails] = useState(null) 
   const[coutCartData,setCoutCartData] = useState(0) 
@@ -23,11 +24,15 @@ const categryapi = async ()=>{
       setAllProductsCategry(data)
 }
 const fetchApi = async ()=>{
+  setLodding(true)
          // allproduct api
         await fetch(`${DomainUrl.url}showProduct`)
      .catch((error)=> console.log(error))
      .then((res)=> res.json())
-     .then((data)=> setAllProducts(data)) 
+     .then((data)=> {
+       setAllProducts(data)
+       setLodding(false)
+     }) 
   }
 const userFechApi = async ()=>{
       const response = await fetch(`${DomainUrl.url}usergetinfo`,{
@@ -70,7 +75,7 @@ const removeToCaart = (iteam)=>{
  }
  
 // contextvalue
-const contextValue = { coutCartFetchApi,coutCartData, setUserDetails,userDetails, addToCart, allProduct, allProductsCategry,fetchApi,categryapi}
+const contextValue = {lodding,coutCartFetchApi,coutCartData, setUserDetails,userDetails, addToCart, allProduct, allProductsCategry,fetchApi,categryapi}
   return (
     <ContestContext.Provider value={contextValue}>
       {children}
