@@ -11,8 +11,9 @@ const Home = ()=>{
      <div className="grid grid-cols-2 md:grid-cols-5 ">
      {
        allProduct.length == 0 && lodding ? (
-         <div className="flex justify-center " >
-           <DNA
+       
+        <div className="flex justify-center " >
+          <DNA
   visible={true}
   height="80"
   width="80"
@@ -21,13 +22,14 @@ const Home = ()=>{
   wrapperClass="dna-wrapper"
   />
           </div>
-       ):(
-       {
-       allProduct.map((iteam,index)=>{
+  
+  ):(
+  
+   allProduct.map((iteam,index)=>{
          return <ProductIteam key={index} name={iteam.name} image={iteam.image} newPrice={iteam.newPrice} oldPrice={iteam.oldPrice} id={iteam._id}/>
        })
-       }
-       )
+    )
+    
        }
      </div>
      </>
