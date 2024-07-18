@@ -48,14 +48,14 @@ const checkOutHandler = ()=>{
           </div>
         ):(
       
-      cartProductView.length == 0   ? (
+      cartProductView?.length == 0   ? (
         <div className="text-center text-2xl mt-20 mb-20">Cart is empty</div>
         ):(
          <>    
     <div className="flex flex-col gap-1 "> 
      <h1 className="text-2xl text-center mt-10 uppercase">Cart Datails</h1>
       
-    { cartProductView.map((product,index)=>{
+    { cartProductView?.map((product,index)=>{
           TotalPrice += Number(product.productId?.newPrice)
         return <CartIteam cartProductViewFetch={cartProductViewFetch} product={product} key={index}/> 
       
