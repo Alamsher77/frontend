@@ -6,15 +6,16 @@ import Footer from "./components/footer"
 // import {Footer} from './components/footer'
 // import {Admin} from './admin/admin'
 import {Outlet} from "react-router-dom";
-
+import CategryIteams from './pages/categryIteams'
  
 function App() {
    
   return (
     <>
       <Headers />
-    <div className="pt-12">
+    <div className="pt-12 ">
     <Outlet/>
+    
     </div>
       <Footer/>
       <Toaster

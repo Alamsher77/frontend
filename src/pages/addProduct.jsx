@@ -2,6 +2,7 @@ import {useState,useEffect, useContext} from 'react'
 import logo5 from '../asetes/upload.jpg'
 import {ContestContext} from '../api/ContestContext'
 import DomainUrl from '../Configuration/Index'
+import UploadImage from '../helpers/uploadsImage'
 import{ toast } from 'react-hot-toast';
 const AddProduct = ()=>{
   
@@ -14,13 +15,15 @@ const AddProduct = ()=>{
     categry:'',
     productInfo:'',
   })
-  const [image,setImage] = useState(false)
+  const [image,setImage] = useState('')
   const {allProduct,fetchApi,allProductsCategry}= useContext(ContestContext)
   
  
-  const imageHandler = (e)=>{
-    setImage(e.target.files[0])
-  
+  const imageHandler = async(e)=>{
+    const uploadsimage = e.target.files[0]
+    const uploadsimageresponse = await UploadImage(uploadsimage)
+    products.image = uploadsimageresponse.url
+    console.log(products)
   }
   
   const productValue = (e)=>{
@@ -29,29 +32,32 @@ const AddProduct = ()=>{
   
   const submitHandler = async (e)=>{
     e.preventDefault()
-    let responseData ;
-    let formData = new FormData();
-    formData.append('product',image)
-    if(!image.name){
-      toast.error('please provide image')
-      return false
-    }
-     console.log("image is :"+image.name)
-      setImage('')
+    // let responseData ;
+    // let formData = new FormData();
+    // formData.append('product',image)
+    
+
+    // return false
+    // if(!image.name){
+    //   toast.error('please provide image')
+    //   return false
+    // }
+    // console.log("image is :"+image.name)
+    //   setImage('')
    
     try{
-      // image fetch
-      await fetch(`${DomainUrl.url}uploadImage`,{
-      method:'POST',
-      headers:{
-        Accept:'application/json',
-      },
-      body:formData,
-    })
-    .catch((error)=> console.log('fetch error'))
-    .then((res)=> res.json()).then((data)=> responseData = data)
-    if(responseData.success){
-      products.image = responseData.image_url
+    //   // image fetch
+    //   await fetch(`${DomainUrl.url}uploadImage`,{
+    //   method:'POST',
+    //   headers:{
+    //     Accept:'application/json',
+    //   },
+    //   body:formData,
+    // })
+    // .catch((error)=> console.log('fetch error'))
+    // .then((res)=> res.json()).then((data)=> responseData = data)
+    // if(responseData.success){
+    //   products.image = responseData.image_url
        
     await fetch(`${DomainUrl.url}addproduct`,{
       method:'POST',
@@ -83,7 +89,7 @@ const AddProduct = ()=>{
     })
       
       
-    }
+    // }
      
      
     
@@ -162,11 +168,14 @@ const AddProduct = ()=>{
           }
          </select>
          </div>
-          <div className="inputfle">
-           <label htmlFor="file-name">
-            <img src={image ? URL.createObjectURL(image): logo5}  alt="imag"/>
+          <div className="flex items-center gap-10 w-60">
+           <div>
+            <label htmlFor="file-name">
+            <img src={logo5} className="w-full border"  alt="imag"/>
            </label>
            <input type="file" onChange={imageHandler}  id="file-name" hidden />  
+           </div>
+           <div onClick={imageHandler} className='bg-green-400 text-white font-sm  px-5 py-1 rounded-full '>upload</div>
          </div>
           <div className="textarea">
           <lable>Description</lable>

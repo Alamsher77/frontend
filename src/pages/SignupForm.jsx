@@ -26,6 +26,7 @@ const SignupForm = () => {
 
       const response = await fetch(`${DomainUrl.url}singup`, {
         method: 'POST',
+         credentials:'include',
         headers: {
           Accept: 'application/json',
           "Content-type": "application/json",

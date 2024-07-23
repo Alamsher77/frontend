@@ -541,15 +541,19 @@ height: 10px;
      /* width: 60%; */
      transform: rotate(45deg) translatex(-3px);
    }
+    .header .navebars-background{
+      display: none;
+    }
  .header.close .navebars-background{
+   display: block;
   width: 100%;
   height: 100vh;
   left: 0;
   top: 0;
   position: fixed; 
-  background: rgba(0,0,0,.4);   
+  background: rgba(0,0,0,.4);
   z-index: 999;
-  overscroll-behavior-block: none;
+  overscroll-behavior-block: none; 
  }
  body.close{
     overflow: hidden;

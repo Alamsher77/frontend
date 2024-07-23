@@ -9,6 +9,7 @@ import SignupForm from '../pages/SignupForm'
 import AddCategry from '../pages/addCategry'
 import Product from '../pages/product'
 import Cart from '../pages/cart'
+import CategryIteams from '../pages/categryIteams'
 const router = createBrowserRouter([
   { 
     path: "/", 
@@ -17,6 +18,16 @@ const router = createBrowserRouter([
       {
          path : "",
          element: <Home />
+       }, 
+       {
+         path:"categryIteams",
+         element:<CategryIteams/>,
+         children:[
+           {
+            path:":categryId",
+           element:<CategryIteams/>
+           }
+          ]
        },
       {
     path:"signup",
@@ -54,7 +65,7 @@ const router = createBrowserRouter([
       {
          path:"cart",
          element:<Cart/>
-       }
+       } 
        ]
   },
   {
