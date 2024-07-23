@@ -8,9 +8,9 @@ import './header.css'
 export const Headers = ()=> {
   const {allProductsCategry, coutCartData,userDetails,setUserDetails} = useContext(ContestContext) 
  
-  const [toggleMenu,setToggleMenu] = useState('')
-  const [usersPopupIteams,setUsersPopupIteams] = useState(false)
-  const menuhandler=()=>{
+ const [toggleMenu,setToggleMenu] = useState('')
+ const [usersPopupIteams,setUsersPopupIteams] = useState(false)
+ const menuhandler=()=>{
       const sidbarContainer = document.querySelector('.sidbar-container');
      if(toggleMenu == ''){ 
      sidbarContainer.classList.add('active')
@@ -20,9 +20,8 @@ export const Headers = ()=> {
      setToggleMenu('')
      setUsersPopupIteams(false)
      }
-  }
-   
-   const logoutHandler = async ()=>{
+  } 
+ const logoutHandler = async ()=>{
   
      const response = await fetch(`${DomainUrl.url}logout`,{
         method:"GET",
@@ -36,8 +35,7 @@ export const Headers = ()=> {
     window.location.replace("/signup")
      }
   
-   }
-    
+   } 
 const usersTogglePopup = ()=>{
   if(usersPopupIteams){
     setUsersPopupIteams(false)
@@ -45,7 +43,7 @@ const usersTogglePopup = ()=>{
     setUsersPopupIteams(true)
   }
 }
- console.log(userDetails)
+  
   return(
     <> 
     
@@ -64,12 +62,9 @@ const usersTogglePopup = ()=>{
     document.body.removeAttribute('class','close')}> <span>Shopes</span></Link>  
       </div>
        
-         <div className="sidbar-container">  
-           
-            
-            <div className="close-sid-width " onClick={menuhandler}></div>
-
-         
+       <div className="sidbar-container">  
+       <div className="close-sid-width " onClick={menuhandler}></div>
+  
         <div className="user-info">
         {
           userDetails ? (
@@ -89,10 +84,8 @@ const usersTogglePopup = ()=>{
            
           )
         }
-   
         </div>
-        
-       {
+        {
        //userinfo popup iteams
        usersPopupIteams && (
         <div className="absolute flex flex-col gap-1 justify-center items-center  p-2 top-20 left-2 bg-white shadow-indigo-500/50 ">
@@ -101,28 +94,20 @@ const usersTogglePopup = ()=>{
         </div>
        )
        }
-       
-       
-      
-   <div className="items-comtainer">
+        
+      <div className="items-comtainer">
        {
-         allProductsCategry.map((item)=>{
+         allProductsCategry?.map((item)=>{
            return (
-                  
-        <Link className="items" onClick={menuhandler } to={`categryIteams/${item?.categry}`}>
-            <div className="image">{allProductsCategry?.image ? (
-              <img src="./logo7.jpg" alt="image" />
-              ):(
-               null
-              )
-            }</div>
+             <Link className="items" onClick={menuhandler } to={`categryIteams/${item?.categry}`}>
+             <div className="h-6"><img className="h-full" src={item?.catelogo} alt='image'/></div>
             <div className="name"><p>{item?.categry}</p></div>
-        </Link>
+            </Link>
+             
            )
          })
        }
-         
-            </div>
+         </div>
         </div> 
     {
       userDetails ? (

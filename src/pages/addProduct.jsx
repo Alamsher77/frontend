@@ -20,7 +20,8 @@ const AddProduct = ()=>{
   
  
   const imageHandler = async(e)=>{
-    const uploadsimage = e.target.files[0]
+ try{
+      const uploadsimage = e.target.files[0]
     const uploadsimageresponse = await UploadImage(uploadsimage)
     
   setProducts((preve)=>{
@@ -29,6 +30,9 @@ const AddProduct = ()=>{
        image:[...preve.image,uploadsimageresponse.url]
      }
   })
+ }catch(error){
+   console.log(error)
+ }
     
   }
   
