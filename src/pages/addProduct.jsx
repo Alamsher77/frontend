@@ -11,7 +11,7 @@ const AddProduct = ()=>{
     name:'',
     oldPrice:'',
     newPrice:'',
-    image:'',
+    image:[],
     categry:'',
     productInfo:'',
   })
@@ -22,9 +22,16 @@ const AddProduct = ()=>{
   const imageHandler = async(e)=>{
     const uploadsimage = e.target.files[0]
     const uploadsimageresponse = await UploadImage(uploadsimage)
-    products.image = uploadsimageresponse.url
-    console.log(products)
+    
+  setProducts((preve)=>{
+     return{
+       ...preve,
+       image:[...preve.image,uploadsimageresponse.url]
+     }
+  })
+    
   }
+  
   
   const productValue = (e)=>{
     setProducts({...products,[e.target.name]:e.target.value})
@@ -32,34 +39,9 @@ const AddProduct = ()=>{
   
   const submitHandler = async (e)=>{
     e.preventDefault()
-    // let responseData ;
-    // let formData = new FormData();
-    // formData.append('product',image)
-    
-
-    // return false
-    // if(!image.name){
-    //   toast.error('please provide image')
-    //   return false
-    // }
-    // console.log("image is :"+image.name)
-    //   setImage('')
-   
+  
     try{
-    //   // image fetch
-    //   await fetch(`${DomainUrl.url}uploadImage`,{
-    //   method:'POST',
-    //   headers:{
-    //     Accept:'application/json',
-    //   },
-    //   body:formData,
-    // })
-    // .catch((error)=> console.log('fetch error'))
-    // .then((res)=> res.json()).then((data)=> responseData = data)
-    // if(responseData.success){
-    //   products.image = responseData.image_url
-       
-    await fetch(`${DomainUrl.url}addproduct`,{
+     await fetch(`${DomainUrl.url}addproduct`,{
       method:'POST',
       headers:{
         Accept:'application/json',
@@ -88,14 +70,11 @@ const AddProduct = ()=>{
       
     })
       
-      
-    // }
-     
-     
+    
     
       
     }catch(error){
-      console.log(error)
+     toast.error(error)
     }
   
      
@@ -168,14 +147,30 @@ const AddProduct = ()=>{
           }
          </select>
          </div>
-          <div className="flex items-center gap-10 w-60">
-           <div>
+          <div className="flex items-center gap-2">
+           <div className="w-28">
             <label htmlFor="file-name">
             <img src={logo5} className="w-full border"  alt="imag"/>
            </label>
            <input type="file" onChange={imageHandler}  id="file-name" hidden />  
            </div>
-           <div onClick={imageHandler} className='bg-green-400 text-white font-sm  px-5 py-1 rounded-full '>upload</div>
+           <div onClick={imageHandler} className='flex flex-1  '>
+            {
+               products.image.length == 0 ?(
+                <div className="text-red-500"> * please upload image</div>
+               ):(
+                <div className="w-full flex gap-1 p-2 flex-wrap">
+                 {
+                
+                   products.image.map((iteams,index)=>{
+                    return <img key={index} className="w-12 h-12" src={iteams}/>
+                     
+                   })
+                 }
+                </div>
+               )
+            }
+           </div>
          </div>
           <div className="textarea">
           <lable>Description</lable>
@@ -194,7 +189,7 @@ const AddProduct = ()=>{
       allProduct.length == 0 ? <div >no product</div> : allProduct.map((iteam,index)=>{
           return <div className="productIteam" key={index}>
           <div className="productDelete"onClick={()=>{productDelete(iteam._id)}}>✕</div>
-        <img src={iteam.image} alt="image" />
+        <img src={iteam.image[0]} alt="image" />
         <div className="productUpdata" onClick={productEdite}>🖍</div>
         </div>
         })

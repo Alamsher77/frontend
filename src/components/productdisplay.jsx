@@ -39,14 +39,15 @@ const ProductDisplay = (props)=>{
  }
    return(
      <div className="container" >
-       <div className="display-image"><img src={props.image} /></div>
+       <div className="display-image"><img src={props.image[0]} /></div>
        
        <div className="display-list-container">
-        <div className="display-list-iteam"><img src={props.image} /></div>
-      
-       <div className="display-list-iteam"><img src={props.image} /></div>
-        <div className="display-list-iteam"><img src={props.image} /></div>
-        <div className="display-list-iteam"><img src={props.image} /></div>
+        {
+          props.image.map((iteam)=>{
+            return  <div className="display-list-iteam "><img src={iteam} /></div>
+       
+          })
+        }
        </div> 
         
         <div className="product-info">
