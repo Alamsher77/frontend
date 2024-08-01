@@ -65,11 +65,11 @@ const usersTogglePopup = ()=>{
        <div className="sidbar-container">  
        <div className="close-sid-width " onClick={menuhandler}></div>
   
-        <div className="user-info">
+        <div className="user-info"  onClick={usersTogglePopup}>
         {
           userDetails ? (
            <>
-            <div className="user-image" onClick={usersTogglePopup}>{userDetails?.profilePic ? (
+            <div className="user-image">{userDetails?.profilePic ? (
               <img src={userDetails.profilePic} alt="image" />):(
                 null
               )

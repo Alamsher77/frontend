@@ -33,7 +33,7 @@ const SignupForm = () => {
         },
         body: JSON.stringify(users),
       })
-      .catch(()=>alert("fetch error")) 
+      .catch(()=>{ toast.error("fetch error")}) 
       const data = await response.json()
         if (!data.success) {
           toast.error(data.message)
@@ -70,9 +70,19 @@ const SignupForm = () => {
           },
           body: JSON.stringify(users),
         })
-      .catch(()=>alert("fetch error"))
-      const data = await response.json() 
-     if (!data.success){
+      .catch(()=>{
+         toast.error("fetch error")
+        })
+        
+     
+     if(!response.ok){
+       toast.error('server error')
+       return false
+     }
+      
+   const data = await response.json() 
+      
+     if (!data.success || data.ok){
        toast.error(data.message)
      }
 

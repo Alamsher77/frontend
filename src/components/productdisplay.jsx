@@ -5,13 +5,16 @@ import {ContestContext} from '../api/ContestContext'
 import { IoIosStarOutline } from "react-icons/io";
 import DomainUrl from '../Configuration/Index'
 import{ toast } from 'react-hot-toast';
+import {useNavigate} from "react-router-dom";
 const ProductDisplay = (props)=>{
+    const navigate = useNavigate();
    const {coutCartFetchApi,cartProduct,addToCart}= useContext(ContestContext)
    const p = Number(props.oldPrice)
  const l = Number(props.newPrice)
  const m = 100 - (Math.floor(l / p * 100))  
  
  const addToCartController = async (prodId)=>{
+    
    try{
      const response = await fetch(`${DomainUrl.url}addToCart`,{
        method:'POST',
@@ -24,8 +27,10 @@ const ProductDisplay = (props)=>{
      })
      
      const data = await response.json()
+     
      if(!data.success){
        toast.error(data.message) 
+       navigate('/signup'); // Pushes 
      }else{
        toast.success(data.message)
        console.log(data.data)
