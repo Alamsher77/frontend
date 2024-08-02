@@ -30,7 +30,10 @@ const ProductDisplay = (props)=>{
      
      if(!data.success){
        toast.error(data.message) 
-       navigate('/signup'); // Pushes 
+      if(data.auth){
+         navigate('/signup'); // Pushes 
+         return false
+      }
      }else{
        toast.success(data.message)
        console.log(data.data)
