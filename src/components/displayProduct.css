@@ -8,7 +8,7 @@
    box-shadow: 0 0 2px 1px gray;
  }
  .display-image img{
-   height: 300px;
+   max-height: 300px;
  }
  .display-list-container{ 
    max-width: 350px;
