@@ -7,12 +7,16 @@ import DomainUrl from '../Configuration/Index'
 import{ toast } from 'react-hot-toast';
 import {useNavigate} from "react-router-dom";
 const ProductDisplay = (props)=>{
-    const navigate = useNavigate();
+
+  const navigate = useNavigate();
    const {coutCartFetchApi,cartProduct,addToCart}= useContext(ContestContext)
    const p = Number(props.oldPrice)
  const l = Number(props.newPrice)
  const m = 100 - (Math.floor(l / p * 100))  
- 
+  const [productImage,setProductImage] = useState({
+    imageName:'',
+    imageId:'',
+  })
  const addToCartController = async (prodId)=>{
     
    try{
@@ -23,7 +27,7 @@ const ProductDisplay = (props)=>{
         Accept:'application/json',
         "Content-type":"application/json",
       },
-      body:JSON.stringify({productId:prodId}),
+      body:JSON.stringify({productId:prodId,proimage:productImage.imageId}),
      })
      
      const data = await response.json()
@@ -35,8 +39,7 @@ const ProductDisplay = (props)=>{
          return false
       }
      }else{
-       toast.success(data.message)
-       console.log(data.data)
+       toast.success(data.message) 
        coutCartFetchApi()
      }
      
@@ -45,14 +48,21 @@ const ProductDisplay = (props)=>{
      toast.error('cart error',error)
    }
  }
+ 
+  useEffect(()=>{
+   setProductImage({...productImage,imageName:props.image[0],imageId:0})
+ },[])
    return(
      <div className="container" >
-       <div className="display-image"><img src={props.image[0]} /></div>
+       <div className="display-image"><img src={productImage.imageName} /></div>
        
        <div className="display-list-container">
         {
-          props.image.map((iteam)=>{
-            return  <div className="display-list-iteam "><img src={iteam} /></div>
+          props.image.map((iteam,index)=>{
+            return  <div onClick={()=>{
+            setProductImage({...productImage,imageName:iteam,imageId:index})
+   
+            }} className="display-list-iteam "><img style={{objectFit:"contain"}} src={iteam} /></div>
        
           })
         }

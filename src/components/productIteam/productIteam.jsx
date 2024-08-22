@@ -6,7 +6,7 @@ const ProductIteam = (props)=>{
   return(
      <div key={props} className='p-1 m-2 shadow-3xl '>
      <div className="w-full h-40 ">
-       <Link to={`/product/${props.id}`}><img onClick={()=> window.scrollTo(0,0)} src={props?.image[0]} className="w-full h-full object-cover"  /></Link>
+       <Link to={`/product/${props.id}`}><img onClick={()=> window.scrollTo(0,0)} src={props?.image[0]} className="w-full h-full object-contain"  /></Link>
      </div>
       <div className="break-all mt-1 ">
         <p className="leading-4 tracking-tight text-sm truncate text-ellipsis">{props.name}</p>

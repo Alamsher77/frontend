@@ -7,7 +7,7 @@ const Cart = () => {
  const [ cartProductView,setCartProductView] = useState([])
  const [islodding,setIslodding] = useState(false)
  
- 
+  
  let TotalPrice = 0
  let DiscountPrice = 0 
    const cartProductViewFetch = async ()=>{
@@ -25,11 +25,11 @@ const Cart = () => {
      }) 
 }
    useEffect(()=>{
-     cartProductViewFetch()
+     cartProductViewFetch() 
    },[])
 
 const checkOutHandler = ()=>{
-  toast.success('product order successfull')
+  toast.success('product order successfull') 
 }
   return (
    <>

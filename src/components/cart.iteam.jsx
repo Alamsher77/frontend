@@ -8,7 +8,8 @@ import {ContestContext} from '../api/ContestContext'
 import { Grid} from 'react-loader-spinner'
 import {Link} from 'react-router-dom'
 const CartIteam = (props) => {
-const product = props.product.productId 
+const product = props.product.productId  
+const imageCounts = props.product.imageCount
   const { coutCartFetchApi} = useContext(ContestContext) 
   const [lodding,setLodding] = useState(false)
 const cartIteamDeleteHandler = async (id)=>{
@@ -32,9 +33,7 @@ const cartIteamDeleteHandler = async (id)=>{
      }
 }
 
-
-
-
+ 
  
   return (
    <div className="h-24 shadow-lg m-1 gap-1 flex items-center ">
@@ -48,7 +47,7 @@ const cartIteamDeleteHandler = async (id)=>{
   radius="12.5"
   wrapperStyle={{}}
   wrapperClass="grid-wrapper"
-  />:  <Link to={`/product/${product?._id}`} className="h-12 w-20 relative bg-red-200 flex justify-center items-center"> <img src={product?.image[0]} className="w-full absolute x-0 y-0 object-cover h-full" alt="" /></Link>
+  />:  <Link to={`/product/${product?._id}`} className="h-12 w-20 relative bg-white flex justify-center items-center"> <img src={product?.image[imageCounts]} className="w-full absolute x-0 y-0 object-contain h-full" alt="" /></Link>
         }
       <div className="flex justify-between p-1 w-full   items-center ">
         <h2 className="w-20  text-nowrap text-ellipsis overflow-hidden">{product?.name}</h2>

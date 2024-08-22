@@ -4,9 +4,13 @@ import {ContestContext} from '../api/ContestContext'
 import DomainUrl from '../Configuration/Index'
 import UploadImage from '../helpers/uploadsImage'
 import{ toast } from 'react-hot-toast';
+import UploadProductForm from '../components/uploadProductForm'
 const AddProduct = ()=>{
   
-  const [formBox,setFormBox] = useState('hide')
+  const [formBox,setFormBox] = useState(false)
+  const [formHeader,setFormHeader] = useState(false)
+  const [updateForm,setUpdateForm] = useState(false)
+  const [productId,setProductId] = useState('')
   const [products,setProducts] = useState({
     name:'',
     oldPrice:'',
@@ -31,7 +35,7 @@ const AddProduct = ()=>{
      }
   })
  }catch(error){
-   console.log(error)
+   alert(error)
  }
     
   }
@@ -42,8 +46,7 @@ const AddProduct = ()=>{
   }
   
   const submitHandler = async (e)=>{
-    e.preventDefault()
-  
+    e.preventDefault() 
     try{
      await fetch(`${DomainUrl.url}addproduct`,{
       method:'POST',
@@ -84,10 +87,59 @@ const AddProduct = ()=>{
      
   }
   
-  const productEdite = ()=>{
-    toast.success('product edited')
+  const productEdite =async (e)=>{
+    try{
+      const response = await fetch(`${DomainUrl.url}findByIdProduct/${e}`)
+      const data = await response.json()
+     await setProducts({
+     name:data.data.name,
+    oldPrice:data.data.oldPrice,
+    newPrice:data.data.newPrice,
+    image:data.data.image,
+    categry:data.data.categry,
+    productInfo:data.data.productInfo,
+     }) 
+     setProductId(e)
+     setUpdateForm(true)
+     if(!data.success){
+       toast.error(data.message)
+     }
+     if(data.success){
+       toast.success(data.message)
+     }
+    }catch(error){
+      alert(error)
+    }
   }
   
+  const updateHandler = async(e)=>{
+    e.preventDefault() 
+    if(!productId){
+      toast.error('Update Iteams to found')
+      return false
+    }
+  try{
+     const response = await fetch(`${DomainUrl.url}updateProduct/${productId}`,{
+      method:'POST',
+      headers:{
+        Accept:'application/json',
+        "Content-type":"application/json",
+      },
+      body:JSON.stringify(products),
+    })
+    const data = await response.json() 
+    if(!data.success){
+      toast.error(data.message)
+      return false
+    }
+     if(data.success){
+       toast.success(data.message)
+     }
+  
+  }catch(error){
+    alert(error)
+  }
+  }
   const productDelete = async (id)=>{
     
     const confirm = window.confirm('are you sure you want to delete this')
@@ -114,79 +166,30 @@ const AddProduct = ()=>{
   }
   
   return(
-     <>
-     
-     
+     <> 
       <div className="addProduct">
         <h5>AddProducts</h5>
-        <div className="additeam" onClick={()=> {setFormBox('')}}>Add</div>
+        <div className="additeam" onClick={()=> {
+        setFormHeader(false) 
+        setFormBox(true)}}>Add</div> <div className="additeam" onClick={()=> {
+        setUpdateForm(true)
+        setFormHeader(true)
+        }}>Update</div>
       </div>
       
-      
-      <div className={`AddProductForm  ${formBox}`}>
-        <div className='closeForm' onClick={()=> setFormBox('hide')}>✕</div>
-        <h3>Add-Products</h3>
-        <form onSubmit={submitHandler}>
-         <div className="inputfields">
-          <lable>Product Name</lable>
-          <input type="text" value={products.name} onChange={productValue} name='name' placeholder="ProductName"/>
-         </div>
-          <div className="inputfields">
-          <lable>OldPrice</lable>
-          <input type="number"  value={products.oldPrice} onChange={productValue} name='oldPrice' placeholder="OldPrice"/>
-         </div>
-          <div className="inputfields">
-          <lable>NewPrice</lable>
-          <input type="number"  value={products.newPrice} onChange={productValue} name='newPrice' placeholder="NewPrice"/>
-         </div>
-         <div className="inputfields">
-         <select value={products.categry} onChange={productValue} name="categry">
-          <option>...Select Categry...</option>
+       {
+         formBox && (
+             <UploadProductForm formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} submitHandler={submitHandler} categProduct={allProductsCategry} updateForm={{setUpdateForm,updateForm}} setFormBox={setFormBox}/>
+           )
+            
+       }
+       {
+             updateForm && (
+             <UploadProductForm formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} submitHandler={updateHandler} categProduct={allProductsCategry} updateForm={{setUpdateForm,updateForm}}  setFormBox={setFormBox}/>
+           )
            
-          {
-            allProductsCategry.map((iteam,index)=>{
-              return <option key={index} value={iteam.categry}>{iteam.categry}</option>
-                     
-            })
-          }
-         </select>
-         </div>
-          <div className="flex items-center gap-2">
-           <div className="w-28">
-            <label htmlFor="file-name">
-            <img src={logo5} className="w-full border"  alt="imag"/>
-           </label>
-           <input type="file" onChange={imageHandler}  id="file-name" hidden />  
-           </div>
-           <div onClick={imageHandler} className='flex flex-1  '>
-            {
-               products.image.length == 0 ?(
-                <div className="text-red-500"> * please upload image</div>
-               ):(
-                <div className="w-full flex gap-1 p-2 flex-wrap">
-                 {
-                
-                   products.image.map((iteams,index)=>{
-                    return <img key={index} className="w-12 h-12" src={iteams}/>
-                     
-                   })
-                 }
-                </div>
-               )
-            }
-           </div>
-         </div>
-          <div className="textarea">
-          <lable>Description</lable>
-          <textarea type="text"  value={products.productInfo} onChange={productValue} name='productInfo' placeholder="type heare...." />
-         </div>
-         <div className="button" >
-         <button type="submit">submit</button>
-         </div>
-        </form>
-      </div>
-      
-      
+           
+       }
       
       <div className="showProduct">
       {
@@ -194,7 +197,7 @@ const AddProduct = ()=>{
           return <div className="productIteam" key={index}>
           <div className="productDelete"onClick={()=>{productDelete(iteam._id)}}>✕</div>
         <img src={iteam.image[0]} alt="image" />
-        <div className="productUpdata" onClick={productEdite}>🖍</div>
+        <div className="productUpdata" onClick={()=>{productEdite(iteam._id)}}>🖍</div>
         </div>
         })
       
