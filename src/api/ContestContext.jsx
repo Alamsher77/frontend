@@ -75,7 +75,7 @@ const removeToCaart = (iteam)=>{
  }
  
 // contextvalue
-const contextValue = {userFechApi,lodding,coutCartFetchApi,coutCartData, setUserDetails,userDetails, addToCart, allProduct, allProductsCategry,fetchApi,categryapi}
+const contextValue = {userFechApi,lodding,coutCartFetchApi,coutCartData,setUserDetails,userDetails, addToCart, allProduct, allProductsCategry,fetchApi,categryapi}
   return (
     <ContestContext.Provider value={contextValue}>
       {children}

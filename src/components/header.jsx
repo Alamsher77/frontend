@@ -11,6 +11,13 @@ export const Headers = ()=> {
  
  const [toggleMenu,setToggleMenu] = useState('')
  const [usersPopupIteams,setUsersPopupIteams] = useState(false)
+ const usersTogglePopup = ()=>{
+  if(usersPopupIteams){
+    setUsersPopupIteams(false)
+  }else{
+    setUsersPopupIteams(true)
+  }
+}
  const menuhandler=()=>{
       const sidbarContainer = document.querySelector('.sidbar-container');
      if(toggleMenu == ''){ 
@@ -22,6 +29,7 @@ export const Headers = ()=> {
      setUsersPopupIteams(false)
      }
   } 
+  
  const logoutHandler = async ()=>{
   
      const response = await fetch(`${DomainUrl.url}logout`,{
@@ -32,19 +40,16 @@ export const Headers = ()=> {
      const data = await response.json()
      if(data.success){ 
     toast.success(data.message)
-    setToggleMenu("")  
-    navigate("/signup")
-    userFechApi()
+    setToggleMenu("") 
+    usersTogglePopup()
+    menuhandler() 
+    setUserDetails(null)
+   navigate("/signup") 
      }
   
    } 
-const usersTogglePopup = ()=>{
-  if(usersPopupIteams){
-    setUsersPopupIteams(false)
-  }else{
-    setUsersPopupIteams(true)
-  }
-}
+   
+
   
   return(
     <> 
@@ -92,7 +97,7 @@ const usersTogglePopup = ()=>{
        usersPopupIteams && (
         <div className="absolute flex flex-col gap-1 justify-center items-center  p-2 top-20 left-2 bg-white shadow-indigo-500/50 ">
          <div className="border border-yellow-600 px-3 py-1 text-yellow-500 rounded"><Link to="adminPanel/addproduct" onClick={usersTogglePopup,menuhandler } >Admin Panel</Link></div>
-         <div className="border border-red-600 text-red-500 hover:text-red-600 hover:bg-red-200  px-3 rounded"> <Link to="signup" onClick={menuhandler,logoutHandler} >Log Out</Link></div>
+         <div className="border border-red-600 text-red-500 hover:text-red-600 hover:bg-red-200  px-3 rounded"> <Link to="signup" onClick={logoutHandler} >Log Out</Link></div>
         </div>
        )
        }

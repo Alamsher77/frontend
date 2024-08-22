@@ -6,7 +6,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import{ toast } from 'react-hot-toast';
 import {ContestContext} from '../api/ContestContext'
 const SignupForm = () => {
-    const {userFechApi} = useContext(ContestContext) 
+    const {userFechApi,userDetails,setUserDetails} = useContext(ContestContext) 
    const navigate = useNavigate();
   const [isLogin,setIsLogin] = useState(true)
   // sign up
@@ -50,8 +50,7 @@ const SignupForm = () => {
             password: '',
             profilePic: '',
           })
-          setIsLogin(true)
-          userFechApi()
+          setIsLogin(true) 
         } 
 
     }catch(error) {
@@ -98,8 +97,9 @@ const SignupForm = () => {
             password: '',
             profilePic: '',
           })
-     navigate('/') 
-      toast.success(data.message) 
+          toast.success(data.message)
+          navigate('/') 
+          userFechApi() 
      } 
 
     }catch(error) {
