@@ -1,4 +1,4 @@
-import {Link } from "react-router-dom";
+import {Link,useNavigate} from "react-router-dom";
 import {useState,useContext,useEffect} from "react"
 import { MdShoppingCart } from "react-icons/md"; 
 import{ toast } from 'react-hot-toast';
@@ -6,6 +6,7 @@ import{ toast } from 'react-hot-toast';
 import {ContestContext} from '../api/ContestContext'
 import './header.css'
 export const Headers = ()=> {
+   const navigate = useNavigate();
   const {allProductsCategry, coutCartData,userDetails,setUserDetails} = useContext(ContestContext) 
  
  const [toggleMenu,setToggleMenu] = useState('')
@@ -32,7 +33,7 @@ export const Headers = ()=> {
      if(data.success){ 
     toast.success(data.message)
     setToggleMenu("")  
-    window.location.replace("/signup")
+    navigate("/signup")
      }
   
    } 

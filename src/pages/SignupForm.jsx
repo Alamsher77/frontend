@@ -1,10 +1,11 @@
 // src/components/SignupForm.js
 import React, { useState} from 'react';
-import {Navigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import DomainUrl from '../Configuration/Index'
 import { FaRegUserCircle } from "react-icons/fa";
 import{ toast } from 'react-hot-toast';
 const SignupForm = () => {
+   const navigate = useNavigate();
   const [isLogin,setIsLogin] = useState(true)
   // sign up
   const [users,setUsers] = useState({
@@ -94,7 +95,7 @@ const SignupForm = () => {
             password: '',
             profilePic: '',
           })
-      window.location.replace('/') 
+     navigate('/') 
       toast.success(data.message) 
      } 
 
