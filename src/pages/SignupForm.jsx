@@ -1,10 +1,12 @@
 // src/components/SignupForm.js
-import React, { useState} from 'react';
+import React, { useState,useContext} from 'react';
 import {useNavigate} from "react-router-dom";
 import DomainUrl from '../Configuration/Index'
 import { FaRegUserCircle } from "react-icons/fa";
 import{ toast } from 'react-hot-toast';
+import {ContestContext} from '../api/ContestContext'
 const SignupForm = () => {
+    const {userFechApi} = useContext(ContestContext) 
    const navigate = useNavigate();
   const [isLogin,setIsLogin] = useState(true)
   // sign up
@@ -49,6 +51,7 @@ const SignupForm = () => {
             profilePic: '',
           })
           setIsLogin(true)
+          userFechApi()
         } 
 
     }catch(error) {

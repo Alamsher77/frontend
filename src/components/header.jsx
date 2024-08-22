@@ -7,7 +7,7 @@ import {ContestContext} from '../api/ContestContext'
 import './header.css'
 export const Headers = ()=> {
    const navigate = useNavigate();
-  const {allProductsCategry, coutCartData,userDetails,setUserDetails} = useContext(ContestContext) 
+  const {userFechApi,allProductsCategry, coutCartData,userDetails,setUserDetails} = useContext(ContestContext) 
  
  const [toggleMenu,setToggleMenu] = useState('')
  const [usersPopupIteams,setUsersPopupIteams] = useState(false)
@@ -34,6 +34,7 @@ export const Headers = ()=> {
     toast.success(data.message)
     setToggleMenu("")  
     navigate("/signup")
+    userFechApi()
      }
   
    } 
