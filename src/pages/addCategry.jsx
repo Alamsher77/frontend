@@ -12,12 +12,12 @@ const addCategry = ()=>{
       categry:'',
       catelogo:''
     })
-  
+ 
     const imageHandler = async(e)=>{
    try{
       const uploadsimage = e.target.files[0]
     const uploadsimageresponse = await UploadImage(uploadsimage)
- 
+  
     setCategyValue({
      ...categryValue,catelogo:uploadsimageresponse.url
   })
@@ -26,8 +26,7 @@ const addCategry = ()=>{
    }
     
   }
- 
-   console.log(allProductsCategry)  
+  
   const removeCategry = async (e)=>{
      const cotegryRquir = confirm('this categry was delete are you sure')
      if(!cotegryRquir){
@@ -53,7 +52,7 @@ const addCategry = ()=>{
   }
     
  
-    const submitHandler = async()=>{
+  const submitHandler = async()=>{
       
   await fetch(`${DomainUrl.url}productcategry`,{
        method:'POST',
@@ -86,22 +85,23 @@ const addCategry = ()=>{
      <h4>Add Categry</h4> 
     <input type="button" onClick={()=> { showCategryForm ? setShowCategryForm(false) : setShowCategryForm(true)}} value="add"/>
      </div>
-       {showCategryForm ? <div className="addCategryForm" >
+       {showCategryForm ? <div className="addCategryForm " >
         <h3>Add Categrys</h3>
-         <div className="flex items-center gap-2">
-           <div className="w-28">
+         <div className="flex  items-center w-56  gap-2">
+           <div className="flex w-28 items-center ">
+       
             <label htmlFor="file-name">
-            <img src={logo5} className="w-full border"  alt="imag"/>
-           </label>
-           <input type="file" onChange={imageHandler}  id="file-name" hidden />  
+             <img src={logo5} className="w-full border"  alt="imag"/>
+            </label>  
+             <input type="file" onChange={imageHandler}  id="file-name" hidden /> 
            </div>
-           <div className='flex flex-1  '>
+           <div className='flex w-full  '>
             {
                categryValue.catelogo == '' ?(
                 <div className="text-red-500"> * please upload image</div>
                ):(
-                <div className="w-full flex gap-1 p-2 flex-wrap">
-                 <img className="w-12 h-12" src={categryValue.catelogo}/>
+                <div onClick={()=>alert('deleted')} className="w-26 h-26  flex gap-1 p-2 flex-wrap">
+                 <img className="w-full h-full object-contain" src={categryValue.catelogo}/>
                 </div>
                )
             }

@@ -29,7 +29,9 @@ const Cart = () => {
    },[])
 
 const checkOutHandler = ()=>{
-  toast.success('product order successfull') 
+  
+    
+    window.print(); 
 }
   return (
    <>

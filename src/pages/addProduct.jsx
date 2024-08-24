@@ -41,12 +41,33 @@ const AddProduct = ()=>{
   }
   
   
-  const productValue = (e)=>{
+  const productValue = async(e)=>{
     setProducts({...products,[e.target.name]:e.target.value})
-  }
+    try{
+    await  localStorage.setItem('products',JSON.stringify({...products})) 
+    }catch(error){
+      alert(error)
+    }
   
+     
+  }
+  useEffect(()=>{
+      const getproduct = JSON.parse(localStorage.getItem('products')) 
+      if(getproduct){
+        setProducts({
+     name:getproduct.name,
+    oldPrice:getproduct.oldPrice,
+    newPrice:getproduct.newPrice,
+    image:getproduct.image,
+    categry:getproduct.categry,
+    productInfo:getproduct.productInfo,
+     }) 
+      }
+      
+     console.log(getproduct)
+  },[])
   const submitHandler = async (e)=>{
-    e.preventDefault() 
+    e.preventDefault()   
     try{
      await fetch(`${DomainUrl.url}addproduct`,{
       method:'POST',
@@ -56,15 +77,14 @@ const AddProduct = ()=>{
       },
       body:JSON.stringify(products),
     })
-    .then((res)=> res.json()).then((data)=> {
-       
+    .then((res)=> res.json()).then((data)=> { 
       if(!data.success){
         toast.error(data.message)
-      }
-       
+      } 
       if(data.success){
         toast.success(data.message)
         fetchApi()
+        localStorage.removeItem('products')
         setProducts({
     name:'',
     oldPrice:'',
@@ -164,6 +184,7 @@ const AddProduct = ()=>{
      })
     
   }
+  
   
   return(
      <> 

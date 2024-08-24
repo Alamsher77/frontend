@@ -400,9 +400,9 @@ height: 130px;
   color: white;
 }
 .addCategryForm{
-  margin-top: 1px; 
+  margin-top: 1px;  
   padding: 20px 10px; 
-  display: flex;
+  display: flex; 
   justify-content: center;
   align-items: center;
   flex-direction: column;

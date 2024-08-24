@@ -5,7 +5,13 @@ import {ContestContext} from '../api/ContestContext'
  import { DNA } from 'react-loader-spinner'
 const Home = ()=>{
    const {allProduct,lodding}= useContext(ContestContext)
-  
+ 
+     const reslocal = JSON.parse(localStorage.getItem('cloudimage'))
+     console.log(reslocal)
+  //     useEffect(()=>{
+  //   setCategyValue({
+  //   ...categryValue,catelogo:reslocal
+  // })
   return(
      <>
   

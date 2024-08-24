@@ -10,6 +10,7 @@ import AddCategry from '../pages/addCategry'
 import Product from '../pages/product'
 import Cart from '../pages/cart'
 import CategryIteams from '../pages/categryIteams'
+import UserDetails from '../pages/userDetails'
 const router = createBrowserRouter([
   { 
     path: "/", 
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
          element: <Home />
        }, 
        {
+         path:"UserDetails",
+         element:<UserDetails />,
+       },
+      {
          path:"categryIteams",
          element:<CategryIteams/>,
          children:[

@@ -76,9 +76,9 @@ export const Headers = ()=> {
         {
           userDetails ? (
            <>
-            <div className="user-image"   onClick={usersTogglePopup}>{userDetails?.profilePic ? (
-              <img src={userDetails.profilePic} alt="image" />):(
-                null
+            <div className="cursor-pointer user-image bg-slate-200"   onClick={usersTogglePopup}>{userDetails?.profilePic ? (
+              <img src={userDetails?.profilePic} alt="image" />):(
+                <h1 className="font-bold text-4xl text-slate-500">{userDetails?.name.charAt(0)}</h1>
               )
             }</div>
             <div className="user-information">
@@ -97,6 +97,7 @@ export const Headers = ()=> {
        usersPopupIteams && (
         <div className="absolute flex flex-col gap-1 justify-center items-center  p-2 top-20 left-2 bg-white shadow-indigo-500/50 ">
          <div className="border border-yellow-600 px-3 py-1 text-yellow-500 rounded"><Link to="adminPanel/addproduct" onClick={usersTogglePopup,menuhandler } >Admin Panel</Link></div>
+          <div className="border border-yellow-600 px-3 py-1 text-yellow-500 rounded"><Link to="UserDetails" onClick={usersTogglePopup,menuhandler } >Profile</Link></div>
          <div className="border border-red-600 text-red-500 hover:text-red-600 hover:bg-red-200  px-3 rounded"> <Link to="signup" onClick={logoutHandler} >Log Out</Link></div>
         </div>
        )
