@@ -88,7 +88,7 @@ const checkOutHandler = (e)=>{
      <p>Total Amount</p> <p>{DisplayCurrency(TotalPrice)}</p>
       </div>
       <div onClick={checkOutHandler} className="border border-pink-500 my-5">
-       <p className="text-white px-7 py-2 text-black hover:bg-pink-500 hover:text-white rounded cursor-pointer select-none">Payment</p>
+       <p className="px-7 py-2 text-black hover:bg-pink-500 hover:text-white rounded cursor-pointer select-none">Payment</p>
       </div>
     </div>
     
