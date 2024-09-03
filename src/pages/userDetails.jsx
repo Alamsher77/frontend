@@ -10,6 +10,7 @@ const {userFechApi,userDetails,lodding} = useContext(ContestContext)
  const [userValue,setUserValue] = useState({
 name :'',
  email :'',
+ phone:'',
  profilePic :'',
  currentAddress:'',
  deleverAddress:'',
@@ -23,6 +24,7 @@ name :'',
    setUserValue({
   name : userDetails.name,
  email :userDetails?.email,
+ phone:userDetails?.phone,
  profilePic : userDetails?.profilePic,
  currentAddress:userDetails?.currentAddress,
  deleverAddress:userDetails?.deleverAddress,
@@ -96,9 +98,14 @@ const submitHandler = async()=>{
         
          <div className="mb-2">
           <h1 className="mb-1">Email</h1>
-         <input name="email" onChange={changeHandler} disabled={updateUser ? false : true} className="rounded font-bold bg-gray-700 text-white border-4 outline-none border-pink-300 border px-4 py-1" typ="text" value={updateUser ? userValue?.email : userDetails?.email}  placeholder="Email" />
+         <input name="email" onChange={changeHandler} disabled={updateUser ? false : true} className="rounded font-bold bg-gray-700 text-white border-4 outline-none border-pink-300 border px-4 py-1" type="text" value={updateUser ? userValue?.email : userDetails?.email}  placeholder="Email" />
         </div>
           
+          <div className="mb-2">
+          <h1 className="mb-1">Phone</h1>
+         <input name="phone" onChange={changeHandler} disabled={updateUser ? false : true} className="rounded font-bold bg-gray-700 text-white border-4 outline-none border-pink-300 border px-4 py-1" type="number" value={updateUser ? userValue?.phone : userDetails?.phone}  placeholder="Phone" />
+        </div>
+        
       </div>
       
        <h1 onClick={()=>{showAdress ? setShowAdress(false) : setShowAdress(true)}} className=" rounded-full mt-2 shadow shadow-gray-600 px-10 py-1 mb-2 font-bold uppercase text-gray-500 bg-pink-100 cursor-pointer select-none">View Address</h1>

@@ -14,15 +14,18 @@ export const ContestProvider =  ({ children }) => {
   const[coutCartData,setCoutCartData] = useState(0) 
   const [latestProduct,setLatestProduct] = useState([])
   const [randomProduct,setRandomProduct] = useState([])
-  
+
  
   // api funciton
 const categryapi = async ()=>{
        // all categry api 
+      setLodding(true)
     const response =  await fetch(`${DomainUrl.url}showproductcategry`)
      .catch((error)=> console.log(error))
       const data = await response.json()
+       setLodding(false)
       setAllProductsCategry(data)
+     
 }
 const fetchApi = async ()=>{
   setLodding(true)
@@ -81,6 +84,7 @@ const randomProductApi = async ()=>{
        setLodding(false)
      }) 
 }
+ 
   // api useEffect
  useEffect(  ()=>{ 
   fetchApi()
@@ -88,7 +92,7 @@ const randomProductApi = async ()=>{
   userFechApi()
   coutCartFetchApi()
   LatestProductApi()
-  randomProductApi()
+  randomProductApi() 
   },[])
   
  

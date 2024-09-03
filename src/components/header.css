@@ -2,7 +2,7 @@
 @media (max-width:700px){
 .sidbar-container{ 
     background-color: white;
-    width: 300px;
+    width: auto;
     height: 100vh;  
     position: fixed;  
     top: 5px;

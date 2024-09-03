@@ -8,10 +8,10 @@ const LatestProduct = ()=>{
   
   return(
     <>
-    <div className="p-2">
+    <div className="p-2 ">
     <h1 className="font-bold text-pink-400 ">LATEST PRODUCTS</h1>
     </div>
-       <div className="grid grid-cols-2 md:grid-cols-5 "> 
+  <div  style={{ scrollbarWidth: "none"}} className="select-none flex overflow-x-auto"> 
      {
        latestProduct.length == 0 && lodding ? (
      loddingArry.map((iteam,index)=>{

@@ -11,6 +11,7 @@ import Product from '../pages/product'
 import Cart from '../pages/cart'
 import CategryIteams from '../pages/categryIteams'
 import UserDetails from '../pages/userDetails'
+import MyOrder from '../pages/myOrder'
 const router = createBrowserRouter([
   { 
     path: "/", 
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
          path : "",
          element: <Home />
        }, 
-       {
+      {
          path:"UserDetails",
          element:<UserDetails />,
        },
@@ -70,7 +71,11 @@ const router = createBrowserRouter([
       {
          path:"cart",
          element:<Cart/>
-       } 
+       },
+       {
+         path:"myOrderProducts",
+         element:<MyOrder />
+       },
        ]
   },
   {

@@ -1,13 +1,14 @@
-import logo6 from '../asetes/logo6.jpg'
+import logo3 from '../asetes/logo7.jpg'
 const HomeBanner = ()=>{
   return(
-   <div className="h-40 m-2 p-1 bg-pink-200 flex gap-1">
-    <div className="h-full w-44 bg-gray-200">
-     <img src={logo6} className="w-full h-full object-cover"/>
+   <div className="h-52 relative rounded m-2 p-1 bg-pink-200 ">
+    <div className="h-full w-full bg-gray-200">
+     <img src={logo3} className="w-full h-full object-cover"/>
     </div>
-    <div className=" justify-center gap-6 bg-white w-44 p-1 flex flex-col items-center">
-     <h1 className="text-gray-500 font-bold">Welcome to Shopes</h1>
-     <p className="text-sm text-green-700 font-bold">This Year For Best Offers For All Users In This Website You Can By All Products </p>
+    
+    <div className="rounded flex-col gap-4 p-6 select-none h-48 top-0 flex items-center  bg-slate-800/50  absolute  m-2 p-1  ">
+     <h1 className="text-2xl font-bold text-yellow-400">Welcome to This Shope</h1>
+     <p className="text-yellow-100">Hey Your best expirence is here and your favrate products is here You can by this product any where for all items you can by or more</p>
     </div>
    </div>
     )

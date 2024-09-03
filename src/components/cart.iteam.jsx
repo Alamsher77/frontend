@@ -79,6 +79,7 @@ const cartIteamDeleteHandler = async (id)=>{
      toast.error(error.message)
    }
  }
+ 
   return (
    <div className="select-none mx-3 relative bg-white p-1 shadow shadow-gray-600 flex justify-between ">
    
