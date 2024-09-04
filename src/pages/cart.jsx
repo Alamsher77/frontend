@@ -1,11 +1,13 @@
- import React, { useState,useEffect} from 'react'; 
+ import {useState,useContext,useEffect} from "react"
  import DomainUrl from '../Configuration/Index'
  import CartIteam from "../components/cart.iteam"
  import { DNA } from 'react-loader-spinner'
  import{ toast } from 'react-hot-toast'; 
  import DisplayCurrency from '../displayCurrancy'
  import {useNavigate}  from 'react-router-dom'
+ import {ContestContext} from '../api/ContestContext'
 const Cart = () => { 
+    const {userDetails,lodding,coutCartFetchApi} = useContext(ContestContext) 
   const navigate = useNavigate()
  const [cartProductView,setCartProductView] = useState([])
  const [islodding,setIslodding] = useState(false) 
@@ -23,15 +25,16 @@ const cartProductViewFetch = async ()=>{
     }catch(error){
       toast.error(error.message)
     }
+     
 }
    useEffect(()=>{
-     cartProductViewFetch() 
+     cartProductViewFetch()  
    },[])
-console.log(cartProductView)
-  const totalquatity = cartProductView.reduce((prev,curent)=>{
+ 
+  const totalquatity = cartProductView?.reduce((prev,curent)=>{
             return prev + curent.quantity
           },0)
- const TotalPrice = cartProductView.reduce((prev,curent)=>{
+ const TotalPrice = cartProductView?.reduce((prev,curent)=>{
      return prev + (curent.quantity * curent.productId.newPrice)
           },0)
           
@@ -59,36 +62,45 @@ const checkOutHandler = async(e)=>{
     return false
    }
    toast.success(data.message)
+   coutCartFetchApi()
+   cartProductViewFetch()
+   
   }catch(error){
     toast.error(error.message)
   }
 }
  
+     
+  
   return (
    <>
   {
-      islodding ? ( 
-             
-             [1,2,3,2,3,4,3].map((item,index)=>{
+   
+    islodding ? (   
+            [1,2,3,2,3,4,3].map((item,index)=>{
             return (
-               <div  key={index} className="animate-pulse select-none  mt-2 bg-slate-200 p-1 shadow shadow-gray-600 h-28 w-screen  flex items-center">
+              <div  key={index} className="animate-pulse select-none  mt-2 bg-slate-200 p-1 shadow shadow-gray-600 h-28 w-screen  flex items-center">
                 <p className="w-20 h-20 rounded-full bg-slate-400"></p>
                 <div className="flex flex-col gap-4 w-52 p-2 ml-3">
-                 <p className="bg-slate-400 h-8 w-full"></p>
-                 <p className="bg-slate-400 h-8 w-full"></p>
+                <p className="bg-slate-400 h-8 w-full"></p>
+                <p className="bg-slate-400 h-8 w-full"></p>
                 </div>
-               </div>
+              </div>
               )
-          })  
- 
-        ):(
-      
-      cartProductView?.length == 0   ? (
-         <div className="text-center mt-20 mb-20">
+          })   
+        ):( 
+      !userDetails ?(
+          <div className="text-center mt-20 mb-20 text-red-400">
+          <p className="text-2xl mb-10">You are not login</p>
+          <button onClick={()=>{navigate('/signup')}} className="px-3 py-1 border border-red-500 rounded hover:bg-red-500 hover:text-white">Login</button>
+          </div>
+         ):(
+     cartProductView?.length == 0   ? (
+        <div className="text-center mt-20 mb-20">
           <p className="text-2xl mb-10">Cart is empty</p>
           <button onClick={()=>{navigate('/')}} className="px-3 py-1 border border-green-500 rounded hover:bg-green-500 hover:text-white">Shop now</button>
           </div>
-         ):(
+        ):(
         <>    
     <div className="flex flex-col gap-1 "> 
     <h1 className="text-2xl text-center mt-10 uppercase">Cart Datails</h1>
@@ -108,20 +120,25 @@ const checkOutHandler = async(e)=>{
     <div className="cart-checkout  bg-slate-100">
       <h1>Order Summery</h1>
       <div className="w-full px-4 py-2 flex justify-between gap-2">
-     <p>Total Quantity</p> <p>{totalquatity}</p>
+    <p>Total Quantity</p> <p>{totalquatity}</p>
       </div>
        
-       <div className="w-full px-4 py-2 flex justify-between gap-2">
-     <p>Total Amount</p> <p>{DisplayCurrency(TotalPrice)}</p>
+      <div className="w-full px-4 py-2 flex justify-between gap-2">
+    <p>Total Amount</p> <p>{DisplayCurrency(TotalPrice)}</p>
       </div>
       <div onClick={checkOutHandler} className="border border-pink-500 my-5">
-       <p className="px-7 py-2 text-black hover:bg-pink-500 hover:text-white rounded cursor-pointer select-none">Order now</p>
+      <p className="px-7 py-2 text-black hover:bg-pink-500 hover:text-white rounded cursor-pointer select-none">Order now</p>
       </div>
     </div>
     
   </>
-    ))
-    }
+    )
+           )
+          
+    )
+     
+    
+  }
    </>
   );
 };

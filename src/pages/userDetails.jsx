@@ -2,9 +2,12 @@ import React,{useState,useEffect,useContext} from 'react'
 import {ContestContext} from '../api/ContestContext'
 import{ toast } from 'react-hot-toast';
 import DomainUrl from '../Configuration/Index'
+import {useNavigate} from 'react-router-dom'
 import logo5 from '../asetes/logo5.png'
 import UploadImage from '../helpers/uploadsImage'
+import { FaRegUserCircle } from "react-icons/fa";
 const UserDetails = ()=>{
+  const navigate = useNavigate()
 const {userFechApi,userDetails,lodding} = useContext(ContestContext)
   const [showAdress,setShowAdress] = useState(false) 
  const [userValue,setUserValue] = useState({
@@ -21,8 +24,9 @@ name :'',
  })
  const [updateUser,setUpdateUser] = useState(false) 
  const updateuserhandler = ()=>{ 
-   setUserValue({
-  name : userDetails.name,
+    try{
+       setUserValue({
+  name : userDetails?.name,
  email :userDetails?.email,
  phone:userDetails?.phone,
  profilePic : userDetails?.profilePic,
@@ -35,7 +39,9 @@ name :'',
    })
    toast.success('Now You Can Change Your Information')
   setUpdateUser(true) 
- 
+    }catch(error){
+      toast.error(error.message)
+    }
  } 
  const changeHandler = (e)=>{ 
    setUserValue({...userValue,[e.target.name]:e.target.value})
@@ -74,15 +80,24 @@ const submitHandler = async()=>{
        toast.success(data?.message)
      }
    setUpdateUser(false)
- }
- 
+ } 
   return(
      <div className="select-none w-full flex flex-col items-center bg-white p-4">
       <h1 className="shadow shadow-gray-600 rounded-full px-10 py-1 mb-2 font-bold uppercase text-gray-500 bg-pink-100">Your Profile</h1>
       <div className="shadow shadow-gray-600 bg-pink-100  gap-2 flex flex-col items-center w-full  p-2">
         <div className="relative flex flex-col items-center p-2"> 
-           <div className=" bg-slate-400 w-20 h-20 mb-2 rounded-full">
-             {userValue?.profilePic ?  <img src={userValue?.profilePic} className="object-cover w-full h-full border rounded-full"  alt="imag"/>  :<img src={userDetails?.profilePic} className="object-cover w-full h-full border rounded-full"  alt="imag"/>} 
+           <div className=" bg-slate-400 w-20 h-20 mb-2 justify-center flex items-center rounded-full">
+             {
+            !userValue?.profilePic && !userDetails?.profilePic ? (
+            <div>
+             <FaRegUserCircle className="text-5xl" />
+            </div>
+            ):(
+            
+             userValue?.profilePic ?  <img src={userValue?.profilePic} className="object-cover w-full h-full border rounded-full"  alt="imag"/>  :<img src={userDetails?.profilePic} className="object-cover w-full h-full border rounded-full"  alt="imag"/>
+               
+            )
+             } 
            </div>
           {updateUser ?   <label className="flex items-center justify-center cursor-pointer top-16 right-10 rounded-full absolute bg-white" htmlFor="file-name">
             <p className="px-1">✏️</p>

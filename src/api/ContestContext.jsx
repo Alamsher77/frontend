@@ -39,12 +39,14 @@ const fetchApi = async ()=>{
      }) 
   }
 const userFechApi = async ()=>{
+      setLodding(true)
       const response = await fetch(`${DomainUrl.url}usergetinfo`,{
         method:"GET",
         credentials:"include"
       })
      .catch((error)=> console.log(error))
      const data = await response.json()
+     setLodding(false)
       if(data.success){
         setUserDetails(data.data)
       }

@@ -1,21 +1,25 @@
-import {useState,useEffect} from 'react'
+ import {useState,useContext,useEffect} from "react"
   import { toast} from 'react-toastify'; 
+  import { MdCancel } from "react-icons/md";
+  import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
   import DomainUrl from '../Configuration/Index'
    import DisplayCurrency from '../displayCurrancy'
    import {useNavigate}  from 'react-router-dom'
+    import {ContestContext} from '../api/ContestContext'
 const MyOrder = ()=>{
+      const {userDetails,lodding} = useContext(ContestContext) 
   const navigate = useNavigate()
 const [userOrderProduct,setUserOrderProduct] = useState([])
-const [lodding,setLodding] = useState(false)
+const [islodding,setIsLodding] = useState(false)
 const userOrderProductApi = async()=>{
   try{
-    setLodding(true)
+    setIsLodding(true)
     const response = await fetch(`${DomainUrl.url}showOrderProducts`,{
         method:"GET",
         credentials:"include"
       })
     const data = await response.json()
-    setLodding(false)
+    setIsLodding(false)
     setUserOrderProduct(data.data) 
   }catch(error){
     toast.error(error.message)
@@ -23,13 +27,43 @@ const userOrderProductApi = async()=>{
 } 
  
 useEffect(()=>{
-  userOrderProductApi()
+  userOrderProductApi() 
 },[]) 
+
+// cancel order functionaliti
+const cancelOrder = async(id)=>{
  
+  try{ 
+const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
+      method: 'post', 
+     headers: { 
+          "Content-type": "application/json",
+        },
+      body: JSON.stringify({id}),
+    })
+    const data = await response.json()
+    if(!data.success){
+      alert(data.message)
+      return false
+    }
+    alert(data.message)
+    userOrderProductApi() 
+  }catch(error){
+    alert(error.message)
+  }
+}
+ console.log(userOrderProduct)
   return(
      <div className="m-1 flex flex-col gap-2">
       {
-        lodding ?(
+        !userDetails ? (
+        <div className="text-center mt-20 mb-20 text-red-400">
+          <p className="text-2xl mb-10">You are not login</p>
+          <button onClick={()=>{navigate('/signup')}} className="px-3 py-1 border border-red-500 rounded hover:bg-red-500 hover:text-white">Login</button>
+          </div>
+       
+        ):(
+          islodding ?(
          [1,2,3,2,3,4,3].map((item,index)=>{
             return (
                <div  key={index} className="animate-pulse select-none  mt-2 bg-slate-200 p-1 shadow shadow-gray-600 w-screen  flex items-center">
@@ -53,7 +87,7 @@ useEffect(()=>{
               )
           })  
         ):(
-         userOrderProduct.length == 0 ?(
+           userOrderProduct?.length == 0 ?(
           <div className="text-center mt-20 mb-20">
           <p className="text-2xl mb-10">No Order Products</p>
           <button onClick={()=>{navigate('/cart')}} className="px-3 py-1 border border-green-500 rounded hover:bg-green-500 hover:text-white">Order Now</button>
@@ -61,6 +95,15 @@ useEffect(()=>{
        
          ):(
           userOrderProduct?.map((item,index)=>{
+          let ordertypeFunction 
+          
+          if(item?.orderType == 'cancel'){
+            ordertypeFunction = <p className= "flex items-center select-none text-red-600 text-[14px]"> <span className="font-bold">Delever : </span><MdCancel /></p>
+          }else if(item?.orderType == 'done'){
+            ordertypeFunction = <p className= "flex items-center select-none text-green-600 text-[14px]"> <span className="font-bold">Delever : </span><IoCheckmarkDoneCircleSharp /></p>
+          }else{
+             ordertypeFunction = <p className= "flex items-center select-none text-yellow-600 text-[14px]"> <span className="font-bold">Delever : </span>underOrder</p>
+          }
       const totalquatity = item?.productDetails?.reduce((prev,curent)=>{
             return prev + curent.quantity
           },0)
@@ -70,7 +113,7 @@ useEffect(()=>{
           },0)
        const date = new Date(item?.createdAt).toLocaleDateString()
        const time = new Date(item?.createdAt).toLocaleTimeString()
-       console.log(date)
+       
          return(
        <div key={index} className="select-none border border-green-500 p-2">
            <div className="flex gap-3">
@@ -104,13 +147,16 @@ useEffect(()=>{
                <p className="select-none text-pink-500 text-[14px]"><span className="font-bold">Total Quantity : </span>{totalquatity}</p>
               <p className="select-none text-green-600 text-[14px]"><span className="font-bold">Total Price : </span> {DisplayCurrency(TotalPrice)}</p></div>
                <div>
-                 <p className="select-none text-green-500 text-[14px]"><span className="font-bold">Delever : </span> Done</p>
+                  
+                   {
+                     ordertypeFunction
+                   }
                   
                   <p className="select-none text-yellow-500 text-[14px]"><span className="font-bold">Payment Type : </span>COD</p>
                </div>
              </div>
              <div className="flex flex-row-reverse mt-3">
-              <button className="border border-red-700 hover:bg-red-500 hover:text-white font-bold uppercase rounded px-3 py-1">Cancel Order</button>
+              <button disabled={item.orderType == 'cancel' || item.orderType == 'done' ? true : false}   onClick={ ()=> cancelOrder(item._id)} className={`${item.orderType == 'cancel' || item.orderType == 'done' ? 'border border-slate-200 bg-slate-100  text-slate-400':'border border-red-700 hover:bg-red-500 hover:text-white'} font-bold uppercase rounded px-3 py-1`}>Cancel Order</button>
              </div>
           </div>
       </div>
@@ -119,7 +165,7 @@ useEffect(()=>{
          )
         )
       
-       
+        )
       } 
      </div>
     )
