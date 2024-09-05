@@ -1,12 +1,15 @@
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
+import {useState} from 'react'
  const Sidebar = ()=> {
-
+ 
   return( 
     <div className='sidebar'>
      <ul> 
-          <Link to='addproduct'><li>addproduct</li></Link> 
-          <Link to='allUsers'><li>allusers</li></Link> 
-          <Link to='addcategry'><li>addcategry</li></Link> 
+          <NavLink className={({isActive})=>isActive ?'bg-green-500':''} to='addproduct'><li>addproduct</li></NavLink> 
+          <NavLink className={({isActive})=>isActive ?'bg-green-500':''} to='allUsers'><li>allusers</li></NavLink> 
+          <NavLink className={({isActive})=>isActive ?'bg-green-500':''} to='addcategry'><li>addcategry</li></NavLink> 
+          <NavLink className={({isActive})=>isActive ?'bg-green-500':''} to='AllUsersOrderProduct'><li>Orders</li></NavLink> 
+           
      </ul>
     </div>  
   )

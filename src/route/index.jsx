@@ -12,6 +12,7 @@ import Cart from '../pages/cart'
 import CategryIteams from '../pages/categryIteams'
 import UserDetails from '../pages/userDetails'
 import MyOrder from '../pages/myOrder'
+import AllUsersOrderProduct from '../pages/allusersOrderProducts'
 const router = createBrowserRouter([
   { 
     path: "/", 
@@ -64,7 +65,11 @@ const router = createBrowserRouter([
             {
               path:"addcategry",
               element:<AddCategry/>
-            }
+            },
+            {
+              path:"AllUsersOrderProduct",
+              element:<AllUsersOrderProduct/>
+            },
            ],
            
        },

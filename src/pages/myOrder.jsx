@@ -1,14 +1,14 @@
  import {useState,useContext,useEffect} from "react"
-  import { toast} from 'react-toastify'; 
+import{ toast } from 'react-hot-toast'; 
   import { MdCancel } from "react-icons/md";
   import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
   import DomainUrl from '../Configuration/Index'
-   import DisplayCurrency from '../displayCurrancy'
+ import DisplayCurrency from '../displayCurrancy'
    import {useNavigate}  from 'react-router-dom'
     import {ContestContext} from '../api/ContestContext'
 const MyOrder = ()=>{
-      const {userDetails,lodding} = useContext(ContestContext) 
-  const navigate = useNavigate()
+ const {userDetails,lodding} = useContext(ContestContext) 
+ const navigate = useNavigate()
 const [userOrderProduct,setUserOrderProduct] = useState([])
 const [islodding,setIsLodding] = useState(false)
 const userOrderProductApi = async()=>{
@@ -32,27 +32,30 @@ useEffect(()=>{
 
 // cancel order functionaliti
 const cancelOrder = async(id)=>{
- 
+ const grant = confirm('Are You sure You Want To Cancel This Order')
+if(!grant){
+  return false
+}
   try{ 
 const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
       method: 'post', 
      headers: { 
           "Content-type": "application/json",
         },
-      body: JSON.stringify({id}),
+      body: JSON.stringify({id:id,type:'cancel'}),
     })
     const data = await response.json()
     if(!data.success){
-      alert(data.message)
+      toast.error(data.message)
       return false
     }
-    alert(data.message)
+    toast.success(data.message)
     userOrderProductApi() 
   }catch(error){
-    alert(error.message)
+    toast.error(error.message)
   }
 }
- console.log(userOrderProduct)
+ 
   return(
      <div className="m-1 flex flex-col gap-2">
       {
