@@ -31,12 +31,12 @@ export const Headers = ()=> {
   } 
   
  const logoutHandler = async ()=>{
-  
+  try{
+    
      const response = await fetch(`${DomainUrl.url}logout`,{
         method:"GET",
         credentials:"include",
-      })
-     .catch((error)=> console.log(error))
+      }) 
      const data = await response.json()
      if(data.success){ 
     toast.success(data.message)
@@ -47,6 +47,9 @@ export const Headers = ()=> {
    navigate("/signup") 
      }
   
+  }catch(error){
+    toast.error(error.message)
+  }
    } 
    
 
@@ -118,13 +121,12 @@ export const Headers = ()=> {
       <>
          
         
-        <div className="text-3xl relative -left-1 flex justify-center items-center w-8 h-8" >
-        <sapn className="text-white absolute" ><NavLink to='cart' onClick={()=> 
-    document.body.removeAttribute('className','close')}> <MdShoppingCart/></NavLink></sapn>
+   <NavLink to='cart' className="text-3xl relative -left-1 flex justify-center items-center w-8 h-8" >
+        <sapn className="text-white absolute" > <MdShoppingCart/>  </sapn>
       <div className="bg-red-600 -top-1 left-2 absolute rounded-full text-white w-5 h-5 p-1 flex items-center justify-center">
         <p className="text-sm">{coutCartData}</p>
       </div>
-      </div>
+      </NavLink>
       </>
       ):(
        <>

@@ -45,7 +45,12 @@ const checkOutHandler = async(e)=>{
     const grant = confirm('Are You Sure ? You want to order this Product')
     if(!grant){
       return false
-    }  
+    } 
+    if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.profilePic || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
+      toast.error('please add addres all fileds')
+      navigate('/userDetails')
+      return false
+    } 
     const response = await fetch(`${DomainUrl.url}cheqoutAndPayment`,{
       method: 'POST',
        credentials:'include',

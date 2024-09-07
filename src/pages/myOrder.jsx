@@ -101,11 +101,11 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
           let ordertypeFunction 
           
           if(item?.orderType == 'cancel'){
-            ordertypeFunction = <p className= "flex items-center select-none text-red-600 text-[14px]"> <span className="font-bold">Delever : </span><MdCancel /></p>
+            ordertypeFunction = <p className= "flex items-center select-none text-red-600 text-[14px]"> <span className="font-bold">Delever : </span><span className="ml-3"><MdCancel /></span></p>
           }else if(item?.orderType == 'done'){
-            ordertypeFunction = <p className= "flex items-center select-none text-green-600 text-[14px]"> <span className="font-bold">Delever : </span><IoCheckmarkDoneCircleSharp /></p>
+            ordertypeFunction = <p className= "flex items-center select-none text-green-600 text-[14px]"> <span className="font-bold">Delever : </span><span className="ml-3"><IoCheckmarkDoneCircleSharp /></span></p>
           }else{
-             ordertypeFunction = <p className= "flex items-center select-none text-yellow-600 text-[14px]"> <span className="font-bold">Delever : </span>underOrder</p>
+             ordertypeFunction = <p className= "flex items-center select-none text-blue-600 text-[14px]"> <span className="font-bold">Delever : </span><span className="ml-3">underOrder</span></p>
           }
       const totalquatity = item?.productDetails?.reduce((prev,curent)=>{
             return prev + curent.quantity
