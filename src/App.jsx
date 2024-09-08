@@ -14,8 +14,7 @@ function App() {
     <>
       <Headers />
     <div className="pt-12 ">
-    <Outlet/>
-    
+      <Outlet/> 
     </div>
       <Footer/>
       <Toaster

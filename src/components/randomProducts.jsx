@@ -11,7 +11,7 @@ const RandomProducts = ()=>{
     <div className="p-2">
     <h1 className="font-bold text-pink-400 ">RANDOM PRODUCTS</h1>
     </div>
-       <div  style={{ scrollbarWidth: "none"}} className="select-none flex w-full overflow-x-scroll no-scrollbar"> 
+       <div  style={{ scrollbarWidth: "none"}} className="select-none gap-1 mx-1 flex w-full overflow-x-scroll no-scrollbar"> 
      {
        randomProduct.length == 0 && lodding ? (
      loddingArry.map((iteam,index)=>{

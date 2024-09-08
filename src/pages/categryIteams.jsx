@@ -30,7 +30,7 @@
    result.length == 0 ?(
       <div className="text-center text-2xl mt-20 mb-20">No Categry releted Product</div>
       ):(
-      <div className="grid grid-cols-2 md:grid-cols-5 ">
+      <div className="grid grid-cols-2 gap-1 mx-1 mt-2  md:grid-cols-5 ">
       {
         result.map((iteam,index)=>{
         return <ProductIteam key={index} name={iteam?.name} image={iteam?.image} newPrice={iteam?.newPrice} oldPrice={iteam?.oldPrice} id={iteam?._id}/>

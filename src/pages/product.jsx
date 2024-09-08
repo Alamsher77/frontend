@@ -28,7 +28,7 @@ const Product = ()=>{
       
         <div className="product-description">
           <b  className="  text-xl font-bold uppercase text-slate-500">Reletedroduct :</b>
-          <div className="grid grid-cols-2 md:grid-cols-5 ">
+      <div className="grid gap-1 grid-cols-2 md:grid-cols-5 ">
        
      {
        reletedProduct.map((iteam,index)=>{

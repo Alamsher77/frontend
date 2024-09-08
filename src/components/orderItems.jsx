@@ -39,21 +39,10 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
     toast.error(error.message)
   }
 } 
-    const exportAsPDF = (e) => {
-     
-    const input = printRef.current;
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
-        pdf.addImage(imgData, 'PNG', 0, 0);
-        pdf.save(`${e}.pdf`);
-      });
-      toast.success('pdf Download success')
-  };
+ 
   return(
      <div className="m-1 flex flex-col gap-2">
-     <p>{allOrders?.length}</p>
+     <p className='px-3 '>Total - {allOrders?.length}</p>
       {
        
           islodding ?(
@@ -171,10 +160,12 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
               </div>
                
               </div>
-               <p onClick={()=>{
+               <button 
+                disabled={item.orderType == 'cancel' || item.orderType == 'done' ? true : false}
+               onClick={()=>{
                   viewuserdetails(item.userDetails)
                   setviewalluserdetail(true) 
-               }} className="hover:bg-slate-800 hover:text-white cursor-pointer mt-3  w-32 text-center py-1 bg-slate-200 rounded">seemore</p> 
+               }} className={`${item.orderType == 'cancel' || item.orderType == 'done' ? 'border border-slate-200 bg-slate-100  text-slate-400':'border border-green-700 hover:bg-green-500 hover:text-white'} font-bold uppercase rounded px-3 py-1 mt-3`}>seemore</button> 
             {
               viewalluserdetail &&(
               <div  className="fixed px-2 py-3 left-5 overflow-scroll w-[325px] max-h-[70vh] border border-gray-400 shadow shadow-gray-400 top-20  bg-slate-200 flex justify-center items-center flex-col">

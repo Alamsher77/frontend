@@ -7,7 +7,8 @@
  import {useNavigate}  from 'react-router-dom'
  import {ContestContext} from '../api/ContestContext'
 const Cart = () => { 
-    const {userDetails,lodding,coutCartFetchApi} = useContext(ContestContext) 
+   
+ const {userDetails,lodding,coutCartFetchApi} = useContext(ContestContext) 
   const navigate = useNavigate()
  const [cartProductView,setCartProductView] = useState([])
  const [islodding,setIslodding] = useState(false) 
@@ -35,7 +36,7 @@ const cartProductViewFetch = async ()=>{
             return prev + curent.quantity
           },0)
  const TotalPrice = cartProductView?.reduce((prev,curent)=>{
-     return prev + (curent.quantity * curent.productId.newPrice)
+     return prev + (curent.quantity * curent.productId?.newPrice)
           },0)
           
   // make a payment function
@@ -46,11 +47,16 @@ const checkOutHandler = async(e)=>{
     if(!grant){
       return false
     } 
+    
     if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.profilePic || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
       toast.error('please add addres all fileds')
       navigate('/userDetails')
       return false
     } 
+   if(TotalPrice < 200){
+     toast.error('You Can Buy MoreThan 200 ruppese')
+     return false
+   }
     const response = await fetch(`${DomainUrl.url}cheqoutAndPayment`,{
       method: 'POST',
        credentials:'include',
@@ -75,7 +81,7 @@ const checkOutHandler = async(e)=>{
   }
 }
  
-     
+console.log(cartProductView)
   
   return (
    <>

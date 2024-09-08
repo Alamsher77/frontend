@@ -1,4 +1,5 @@
 import DomainUrl from '../Configuration/Index'
+import DisplayCurrency from '../displayCurrancy'
 import { IoCloseCircle,IoRemoveCircleSharp,IoAddCircleSharp} from "react-icons/io5";
  
 import{ toast } from 'react-hot-toast';
@@ -78,8 +79,7 @@ const cartIteamDeleteHandler = async (id)=>{
    }catch(error){
      toast.error(error.message)
    }
- }
- 
+ } 
   return (
    <div className="select-none mx-3 relative bg-white p-1 shadow shadow-gray-600 flex justify-between ">
    
@@ -90,8 +90,8 @@ const cartIteamDeleteHandler = async (id)=>{
       <div className="flex flex-col w-64 gap-1 py-5 px-3">
         <h1 className="text-nowrap text-ellipsis font-bold overflow-hidden">{product?.name}</h1>
           <div className="flex justify-between "> 
-          <p className="text-slate-600 font-bold">₹{product?.newPrice }</p>
-          <p className="text-slate-600 font-bold">₹{product?.newPrice * products?.quantity}</p>
+          <p className="text-slate-600 font-bold">{DisplayCurrency(product?.newPrice)}</p>
+          <p className="text-slate-600 font-bold">{DisplayCurrency(product?.newPrice * products?.quantity)}</p>
           </div>
           <div className="flex gap-1 items-center">
          <IoAddCircleSharp className="cursor-pointer text-xl text-green-600" onClick={()=>increese(products?._id,products?.quantity)} /> <p>{products?.quantity
