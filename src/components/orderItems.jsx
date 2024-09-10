@@ -131,22 +131,7 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
                  )
                })
              }
-             <div className="flex gap-2"> 
-               <div>
-               <p className="select-none text-pink-500 text-[14px]"><span className="font-bold">Total Quantity : </span>{totalquatity}</p>
-              <p className="select-none text-green-600 text-[14px]"><span className="font-bold">Total Price : </span> {DisplayCurrency(TotalPrice)}</p></div>
-               <div>
-                  
-                   {
-                     ordertypeFunction
-                   }
-                  
-                  <p className="select-none text-yellow-500 text-[14px]"><span className="font-bold ">Payment Type : </span>COD</p>
-               </div>
-             </div>
-             <div className="flex flex-row-reverse mt-3">
-              <button disabled={item.orderType == 'cancel' || item.orderType == 'done' ? true : false}   onClick={ ()=> orderDone(item._id)} className={`${item.orderType == 'cancel' || item.orderType == 'done' ? 'border border-slate-200 bg-slate-100  text-slate-400':'border border-green-700 hover:bg-green-500 hover:text-white'} font-bold uppercase rounded px-3 py-1`}>Order Done</button>
-             </div>
+         
              <div className='border py-1 px-2'>
              <h1 className='text-center text-green-600 font-bold text-md uppercase'>user information</h1>
               <div className="flex items-center gap-2">
@@ -191,6 +176,25 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
             }
            
              </div>
+             
+               <div className="flex gap-2"> 
+               <div>
+               <p className="select-none text-pink-500 text-[14px]"><span className="font-bold">Total Quantity : </span>{totalquatity}</p>
+              <p className="select-none text-green-600 text-[14px]"><span className="font-bold">Total Price : </span> {DisplayCurrency(TotalPrice)}</p></div>
+               <div>
+                  
+                   {
+                     ordertypeFunction
+                   }
+                  
+                  <p className="select-none text-yellow-500 text-[14px]"><span className="font-bold ">Payment Type : </span>COD</p>
+               </div>
+             </div>
+                  
+             <div className="flex flex-row-reverse mt-3">
+              <button disabled={item.orderType == 'cancel' || item.orderType == 'done' ? true : false}   onClick={ ()=> orderDone(item._id)} className={`${item.orderType == 'cancel' || item.orderType == 'done' ? 'border border-slate-200 bg-slate-100  text-slate-400':'border border-green-700 hover:bg-green-500 hover:text-white'} font-bold uppercase rounded px-3 py-1`}>Order Done</button>
+             </div>
+             
           </div>
       </div>
          )

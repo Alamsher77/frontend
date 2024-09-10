@@ -5,9 +5,10 @@ import{ toast } from 'react-hot-toast';
   import DomainUrl from '../Configuration/Index'
 import {ContestContext} from '../api/ContestContext'
 import './header.css'
+import logo from '../asetes/logo4.png'
 export const Headers = ()=> {
    const navigate = useNavigate();
-  const {userFechApi,allProductsCategry, coutCartData,userDetails,setUserDetails} = useContext(ContestContext) 
+  const {setIsPopUp,userFechApi,allProductsCategry, coutCartData,userDetails,setUserDetails} = useContext(ContestContext) 
  
  const [toggleMenu,setToggleMenu] = useState('')
  const [usersPopupIteams,setUsersPopupIteams] = useState(false)
@@ -23,9 +24,11 @@ export const Headers = ()=> {
      if(toggleMenu == ''){ 
      sidbarContainer.classList.add('active')
      setToggleMenu('close') 
+     setIsPopUp(true)
      }else{
      sidbarContainer.classList.remove('active') 
      setToggleMenu('')
+     setIsPopUp(false)
      setUsersPopupIteams(false)
      }
   } 
@@ -59,7 +62,7 @@ export const Headers = ()=> {
     
    
     <div className={`header ${toggleMenu}`}> 
-       <div className='navebars-background' onClick={menuhandler}></div>
+   <div className='navebars-background' onClick={menuhandler}></div>
       
      <div className="menu" onClick={menuhandler}>
       <div className="menu-iteam"></div>
@@ -67,10 +70,11 @@ export const Headers = ()=> {
       <div className="menu-iteam"></div>
       </div>
       
-      <div className="brand">
-       <NavLink to="/" onClick={()=> 
-    document.body.removeAttribute('class','close')}> <span>Shopes</span></NavLink>  
-      </div>
+       <NavLink  className="w-32 overflow-hidden bg-slate-200 ml-14 rounded" to="/" onClick={()=> 
+    document.body.removeAttribute('class','close')}>
+    <img className="mix-blend-multiply "  src={logo} />
+    </NavLink>  
+       
        
        <div className="sidbar-container">  
        <div className="close-sid-width " onClick={menuhandler}></div>
@@ -101,7 +105,7 @@ export const Headers = ()=> {
            
            <NavLink onClick={menuhandler} className={({isActive})=> isActive ? 'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-800  flex flex-col items-center py-2':'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-500 flex flex-col items-center py-2'} to="/myOrderProducts"  >My Orders</NavLink> 
             
-           <NavLink onClick={menuhandler} className={({isActive})=> isActive ? 'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-800 flex flex-col items-center py-2':'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-500 flex flex-col items-center py-2'} to="#"  >Contact</NavLink> 
+           <NavLink onClick={menuhandler} className={({isActive})=> isActive ? 'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-800 flex flex-col items-center py-2':'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-500 flex flex-col items-center py-2'} to="about"  >Contact</NavLink> 
          </div>
          
         {

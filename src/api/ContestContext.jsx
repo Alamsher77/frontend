@@ -14,6 +14,7 @@ export const ContestProvider =  ({ children }) => {
   const[coutCartData,setCoutCartData] = useState(0) 
   const [latestProduct,setLatestProduct] = useState([])
   const [randomProduct,setRandomProduct] = useState([])
+  const [isPopUp,setIsPopUp] = useState(false)
 
  
   // api funciton
@@ -95,12 +96,21 @@ const randomProductApi = async ()=>{
   coutCartFetchApi()
   LatestProductApi()
   randomProductApi() 
-  },[])
+  
+  if(isPopUp){
+    document.body.style.overflow = 'hidden'
+  }else{
+    document.body.style.overflow = ''
+  }
+  return ()=>{
+    document.body.style.overflow = ''
+  }
+  },[isPopUp])
   
  
  
 // contextvalue
-const contextValue = {latestProduct,userFechApi,lodding,coutCartFetchApi,coutCartData,setUserDetails,userDetails,randomProduct, allProduct, allProductsCategry,fetchApi,categryapi}
+const contextValue = {setIsPopUp,latestProduct,userFechApi,lodding,coutCartFetchApi,coutCartData,setUserDetails,userDetails,randomProduct, allProduct, allProductsCategry,fetchApi,categryapi}
   return (
     <ContestContext.Provider value={contextValue}>
       {children}

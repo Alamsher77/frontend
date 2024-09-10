@@ -154,6 +154,16 @@ const AddProduct = ()=>{
     }
      if(data.success){
        toast.success(data.message)
+         fetchApi()
+        localStorage.removeItem('products')
+        setProducts({
+    name:'',
+    oldPrice:'',
+    newPrice:'',
+    image:'',
+    categry:'',
+    productInfo:'',
+  })
      }
   
   }catch(error){
@@ -200,7 +210,7 @@ const AddProduct = ()=>{
       
        {
          formBox && (
-             <UploadProductForm formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} submitHandler={submitHandler} categProduct={allProductsCategry} updateForm={{setUpdateForm,updateForm}} setFormBox={setFormBox}/>
+             <UploadProductForm fetchApi={fetchApi} formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} submitHandler={submitHandler} categProduct={allProductsCategry} updateForm={{setUpdateForm,updateForm}} setFormBox={setFormBox}/>
            )
             
        }

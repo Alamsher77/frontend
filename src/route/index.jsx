@@ -12,6 +12,7 @@ import Cart from '../pages/cart'
 import CategryIteams from '../pages/categryIteams'
 import UserDetails from '../pages/userDetails'
 import MyOrder from '../pages/myOrder'
+import About from '../pages/about'
 import AllUsersOrderProduct from '../pages/allusersOrderProducts'
 const router = createBrowserRouter([
   { 
@@ -77,9 +78,13 @@ const router = createBrowserRouter([
          path:"cart",
          element:<Cart/>
        },
-       {
+      {
          path:"myOrderProducts",
          element:<MyOrder />
+       },
+       {
+         path:'about',
+         element:<About />
        },
        ]
   },

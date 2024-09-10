@@ -38,26 +38,30 @@ const AllUsers = ()=>{
           </div>
         ):(
            
-       <div className="w-full flex flex-col gap-1 p-2">
+       <div className="w-full flex flex-col  gap-1 mt-2">
     
-         <div className="h-10 text-xs text-slate-500 w-full flex justify-between border-slate-900 mb-2 border-b-2">
-        <div className="flex text-xs text-slate-500 w-8 h-8  justify-center items-center"><b>Sr.N</b></div>
-        <div className="flex text-xs text-slate-500 w-28 h-8  justify-center items-center"><b> User Name</b></div>
-        <div className="flex text-xs text-slate-500 w-40 h-8  justify-center items-center"><b>User Email</b></div>
+         <div className="p-1 bg-slate-600 text-white text-[12px] w-full flex justify-between  mb-2 border-b-2">
+        <div className="flex   justify-center items-center"><b>Sr.N</b></div>
+        <div className="flex   justify-center items-center"><b> User Name</b></div>
+        <div className="flex   justify-center items-center"><b>User Email</b></div>
         
-        <div className="flex text-xs text-slate-500 w-8 h-8  justify-center items-center"><b>Roll</b></div>
+        <div className="flex  justify-center items-center"><b>Roll</b></div>
          
        </div>
         {
           allUsers?.map((iteam,index)=>{
-             return  <div className="h-10 text-xs text-slate-500 w-full flex justify-between border-slate-900 ">
-        <div className="flex text-xs text-slate-500 w-8 h-8  justify-center items-center"><b>{index+1}</b></div>
-        <div className="flex text-xs text-slate-500 h-8  justify-center items-center"><b>{iteam.name}</b></div>
-        <div className=" overflow-x-scroll pl-2 flex text-xs text-slate-500 h-8  justify-center items-center"><b>{iteam.email}</b></div>
+             return (
+             
+    <div className="shadow p-2 text-[10px] justify-between items-center text-slate-500 w-full flex  border-slate-900 ">
+        <div className=" flex text-slate-500 px-1  justify-center items-center"><b>{index+1}</b></div>
+        <div className="flex text-slate-500 px-1 justify-center items-center"><b>{iteam.name}</b></div>
+        <div className="  flex  text-slate-500  px-1 justify-center items-center"><b>{iteam.email}</b></div>
         
-        <div className="flex text-xs text-slate-500 w-8 h-8  justify-center items-center"><b>{iteam?.roll ? iteam?.roll : "none"}</b></div>
+        <div className="flex  text-slate-500 px-1 justify-center items-center"><b>{iteam?.roll ? iteam?.roll : "none"}</b></div>
          
        </div>
+              
+             )
           })
         }
       </div>

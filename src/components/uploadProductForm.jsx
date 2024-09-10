@@ -1,8 +1,12 @@
+import { MdDelete } from "react-icons/md";
+const UploadProductForm = (props)=>{ 
+  const productValue = props.productValue
+  const products = props.products
+  const removeImage = (e)=>{
+     products.image.splice(e,1)
+     localStorage.setItem('products',JSON.stringify({...products})) 
 
-const UploadProductForm = (props)=>{
-   const products = props.products
-   const productValue = props.productValue
-  
+  }
   return(
     
      <div className='AddProductForm'>
@@ -35,7 +39,7 @@ const UploadProductForm = (props)=>{
           }
          </select>
          </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col items-center gap-2">
            <div className="w-28">
             <label htmlFor="file-name">
             <img src={props.image} className="w-full border"  alt="imag"/>
@@ -51,7 +55,12 @@ const UploadProductForm = (props)=>{
                  {
                 
                    products.image.map((iteams,index)=>{
-                    return <img key={index} className="w-12 h-12" src={iteams}/>
+                    return(
+                     <div className='border p-2 relative group'>
+                      <img  key={index} className="w-20 h-16 object-contain " src={iteams}/>
+                      <div onClick={()=>removeImage(index)} className='absolute text-xl text-red-500 cursor-pointer border border-red-600 rounded-full p-0.5 hidden right-0 bottom-0   group-hover:block transition-all'><MdDelete /></div>
+                     </div>
+                    )
                      
                    })
                  }
