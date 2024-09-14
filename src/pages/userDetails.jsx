@@ -51,7 +51,7 @@ const imageHandler = async()=>{
     
   try{ 
      const file = event.target.files[0];  
- const resposedeleteimage = await  DeleteImageCloudnary(userDetails?.profilePic?.publicid) 
+ const resposedeleteimage = await  DeleteImageCloudnary(userDetails?.profilePic?.publicid || "dbeb3x4dh") 
  if(!resposedeleteimage.success){
     toast.error(resposedeleteimage.message) 
     return false
