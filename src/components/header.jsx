@@ -84,7 +84,7 @@ export const Headers = ()=> {
           userDetails ? (
            <>
             <div className="cursor-pointer user-image bg-slate-200"   onClick={usersTogglePopup}>{userDetails?.profilePic ? (
-              <img src={userDetails?.profilePic} alt="image" />):(
+              <img src={userDetails?.profilePic?.img} alt="image" />):(
                 <h1 className="font-bold text-4xl text-slate-500">{userDetails?.name.charAt(0)}</h1>
               )
             }</div>

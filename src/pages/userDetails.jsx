@@ -5,6 +5,7 @@ import DomainUrl from '../Configuration/Index'
 import {useNavigate} from 'react-router-dom'
 import logo5 from '../asetes/logo5.png'
 import UploadImage from '../helpers/uploadsImage'
+import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
 import { FaRegUserCircle } from "react-icons/fa";
 const UserDetails = ()=>{
   const navigate = useNavigate()
@@ -25,11 +26,11 @@ name :'',
  const [updateUser,setUpdateUser] = useState(false) 
  const updateuserhandler = ()=>{ 
     try{
-       setUserValue({
+   setUserValue({
   name : userDetails?.name,
  email :userDetails?.email,
  phone:userDetails?.phone,
- profilePic : userDetails?.profilePic,
+ profilePic : userDetails?.profilePic || userValue?.profilePic?.img,
  currentAddress:userDetails?.currentAddress,
  deleverAddress:userDetails?.deleverAddress,
  block:userDetails?.block,
@@ -48,14 +49,18 @@ name :'',
  } 
 const imageHandler = async()=>{
     
-  try{
-    
-     const file = event.target.files[0]; 
- 
-       const uploadsimageresponse = await UploadImage(file)  
-      setUserValue({...userValue,profilePic:uploadsimageresponse.url})
+  try{ 
+     const file = event.target.files[0];  
+ const resposedeleteimage = await  DeleteImageCloudnary(userDetails?.profilePic?.publicid) 
+ if(!resposedeleteimage.success){
+    toast.error(resposedeleteimage.message) 
+    return false
+ }
+  toast.success(resposedeleteimage.message) 
+ const uploadsimageresponse = await UploadImage(file)  
+      setUserValue({...userValue,profilePic:{img:uploadsimageresponse.url,publicid:uploadsimageresponse.public_id}})
       toast.success('upload success')
-      console.log(userValue)
+      // console.log(userValue)
   }catch(error){
     toast.error(error.message)
   }
@@ -78,9 +83,12 @@ const submitHandler = async()=>{
       
      if(data?.success){
        toast.success(data?.message)
+      
      }
    setUpdateUser(false)
  } 
+
+ console.log(userDetails)
   return(
      <div className="select-none w-full flex flex-col items-center bg-white p-4">
       <h1 className="shadow shadow-gray-600 rounded-full px-10 py-1 mb-2 font-bold uppercase text-gray-500 bg-pink-100">Your Profile</h1>
@@ -94,7 +102,7 @@ const submitHandler = async()=>{
             </div>
             ):(
             
-             userValue?.profilePic ?  <img src={userValue?.profilePic} className="object-cover w-full h-full border rounded-full"  alt="imag"/>  :<img src={userDetails?.profilePic} className="object-cover w-full h-full border rounded-full"  alt="imag"/>
+             userValue?.profilePic ?  <img src={userValue?.profilePic?.img} className="object-cover w-full h-full border rounded-full"  alt="imag"/>  :<img src={userDetails?.profilePic?.img} className="object-cover w-full h-full border rounded-full"  alt="imag"/>
                
             )
              } 
