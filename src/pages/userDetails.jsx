@@ -3,7 +3,6 @@ import {ContestContext} from '../api/ContestContext'
 import{ toast } from 'react-hot-toast';
 import DomainUrl from '../Configuration/Index'
 import {useNavigate} from 'react-router-dom'
-import logo5 from '../asetes/logo5.png'
 import UploadImage from '../helpers/uploadsImage'
 import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
 import { FaRegUserCircle } from "react-icons/fa";

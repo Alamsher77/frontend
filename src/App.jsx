@@ -1,10 +1,8 @@
 import './App.css'  
-import{ Toaster } from 'react-hot-toast';
- import 'react-toastify/dist/ReactToastify.css';
+import {Toaster} from 'react-hot-toast';
+
 import {Headers} from './components/header'
 import Footer from "./components/footer"
-// import {Footer} from './components/footer'
-// import {Admin} from './admin/admin'
 import {Outlet} from "react-router-dom";
 import CategryIteams from './pages/categryIteams'
  
