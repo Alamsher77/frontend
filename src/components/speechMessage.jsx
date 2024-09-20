@@ -1,6 +1,5 @@
  import{ toast } from 'react-hot-toast';
  import {useState} from 'react'
- import axios from "axios";
   const utterance = new SpeechSynthesisUtterance();
   const SpeechMessage = async(message) => { 
    try{ 
