@@ -1,11 +1,9 @@
 import Sidebar from '../components/sidebar.jsx'
 import {Outlet,Link} from "react-router-dom";
-import {useState,useContext} from "react" 
-  import { toast} from 'react-toastify';
+import {useState,useContext} from "react"
 import {ContestContext} from '../api/ContestContext'
 const AdminPanel = ()=>{
     const {userDetails} = useContext(ContestContext)
-    console.log(userDetails)
     
   return(
      <> 

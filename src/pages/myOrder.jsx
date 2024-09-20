@@ -4,8 +4,10 @@ import{ toast } from 'react-hot-toast';
   import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
   import DomainUrl from '../Configuration/Index'
  import DisplayCurrency from '../displayCurrancy'
-   import {useNavigate}  from 'react-router-dom'
-    import {ContestContext} from '../api/ContestContext'
+ import {useNavigate}  from 'react-router-dom'
+ import {ContestContext} from '../api/ContestContext'
+ import NoContent from '../components/noContent'
+ import SpeechMessage from '../components/speechMessage'
 const MyOrder = ()=>{
  const {userDetails,lodding} = useContext(ContestContext) 
  const navigate = useNavigate()
@@ -32,8 +34,10 @@ useEffect(()=>{
 
 // cancel order functionaliti
 const cancelOrder = async(id)=>{
+  SpeechMessage('Are You sure You Want To Cancel This Order')
  const grant = confirm('Are You sure You Want To Cancel This Order')
 if(!grant){
+  SpeechMessage('you are Cancel this process')
   return false
 }
   try{ 
@@ -47,12 +51,15 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
     const data = await response.json()
     if(!data.success){
       toast.error(data.message)
+      SpeechMessage(data?.message)
       return false
     }
     toast.success(data.message)
     userOrderProductApi() 
+    SpeechMessage(data?.message)
   }catch(error){
     toast.error(error.message)
+    SpeechMessage(error?.message)
   }
 }
  
@@ -90,10 +97,13 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
               )
           })  
         ):(
-           userOrderProduct?.length == 0 ?(
-          <div className="text-center mt-20 mb-20">
-          <p className="text-2xl mb-10">No Order Products</p>
-          <button onClick={()=>{navigate('/cart')}} className="px-3 py-1 border border-green-500 rounded hover:bg-green-500 hover:text-white">Order Now</button>
+           userOrderProduct?.length == 0 ?( 
+          <div className="text-center ">
+          <NoContent message="No Order Products" />
+          <button onClick={()=>{
+          navigate('/cart')
+            
+          }} className="px-3 py-1 border border-green-500 rounded hover:bg-green-500 hover:text-white">Order Now</button>
           </div>
        
          ):(
@@ -133,7 +143,7 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
                     <div key={index} className="flex items-center justify-between p-1 bg-slate-100"> 
                     
                      <div className="border border-green-500 bg-white w-24 h-20"> 
-                      <img className="w-full h-full object-contain" src={product?.productId?.image[0]}/>
+                      <img className="w-full h-full object-contain" src={product?.productId?.image[0]?.img}/>
                      </div>
                       
                       <div className="p-2 w-56 bg-white">

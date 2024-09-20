@@ -1,11 +1,28 @@
 import { MdDelete } from "react-icons/md";
+import{ toast } from 'react-hot-toast'; 
+import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
+import SpeechMessage from './speechMessage'
 const UploadProductForm = (props)=>{ 
   const productValue = props.productValue
   const products = props.products
-  const removeImage = (e)=>{
-     products.image.splice(e,1)
+  const removeImage = async(e,img)=>{
+    try{ 
+       const resposedeleteimage = await  DeleteImageCloudnary(img || "dbeb3x4dh",'deleteCloudnaryImage')
+        if(!resposedeleteimage?.success){
+          toast.error(resposedeleteimage?.message)
+          SpeechMessage(resposedeleteimage?.message)
+          return false
+        } 
+        toast.success(resposedeleteimage?.message)
+        SpeechMessage(resposedeleteimage?.message)  
+       products.image.splice(e,1) 
      localStorage.setItem('products',JSON.stringify({...products})) 
-
+  props.setProducts({...products})
+  toast.success('update')
+    }catch(error){
+      toast.error(error?.message)
+      SpeechMessage(error?.message)
+    }
   }
   return(
     
@@ -16,15 +33,15 @@ const UploadProductForm = (props)=>{
         <h3>{props.formHeader ? "UpdateProduct" :"AddProduct"}</h3>
         <form onSubmit={props.submitHandler}>
          <div className="inputfields">
-          <lable>Product Name</lable>
+          <label>Product Name</label>
           <input type="text" value={products.name} onChange={productValue} name='name' placeholder="ProductName"/>
          </div>
           <div className="inputfields">
-          <lable>OldPrice</lable>
+          <label>OldPrice</label>
           <input type="number"  value={products.oldPrice} onChange={productValue} name='oldPrice' placeholder="OldPrice"/>
          </div>
           <div className="inputfields">
-          <lable>NewPrice</lable>
+          <label>NewPrice</label>
           <input type="number"  value={products.newPrice} onChange={productValue} name='newPrice' placeholder="NewPrice"/>
          </div>
          <div className="inputfields">
@@ -48,17 +65,17 @@ const UploadProductForm = (props)=>{
            </div>
            <div  className='flex flex-1  '>
             {
-               products.image.length == 0 ?(
+               products?.image?.length == 0 ?(
                 <div className="text-red-500"> * please upload image</div>
                ):(
                 <div className="w-full flex gap-1 p-2 flex-wrap">
                  {
                 
-                   products.image.map((iteams,index)=>{
+                   products?.image?.map((iteams,index)=>{
                     return(
-                     <div className='border p-2 relative group'>
-                      <img  key={index} className="w-20 h-16 object-contain " src={iteams}/>
-                      <div onClick={()=>removeImage(index)} className='absolute text-xl text-red-500 cursor-pointer border border-red-600 rounded-full p-0.5 hidden right-0 bottom-0   group-hover:block transition-all'><MdDelete /></div>
+                     <div className='border p-2 relative group'  key={index}>
+                      <img  className="w-20 h-16 object-contain " src={iteams?.img}/>
+                      <div onClick={()=>removeImage(index,iteams)} className='absolute text-xl text-red-500 cursor-pointer border border-red-600 rounded-full p-0.5 hidden right-0 bottom-0   group-hover:block transition-all'><MdDelete /></div>
                      </div>
                     )
                      
@@ -70,7 +87,7 @@ const UploadProductForm = (props)=>{
            </div>
          </div>
           <div className="textarea">
-          <lable>Description</lable>
+          <label>Description</label>
           <textarea type="text"  value={products.productInfo} onChange={productValue} name='productInfo' placeholder="type heare...." />
          </div>
          <div className="button" >

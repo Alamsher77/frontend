@@ -7,6 +7,7 @@ import logo5 from '../asetes/logo5.png'
 import UploadImage from '../helpers/uploadsImage'
 import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
 import { FaRegUserCircle } from "react-icons/fa";
+ import SpeechMessage from '../components/speechMessage'
 const UserDetails = ()=>{
   const navigate = useNavigate()
 const {userFechApi,userDetails,lodding} = useContext(ContestContext)
@@ -39,9 +40,12 @@ name :'',
  country:userDetails?.country,
    })
    toast.success('Now You Can Change Your Information')
+   SpeechMessage("अब आप अपनी जानकारी बदल सकते हैं")
+   
   setUpdateUser(true) 
     }catch(error){
-      toast.error(error.message)
+      toast.error(error?.message)
+      SpeechMessage(error?.message)
     }
  } 
  const changeHandler = (e)=>{ 
@@ -51,22 +55,29 @@ const imageHandler = async()=>{
     
   try{ 
      const file = event.target.files[0];  
- const resposedeleteimage = await  DeleteImageCloudnary(userDetails?.profilePic?.publicid || "dbeb3x4dh") 
+     console.log(userDetails.profilePic)
+ const resposedeleteimage = await  DeleteImageCloudnary(userDetails?.profilePic || "dbeb3x4dh",'deleteCloudnaryImage') 
  if(!resposedeleteimage.success){
     toast.error(resposedeleteimage.message) 
+    SpeechMessage(resposedeleteimage?.message)
     return false
  }
-  toast.success(resposedeleteimage.message) 
+  toast.success(resposedeleteimage.message)  
+  SpeechMessage(resposedeleteimage?.message)
+   
  const uploadsimageresponse = await UploadImage(file)  
       setUserValue({...userValue,profilePic:{img:uploadsimageresponse.url,publicid:uploadsimageresponse.public_id}})
-      toast.success('upload success')
+      toast.success('image upload success')
+      SpeechMessage("तस्वीर सफलतापूर्वक अपलोड हो गया")
       // console.log(userValue)
   }catch(error){
-    toast.error(error.message)
+    toast.error(error?.message)
+   SpeechMessage(error?.message)
   }
 } 
 const submitHandler = async()=>{
-  const response = await fetch(`${DomainUrl.url}userUpdate`, {
+  try{
+     const response = await fetch(`${DomainUrl.url}userUpdate`, {
         method: 'POST',
          credentials:'include',
         headers: {
@@ -78,17 +89,20 @@ const submitHandler = async()=>{
       const data = await response.json()
       if(!data?.success){
         toast.error(data?.message)
+        SpeechMessage(data?.message)
         return false
       }
       
      if(data?.success){
        toast.success(data?.message)
-      
+        SpeechMessage(data?.message)
      }
    setUpdateUser(false)
+  }catch(error){
+    toast.error(error?.message)
+    SpeechMessage(error?.message)
+  }
  } 
-
- console.log(userDetails)
   return(
      <div className="select-none w-full flex flex-col items-center bg-white p-4">
       <h1 className="shadow shadow-gray-600 rounded-full px-10 py-1 mb-2 font-bold uppercase text-gray-500 bg-pink-100">Your Profile</h1>

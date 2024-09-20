@@ -5,6 +5,7 @@ import {useState,useEffect,useContext} from 'react'
   import{ toast } from 'react-hot-toast';
  import { FaEdit } from "react-icons/fa";
  import {ContestContext} from '../api/ContestContext'
+   import SpeechMessage from '../components/speechMessage'
 const AllUsers = ()=>{
   const {setIsPopUp}= useContext(ContestContext)
   const [allUsers,setAllUsers] = useState()
@@ -24,7 +25,8 @@ const AllUsers = ()=>{
        setAllUsers(data)
       setLodding(false)
       }catch(error){
-        toast.error(error.message)
+        toast.error(error?.message)
+        SpeechMessage(error?.message)
       }
     }
     useEffect(()=>{
@@ -44,16 +46,19 @@ const AllUsers = ()=>{
       
       const data = await response.json() 
       if(!data.success){
-        toast.error(data.message)
+        toast.error(data?.message)
+        SpeechMessage(data?.message)
       }
       if(data.success){
-        toast.success(data.message)
+        toast.success(data?.message)
+        SpeechMessage(data?.message)
         alluserFetch()
         setrollpopup(false)
         setIsPopUp(false)
       }
      }catch(error){
-       toast.error(error.message)
+       toast.error(error?.message)
+       SpeechMessage(error?.message)
      }
     }
     

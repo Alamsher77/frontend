@@ -2,7 +2,7 @@ import './displayProduct.css'
 import Zoom from 'react-medium-image-zoom';
 import ReactImageMagnify from 'react-image-magnify';
 import 'react-medium-image-zoom/dist/styles.css';
-
+import SpeechMessage from './speechMessage'
 import { FaBeer } from "@react-icons/all-files/fa/FaBeer";
 import {useState,useEffect, useContext} from 'react'
 import {ContestContext} from '../api/ContestContext'
@@ -11,7 +11,7 @@ import DomainUrl from '../Configuration/Index'
 import{ toast } from 'react-hot-toast';
 import { IoCloseSharp } from "react-icons/io5";
 import {useNavigate} from "react-router-dom";
-import DisplayCurrency from '../displayCurrancy'
+import DisplayCurrency from '../displayCurrancy'  
 const ProductDisplay = (props)=>{
 const [viewProduct,setViewProduct] = useState({
   close:false,
@@ -38,14 +38,17 @@ const [viewProduct,setViewProduct] = useState({
      
      const data = await response.json()
      
-     if(!data.success){
-       toast.error(data.message) 
+     if(!data?.success){
+       toast.error(data?.message) 
+       SpeechMessage(data?.message)
       if(data.auth){
          navigate('/signup'); // Pushes 
          return false
       }
      }else{
-       toast.success(data.message) 
+       toast.success(data?.message) 
+       SpeechMessage(data?.message)
+       navigate('/cart')
        coutCartFetchApi()
      }
      
@@ -62,7 +65,7 @@ const [viewProduct,setViewProduct] = useState({
           {props.image.map((image,indes)=>{
             return(
             <div className='min-w-full h-[300px]'> 
-              <img className="duration-500 ease-in-out transition-transform hover:scale-110 w-[100%] h-full object-contain" src={image} />  
+              <img className="duration-500 ease-in-out transition-transform hover:scale-110 w-[100%] h-full object-contain" src={image.img} />  
             </div>
             )
           })}

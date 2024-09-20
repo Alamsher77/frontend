@@ -7,17 +7,20 @@ import jsPDF from 'jspdf';
  import DisplayCurrency from '../displayCurrancy'
  import { MdCancel } from "react-icons/md";
 import {NavLink,useNavigate} from "react-router-dom";
+import NoContent from './noContent'
+import SpeechMessage from './speechMessage'
   import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
   
-const OrderItems = ({allOrders,islodding,userOrderProductApi})=>{
+const OrderItems = ({allOrders,islodding,userOrderProductApi,text})=>{
      const printRef = useRef(); 
   const [viewalluserdetail,setviewalluserdetail] = useState(false)
   const navigate = useNavigate()
   const [seealluserDetail,setseealluserdetail] = useState() 
   const orderDone = async(id)=>{ 
-    const grant = confirm('This Order Was Confirm')
+   SpeechMessage('are you sure this order was completed')
+    const grant = confirm('are you sure this order was completed') 
     if(!grant){
-      
+      SpeechMessage('you are canceled this process')
       return false
     }
   try{ 
@@ -33,16 +36,18 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
       toast.error(data.message)
       return false
     }
-    toast.success(data.message)
+    toast.success(data?.message)
     userOrderProductApi() 
+    SpeechMessage(data?.message)
   }catch(error){
     toast.error(error.message)
+    SpeechMessage(error?.message)
   }
 } 
  
   return(
      <div className="m-1 flex flex-col gap-2">
-     <p className='px-3 '>Total - {allOrders?.length}</p>
+     <p className='px-3 '><strong>Total: </strong> <span className="ml-3">{allOrders?.length}</span></p>
       {
        
           islodding ?(
@@ -70,8 +75,8 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
           })  
         ):(
            allOrders?.length == 0 ?(
-          <div className="text-center mt-20 mb-20">
-          <p className="text-2xl mb-10">No Order Products</p>
+          <div className="text-center ">
+          <NoContent message={text} />
           <button onClick={()=>{navigate('/cart')}} className="px-3 py-1 border border-green-500 rounded hover:bg-green-500 hover:text-white">Order Now</button>
           </div>
        
@@ -113,13 +118,13 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
         
           <div className="flex flex-col gap-1">
              {
-               item?.productDetails.map((product,index)=>{
+               item?.productDetails?.map((product,index)=>{
                 
                  return(
                     <div key={index} className="flex items-center justify-between p-1 bg-slate-100"> 
                     
                      <div className="border border-green-500 bg-white w-24 h-20"> 
-                      <img className="w-full h-full object-contain" src={product?.productId?.image[0]}/>
+                      <img className="w-full h-full object-contain" src={product?.productId?.image[0]?.img}/>
                      </div>
                       
                       <div className="p-2 w-56 bg-white">
@@ -137,7 +142,7 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
               <div className="flex items-center gap-2">
               
                <div className="w-12 h-12 rounded-full bg-slate-500">
-               <img className="w-full h-full rounded-full object-cover" src={item.userDetails.profilePic}/>
+               <img className="w-full h-full rounded-full object-cover" src={item?.userDetails?.profilePic?.img}/>
               </div>
               <div  className="text-slate-700 text-sm">
                <p>Name : {item.userDetails.name}</p>

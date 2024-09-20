@@ -1,7 +1,7 @@
 import DomainUrl from '../Configuration/Index'
 
-const DeleteImageCloudnary = async(publicid)=>{
- const response = await fetch(`${DomainUrl.url}deleteCloudnaryImage`,{
+const DeleteImageCloudnary = async(publicid,path)=>{
+ const response = await fetch(`${DomainUrl.url}${path}`,{
     method: 'POST', 
         headers: {
           Accept: 'application/json',

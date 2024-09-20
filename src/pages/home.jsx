@@ -17,7 +17,7 @@ const Home = ()=>{
         allProductsCategry?.map((item)=>{
           return (
             <Link className="rounded flex border py-2 border-slate-500 flex-col gap-1 items-center min-w-[110px]"  to={`categryIteams/${item?.categry}`}>
-           <img className="h-12 w-12 bg-white object-contain" src={item?.catelogo} alt='image'/> 
+           <img className="h-12 w-12 bg-white object-contain" src={item?.catelogo?.img} alt='image'/> 
            <p className="">{item?.categry}</p> 
             </Link>
              

@@ -56,16 +56,16 @@ const AllUsersOrderProduct = ()=>{
       <NavLink onClick={()=>setTab('complete')}    className={`${style('green')} ${tab == 'complete'?'bg-green-500 text-white':''}`}>complete</NavLink> 
     </div>
      {tab == 'all' &&(
-         <OrderItems islodding={islodding} userOrderProductApi={userOrderProductApi} allOrders={filterOrderProduct} />
+         <OrderItems text='no any orders' islodding={islodding} userOrderProductApi={userOrderProductApi} allOrders={filterOrderProduct} />
        )}
        {tab == 'cancel' &&(
-         <OrderItems islodding={islodding} userOrderProductApi={userOrderProductApi} allOrders={filterOrderProduct} />
+         <OrderItems text='canceled order not found' islodding={islodding} userOrderProductApi={userOrderProductApi} allOrders={filterOrderProduct} />
        )}
          {tab == 'complete' &&(
-         <OrderItems islodding={islodding} userOrderProductApi={userOrderProductApi} allOrders={filterOrderProduct} />
+         <OrderItems text='order complete not found' islodding={islodding} userOrderProductApi={userOrderProductApi} allOrders={filterOrderProduct} />
        )}
          {tab == 'Orders' &&(
-         <OrderItems islodding={islodding} userOrderProductApi={userOrderProductApi} allOrders={filterOrderProduct} />
+         <OrderItems text='order item not available' islodding={islodding} userOrderProductApi={userOrderProductApi} allOrders={filterOrderProduct} />
        )}
      </>
     )

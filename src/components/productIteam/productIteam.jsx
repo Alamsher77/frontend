@@ -7,7 +7,7 @@ const ProductIteam = (props)=>{
   return(
      <div key={props} className=' w-42 '>
      <div className="w-38 h-40 bg-pink-100 ">
-       <Link className="w-full h-full max-w-full max-h-full" to={`/product/${props.id}`}><img onClick={()=> window.scrollTo(0,0)} src={props?.image[0]} className="w-full h-full object-contain mix-blend-multiply"  /></Link>
+       <Link className="w-full h-full max-w-full max-h-full" to={`/product/${props.id}`}><img onClick={()=> window.scrollTo(0,0)} src={props?.image[0].img} className="w-full h-full object-contain mix-blend-multiply"  /></Link>
      </div>
       <div className="break-all p-0.5 mt-1 w-40">
         <p className="leading-4 tracking-tight text-sm truncate text-ellipsis">{props.name}</p>

@@ -5,6 +5,7 @@ import DomainUrl from '../Configuration/Index'
 import { FaRegUserCircle } from "react-icons/fa";
 import{ toast } from 'react-hot-toast';
 import {ContestContext} from '../api/ContestContext'
+ import SpeechMessage from '../components/speechMessage'
 const SignupForm = () => {
     const {userFechApi,userDetails,setUserDetails} = useContext(ContestContext) 
    const navigate = useNavigate();
@@ -25,8 +26,7 @@ const SignupForm = () => {
 
   const signupHandler = async (e)=> {
     e.preventDefault()
-    try {
-
+    try { 
       const response = await fetch(`${DomainUrl.url}singup`, {
         method: 'POST',
          credentials:'include',
@@ -36,25 +36,28 @@ const SignupForm = () => {
         },
         body: JSON.stringify(users),
       })
-      .catch(()=>{ toast.error("fetch error")}) 
-      const data = await response.json()
-        if (!data.success) {
-          toast.error(data.message)
+      .catch(()=>{ toast?.error("fetch error")}) 
+      const data = await response?.json()
+        if (!data?.success) {
+          toast.error(data?.message) 
+          SpeechMessage(data?.message)
         }
 
-        if (data.success) {
-          toast.success(data.message)
+        if (data?.success) {
+          toast.success(data?.message)
           setUsers({
             name: '',
             email: '',
             password: '',
             profilePic: '',
           })
+          SpeechMessage(data?.message)
           setIsLogin(true) 
         } 
 
     }catch(error) {
     toast.error(error)
+    SpeechMessage(error.message)
     }
 
   }
@@ -78,32 +81,34 @@ const SignupForm = () => {
         })
         
      
-     if(!response.ok){
+     if(!response?.ok){
        toast.error('server error')
        return false
      }
       
-   const data = await response.json() 
+   const data = await response?.json() 
       
-     if (!data.success || data.ok){
+     if (!data?.success || data?.ok){
        toast.error(data.message)
+       SpeechMessage(data.message)
      }
 
-     if (data.success) {
-        
+     if (data?.success) { 
       setUsers({
             name: '',
             email: '',
             password: '',
             profilePic: '',
           })
-          toast.success(data.message)
+          toast?.success(data?.message)
           navigate('/') 
           userFechApi() 
+          SpeechMessage(data?.message)
      } 
 
     }catch(error) {
-      toast.error(error)
+      toast.error(error.message)
+      SpeechMessage(error.message)
     }
 
   }

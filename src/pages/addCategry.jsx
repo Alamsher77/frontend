@@ -4,35 +4,52 @@ import DomainUrl from '../Configuration/Index'
 import{ toast } from 'react-hot-toast';
 import logo5 from '../asetes/upload.jpg'
 import UploadImage from '../helpers/uploadsImage'
-const addCategry = ()=>{
-
-    const {allProductsCategry,categryapi}= useContext(ContestContext)
-    const [showCategryForm,setShowCategryForm] = useState(false)
-    const [categryValue,setCategyValue] = useState({
+import NoContent from '../components/noContent'
+import SpeechMessage from '../components/speechMessage'
+import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
+const AddCategry = ()=>{ 
+const {allProductsCategry,categryapi}= useContext(ContestContext)
+const [showCategryForm,setShowCategryForm] = useState(false)
+const [categryValue,setCategyValue] = useState({
       categry:'',
       catelogo:''
     })
  
-    const imageHandler = async(e)=>{
+const imageHandler = async(e)=>{
    try{
       const uploadsimage = e.target.files[0]
-    const uploadsimageresponse = await UploadImage(uploadsimage)
-  
+    const uploadsimageresponse = await UploadImage(uploadsimage) 
+    toast.success('image uploded')
+    SpeechMessage('image uploded')
     setCategyValue({
-     ...categryValue,catelogo:uploadsimageresponse.url
+     ...categryValue,catelogo:{public_id:uploadsimageresponse?.public_id,img:uploadsimageresponse?.url}
   })
+
    }catch(error){
-     console.log(error)
+    toast.error(error?.message)
+    SpeechMessage(error?.message)
    }
     
   }
   
-  const removeCategry = async (e)=>{
-     const cotegryRquir = confirm('this categry was delete are you sure')
+  const removeCategry = async (e,image)=>{
+    try{
+   
+      SpeechMessage('are you sure delete this caategry')
+       const cotegryRquir = confirm('this categry was delete are you sure')
      if(!cotegryRquir){
+       SpeechMessage('you are cancel this process')
        return false
      }
-      await fetch(`${DomainUrl.url}removeCategry`,{
+     
+     const responseimagedelete = await DeleteImageCloudnary(image,"deleteCloudnaryImage")
+     if(!responseimagedelete?.success){
+       toast.error(responseimagedelete?.message)
+       SpeechMessage(responseimagedelete?.message)
+     }
+     toast.success(responseimagedelete?.message)
+     SpeechMessage(responseimagedelete?.message) 
+    const respose =   await fetch(`${DomainUrl.url}removeCategry`,{
       method:'DELETE',
       headers:{
         Accept:'application/json',
@@ -40,21 +57,23 @@ const addCategry = ()=>{
       },
       body:JSON.stringify({_id:e}),
     })
-    .then((res)=> res.json()).then((data)=> {
-      if(!data.success){
-        toast.error(data.message)
-        return false
-      }
-      toast.success(data.message) 
-      categryapi()
-       
-    })
+    const data = await respose.json()
+    if(!data?.success){
+      toast.error(data?.message)
+      SpeechMessage(data?.message)
+    }
+     toast.success(data?.message) 
+     SpeechMessage(data?.message)
+     categryapi()
+    }catch(error){
+      toast.error(error?.message)
+      SpeechMessage(error?.message)
+    }
   }
-    
- 
+     
   const submitHandler = async()=>{
-      
-  await fetch(`${DomainUrl.url}productcategry`,{
+    try{ 
+  const respose = await fetch(`${DomainUrl.url}productcategry`,{
        method:'POST',
        headers:{
          Accept:'application/json',
@@ -62,23 +81,25 @@ const addCategry = ()=>{
        },
        body:JSON.stringify(categryValue),
      })
-     .then((res)=> res.json()).then((data)=> {
-       if(!data?.success){
-        toast.error(data?.message)
-        return false
-       }
-      
-      console.log(data)
-       toast.success(data.message)
-       categryapi()
-        
-      setCategyValue({categry:'',catelogo:''})
-      setShowCategryForm(false)
-     })
-    
+    const data = await respose.json() 
+    if(!data?.success){
+      toast.error(data?.message)
+      SpeechMessage(data?.message)
+      return false
+    } 
+       toast.success(data?.message)
+       SpeechMessage(data?.message)
+       categryapi() 
+       setCategyValue({categry:'',catelogo:''})
+       setShowCategryForm(false)
+    }catch(error){
+      toast.error(error?.message)
+      SpeechMessage(error?.message)
     }
+    
+  }
   
-  
+ 
   return(
      <>
      <div className="addCategry">
@@ -97,11 +118,12 @@ const addCategry = ()=>{
            </div>
            <div className='flex w-full  '>
             {
+           
                categryValue.catelogo == '' ?(
                 <div className="text-red-500"> * please upload image</div>
                ):(
                 <div onClick={()=>alert('deleted')} className="w-26 h-26  flex gap-1 p-2 flex-wrap">
-                 <img className="w-full h-full object-contain" src={categryValue.catelogo}/>
+                 <img className="w-full h-full object-contain" src={categryValue?.catelogo?.img}/>
                 </div>
                )
             }
@@ -122,18 +144,16 @@ const addCategry = ()=>{
       {
          allProductsCategry?.map((iteam,index)=>{
     return  <div className="showCategryIteam" key={index}> 
-      <p> {iteam.categry}</p> <span onClick={()=>{removeCategry(iteam._id)}}>✕</span></div>
+      <p> {iteam.categry}</p> <span onClick={()=>{removeCategry(iteam._id,iteam?.catelogo)}}>✕</span></div>
     })
       }
      </div>
           </>
          ):(
-            <>
-             no categry
-            </>
+           <NoContent message='no categrys' />
            )
      }
      </>
     )
 }
-export default addCategry
+export default AddCategry

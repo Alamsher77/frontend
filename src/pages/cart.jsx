@@ -6,6 +6,8 @@
  import DisplayCurrency from '../displayCurrancy'
  import {useNavigate}  from 'react-router-dom'
  import {ContestContext} from '../api/ContestContext'
+ import NoContent from '../components/noContent'
+  import SpeechMessage from '../components/speechMessage'
 const Cart = () => { 
    
  const {userDetails,lodding,coutCartFetchApi} = useContext(ContestContext) 
@@ -29,7 +31,7 @@ const cartProductViewFetch = async ()=>{
      
 }
    useEffect(()=>{
-     cartProductViewFetch()  
+     cartProductViewFetch()   
    },[])
  
   const totalquatity = cartProductView?.reduce((prev,curent)=>{
@@ -43,18 +45,23 @@ const cartProductViewFetch = async ()=>{
     
 const checkOutHandler = async(e)=>{
   try{
+    SpeechMessage("Are You Sure ? You want to order this Product")
     const grant = confirm('Are You Sure ? You want to order this Product')
+  
     if(!grant){
+        SpeechMessage("You are cancel this process")
       return false
     } 
     
     if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.profilePic || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
       toast.error('please add addres all fileds')
+        SpeechMessage("please add addres all fileds")
       navigate('/userDetails')
       return false
     } 
-   if(TotalPrice < 200){
+   if(TotalPrice <= 200){
      toast.error('You Can Buy MoreThan 200 ruppese')
+     SpeechMessage('You Can Buy MoreThan 200 roopeese')
      return false
    }
     const response = await fetch(`${DomainUrl.url}cheqoutAndPayment`,{
@@ -69,20 +76,22 @@ const checkOutHandler = async(e)=>{
   
   const data = await response.json()
    if(!data.success){
-    toast.error(data.message)
+    toast.error(data?.message)
+    SpeechMessage(data?.message)
     return false
    }
-   toast.success(data.message)
+   toast.success(data?.message)
+   SpeechMessage(data?.message)
+   navigate('/myOrderProducts')
    coutCartFetchApi()
    cartProductViewFetch()
    
   }catch(error){
-    toast.error(error.message)
+    toast.error(error?.message)
+    SpeechMessage(error?.message)
   }
 }
  
-console.log(cartProductView)
-  
   return (
    <>
   {
@@ -107,8 +116,8 @@ console.log(cartProductView)
           </div>
          ):(
      cartProductView?.length == 0   ? (
-        <div className="text-center mt-20 mb-20">
-          <p className="text-2xl mb-10">Cart is empty</p>
+        <div className="text-center ">
+          <NoContent message='empaty carts' />
           <button onClick={()=>{navigate('/')}} className="px-3 py-1 border border-green-500 rounded hover:bg-green-500 hover:text-white">Shop now</button>
           </div>
         ):(

@@ -1,7 +1,6 @@
 // src/ContestContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import DomainUrl from '../Configuration/Index'
-  import { toast} from 'react-toastify'; 
 export const ContestContext = createContext(null);
 
 
@@ -35,8 +34,8 @@ const fetchApi = async ()=>{
      .catch((error)=> console.log(error))
      .then((res)=> res.json())
      .then((data)=> {
-       setAllProducts(data)
-       setLodding(false)
+      setAllProducts(data)
+      setLodding(false)
      }) 
   }
 const userFechApi = async ()=>{

@@ -5,8 +5,12 @@ import DomainUrl from '../Configuration/Index'
 import UploadImage from '../helpers/uploadsImage'
 import{ toast } from 'react-hot-toast';
 import UploadProductForm from '../components/uploadProductForm'
+import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
+import NoContent from '../components/noContent'
+import LoddingCardComponent from '../components/loddingCardComponent'
+ import SpeechMessage from '../components/speechMessage'
 const AddProduct = ()=>{
-  
+
   const [formBox,setFormBox] = useState(false)
   const [formHeader,setFormHeader] = useState(false)
   const [updateForm,setUpdateForm] = useState(false)
@@ -20,22 +24,25 @@ const AddProduct = ()=>{
     productInfo:'',
   })
   const [image,setImage] = useState('')
-  const {allProduct,fetchApi,allProductsCategry}= useContext(ContestContext)
-  
+  const {allProduct,fetchApi,lodding,allProductsCategry}= useContext(ContestContext)
  
   const imageHandler = async(e)=>{
  try{
-      const uploadsimage = e.target.files[0]
+      const uploadsimage = e.target.files[0] 
     const uploadsimageresponse = await UploadImage(uploadsimage)
-    
+    const obj = {img:uploadsimageresponse.url,public_id:uploadsimageresponse.public_id}
   setProducts((preve)=>{
      return{
        ...preve,
-       image:[...preve.image,uploadsimageresponse.url]
+       image:[...preve.image,obj]
      }
   })
+  toast.success('uploded')
+  SpeechMessage("image uploded")
+ 
  }catch(error){
-   alert(error)
+   toast.error(error?.message)
+   SpeechMessage(error?.message)
  }
     
   }
@@ -46,7 +53,8 @@ const AddProduct = ()=>{
     try{
     await  localStorage.setItem('products',JSON.stringify({...products})) 
     }catch(error){
-      alert(error)
+      toast.error(error?.message)
+      SpeechMessage(error?.message)
     }
   
      
@@ -55,12 +63,12 @@ const AddProduct = ()=>{
       const getproduct = JSON.parse(localStorage.getItem('products')) 
       if(getproduct){
         setProducts({
-     name:getproduct.name,
-    oldPrice:getproduct.oldPrice,
-    newPrice:getproduct.newPrice,
-    image:getproduct.image,
-    categry:getproduct.categry,
-    productInfo:getproduct.productInfo,
+     name:getproduct?.name,
+    oldPrice:getproduct?.oldPrice,
+    newPrice:getproduct?.newPrice,
+    image:getproduct?.image,
+    categry:getproduct?.categry,
+    productInfo:getproduct?.productInfo,
      }) 
       }
       
@@ -69,7 +77,7 @@ const AddProduct = ()=>{
   const submitHandler = async (e)=>{
     e.preventDefault()   
     try{
-     await fetch(`${DomainUrl.url}addproduct`,{
+     await fetch(`${DomainUrl?.url}addproduct`,{
       method:'POST',
       headers:{
         Accept:'application/json',
@@ -78,13 +86,14 @@ const AddProduct = ()=>{
       body:JSON.stringify(products),
     })
     .then((res)=> res.json()).then((data)=> { 
-      if(!data.success){
-        toast.error(data.message)
+      if(!data?.success){
+        toast.error(data?.message)
+        SpeechMessage(data?.message)
       } 
-      if(data.success){
-        toast.success(data.message)
+      if(data?.success){
+        toast.success(data?.message)
         fetchApi()
-        localStorage.removeItem('products')
+        localStorage?.removeItem('products')
         setProducts({
     name:'',
     oldPrice:'',
@@ -93,6 +102,7 @@ const AddProduct = ()=>{
     categry:'',
     productInfo:'',
   })
+   SpeechMessage(data?.message)
       }
       
     })
@@ -101,7 +111,8 @@ const AddProduct = ()=>{
     
       
     }catch(error){
-     toast.error(error)
+     toast.error(error?.message)
+     SpeechMessage(error?.message)
     }
   
      
@@ -111,31 +122,36 @@ const AddProduct = ()=>{
     try{
       const response = await fetch(`${DomainUrl.url}findByIdProduct/${e}`)
       const data = await response.json()
-     await setProducts({
-     name:data.data.name,
-    oldPrice:data.data.oldPrice,
-    newPrice:data.data.newPrice,
-    image:data.data.image,
-    categry:data.data.categry,
-    productInfo:data.data.productInfo,
-     }) 
-     setProductId(e)
-     setUpdateForm(true)
+    
      if(!data.success){
        toast.error(data.message)
+       SpeechMessage(data?.message)
      }
      if(data.success){
        toast.success(data.message)
+       SpeechMessage(data?.message)
+        await setProducts({
+     name:data?.data?.name,
+    oldPrice:data?.data?.oldPrice,
+    newPrice:data?.data?.newPrice,
+    image:data?.data?.image,
+    categry:data?.data?.categry,
+    productInfo:data?.data?.productInfo,
+     }) 
+     setProductId(e)
+     setUpdateForm(true)
      }
     }catch(error){
-      alert(error)
+      toast.error(error?.message)
+      SpeechMessage(error?.message)
     }
   }
   
   const updateHandler = async(e)=>{
     e.preventDefault() 
     if(!productId){
-      toast.error('Update Iteams to found')
+      toast.error('Update Iteams not found')
+      SpeechMessage("Update Iteams not found")
       return false
     }
   try{
@@ -150,6 +166,7 @@ const AddProduct = ()=>{
     const data = await response.json() 
     if(!data.success){
       toast.error(data.message)
+      SpeechMessage(data?.message)
       return false
     }
      if(data.success){
@@ -164,37 +181,59 @@ const AddProduct = ()=>{
     categry:'',
     productInfo:'',
   })
+  SpeechMessage(data?.message)
      }
   
   }catch(error){
-    alert(error)
+   toast.error(error.message)
+   SpeechMessage(error?.message)
   }
   }
-  const productDelete = async (id)=>{
+  const productDelete = async (id,img)=>{
+  try{
     
-    const confirm = window.confirm('are you sure you want to delete this')
+  
+  const confirm = window.confirm('are you sure you want to delete this')
     
     if(!confirm){
       return false
     }
     
-  //  alert('product deleted ---'+ id)
-     await fetch(`${DomainUrl.url}imageDelete`,{
+    
+  const resposedeleteimage = await  DeleteImageCloudnary(img || "dbeb3x4dh",'deleteCloudnaryImageMulltiple') 
+ 
+  if(!resposedeleteimage?.success){
+    toast.error(resposedeleteimage.message) 
+    SpeechMessage(resposedeleteimage?.message)
+    return false
+ } 
+  toast.success(resposedeleteimage?.message) 
+  SpeechMessage(resposedeleteimage?.message)
+  //  alert('product deleted ---'+ id) 
+    const response = await fetch(`${DomainUrl.url}imageDelete`,{
        method:'DELETE',
        headers:{
          Accept:'application/json',
          "Content-type":"application/json",
        },
        body:JSON.stringify({_id:id}),
-     }).then((res)=> res.json()).then((data)=>{
-       if(data.success){
-         console.log(data.message)
-         fetchApi()
-       }
      })
-    
+    const data = await response.json()
+    if(!data.success){
+      toast.error(data.message)
+      SpeechMessage(data?.message)
+      return false
+    }
+     fetchApi()
+    toast.success(data.message)
+    SpeechMessage(data?.message)
+  }catch(error){
+    toast.error(error.message)
+    SpeechMessage(error?.message)
+  }
   }
   
+ 
   
   return(
      <> 
@@ -210,7 +249,7 @@ const AddProduct = ()=>{
       
        {
          formBox && (
-             <UploadProductForm fetchApi={fetchApi} formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} submitHandler={submitHandler} categProduct={allProductsCategry} updateForm={{setUpdateForm,updateForm}} setFormBox={setFormBox}/>
+             <UploadProductForm fetchApi={fetchApi} formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} setProducts={setProducts} submitHandler={submitHandler} categProduct={allProductsCategry} updateForm={{setUpdateForm,updateForm}} setFormBox={setFormBox}/>
            )
             
        }
@@ -220,21 +259,28 @@ const AddProduct = ()=>{
            )
            
            
-       }
-      
-      <div className="showProduct">
-      {
-      allProduct.length == 0 ? <div >no product</div> : allProduct.map((iteam,index)=>{
-          return <div className="productIteam" key={index}>
-          <div className="productDelete"onClick={()=>{productDelete(iteam._id)}}>✕</div>
-        <img src={iteam.image[0]} alt="image" />
-        <div className="productUpdata" onClick={()=>{productEdite(iteam._id)}}>🖍</div>
-        </div>
-        })
-      
+       } 
        
-      }
-      </div>
+       {
+         lodding ?(
+           <div className=" w-full justify-center flex flex-wrap overflow-hidden">
+           {[0,1,2,3,4,5,2,34,5,2,5,2].map(()=> <LoddingCardComponent />)}
+           </div> 
+           ):(
+             allProduct.length == 0 ? (
+               <NoContent message='no products' />
+               ):(
+                  <div className="showProduct">
+                {allProduct.map((iteam,index)=>{ 
+                return(
+                   <div className="productIteam" keys={index}>
+                    <div className="productDelete"onClick={()=>{productDelete(iteam?._id,iteam?.image)}}>✕</div>
+                    <img src={iteam?.image[0]?.img} alt="image" />
+                    <div className="productUpdata" onClick={()=>{productEdite(iteam?._id)}}>🖍</div>
+                   </div>
+                )})}
+                   </div>
+                 ))} 
      </>
     )
 }
