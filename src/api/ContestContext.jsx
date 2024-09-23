@@ -1,10 +1,11 @@
 // src/ContestContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import DomainUrl from '../Configuration/Index'
-export const ContestContext = createContext(null);
+import{ toast } from 'react-hot-toast';
+ import SpeechMessage from '../components/speechMessage'
+ export const ContestContext = createContext(null); 
 
-
-export const ContestProvider =  ({ children }) => {
+export  const ContestProvider =  ({ children }) => {
   // fetch api state
   const [allProduct, setAllProducts] = useState([]);
   const [lodding,setLodding] = useState(false)
@@ -18,77 +19,94 @@ export const ContestProvider =  ({ children }) => {
  
   // api funciton
 const categryapi = async ()=>{
-       // all categry api 
+    try{
       setLodding(true)
-    const response =  await fetch(`${DomainUrl.url}showproductcategry`)
-     .catch((error)=> console.log(error))
-      const data = await response.json()
+    const response =  await fetch(`${DomainUrl.url}showproductcategry`) 
+     const data = await response.json()
+     if(!data?.success){
+       toast.error(data?.message)
+       return false
+     } 
        setLodding(false)
-      setAllProductsCategry(data)
-     
+      setAllProductsCategry(data.data)
+    }catch(error){
+      toast?.error(error?.message)
+      SpeechMessage(error?.message)
+    }
 }
 const fetchApi = async ()=>{
-  setLodding(true)
-         // allproduct api
-    await fetch(`${DomainUrl.url}showProduct`)
-     .catch((error)=> console.log(error))
-     .then((res)=> res.json())
-     .then((data)=> {
-      setAllProducts(data)
-      setLodding(false)
-     }) 
+   try{
+      setLodding(true) 
+   const response =  await fetch(`${DomainUrl.url}showProduct`)
+  const data = await response.json()  
+    setAllProducts(data)
+   setLodding(false)
+   }catch(error){
+    // toast?.error(error?.message)
+    // SpeechMessage(error?.message)
+    console.log('product error '+error)
+   }
   }
 const userFechApi = async ()=>{
-      setLodding(true)
-      const response = await fetch(`${DomainUrl.url}usergetinfo`,{
+    try{
+        setLodding(true)
+     const response = await fetch(`${DomainUrl.url}usergetinfo`,{
         method:"GET",
         credentials:"include"
       })
-     .catch((error)=> console.log(error))
      const data = await response.json()
      setLodding(false)
-      if(data.success){
-        setUserDetails(data.data)
-      }
+     if(!data?.success){
+       toast?.error(data?.message)
+       return false
+     }
+     setUserDetails(data.data)
+    }catch(error){
+      toast.error(error?.message)
+      SpeechMessage(error?.message)
+    }
   }
 const coutCartFetchApi = async ()=>{
+    try{
       const response = await fetch(`${DomainUrl.url}countCartProduct`,{
         method:"GET",
         credentials:"include"
       })
-     .catch((error)=> console.log(error))
-     const data = await response.json()
-     if(data.success){ 
-      setCoutCartData(data.data)
+      const data = await response.json()
+     if(!data.success){ 
+      toast.error(data?.message)
+      return false
      }
-    
+      setCoutCartData(data.data)
+    }catch(error){
+      toast.error(error?.message)
+    }
 }
 const LatestProductApi = async ()=>{
-   setLodding(true)
-         // allproduct api
-    await fetch(`${DomainUrl.url}latestProduct`)
-     .catch((error)=> console.log(error))
-     .then((res)=> res.json())
-     .then((data)=> {
-       setLatestProduct(data)
-       setLodding(false)
-     }) 
+   try{
+     setLodding(true) 
+  const response =  await fetch(`${DomainUrl.url}latestProduct`)
+  const data = await response.json()
+   setLodding(false)  
+   setLatestProduct(data) 
+   }catch(error){
+     toast?.error(error?.message)
+   }
 }
 
 const randomProductApi = async ()=>{
-   setLodding(true)
-         // allproduct api
-    await fetch(`${DomainUrl.url}randomProduct`)
-     .catch((error)=> console.log(error))
-     .then((res)=> res.json())
-     .then((data)=> {
-       setRandomProduct(data)
-       setLodding(false)
-     }) 
-}
- 
-  // api useEffect
- useEffect(  ()=>{ 
+  try{
+       setLodding(true) 
+   const response = await fetch(`${DomainUrl.url}randomProduct`)
+   const data = await response.json()
+    setLodding(false) 
+    setRandomProduct(data)
+   
+  }catch(error){
+    toast.error(error?.message)
+  }
+} 
+ useEffect(()=>{ 
   fetchApi()
   categryapi()   
   userFechApi()
@@ -104,9 +122,7 @@ const randomProductApi = async ()=>{
   return ()=>{
     document.body.style.overflow = ''
   }
-  },[isPopUp])
-  
- 
+  },[isPopUp]) 
  
 // contextvalue
 const contextValue = {setIsPopUp,latestProduct,userFechApi,lodding,coutCartFetchApi,coutCartData,setUserDetails,userDetails,randomProduct, allProduct, allProductsCategry,fetchApi,categryapi}
@@ -116,3 +132,4 @@ const contextValue = {setIsPopUp,latestProduct,userFechApi,lodding,coutCartFetch
     </ContestContext.Provider>
   );
 };
+ 

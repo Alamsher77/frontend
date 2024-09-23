@@ -5,7 +5,7 @@ import {ContestContext} from '../api/ContestContext'
 const LatestProduct = ()=>{
     const loddingArry = [1,2,3,4,5,6,7,8,9,10]
    const {latestProduct,lodding}= useContext(ContestContext)
-  
+
   return(
     <>
     <div className="p-2 ">

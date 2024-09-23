@@ -35,7 +35,7 @@
         <button onClick={()=>{navigate('/')}} className="px-3 py-1 border border-green-500 rounded hover:bg-green-500 hover:text-white">Home</button>
       </div>
       ):(
-      <div className="grid grid-cols-2 gap-1 mx-1 mt-2  md:grid-cols-5 ">
+      <div className="flex gap-1 justify-center flex-wrap ove mt-2 ">
       {
         result.map((iteam,index)=>{
         return <ProductIteam key={index} name={iteam?.name} image={iteam?.image} newPrice={iteam?.newPrice} oldPrice={iteam?.oldPrice} id={iteam?._id}/>
