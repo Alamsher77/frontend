@@ -15,6 +15,7 @@ export  const ContestProvider =  ({ children }) => {
   const [latestProduct,setLatestProduct] = useState([])
   const [randomProduct,setRandomProduct] = useState([])
   const [isPopUp,setIsPopUp] = useState(false)
+  const [allbanners,setallbanners] = useState([])
 
  
   // api funciton
@@ -105,7 +106,19 @@ const randomProductApi = async ()=>{
   }catch(error){
     toast.error(error?.message)
   }
-} 
+}
+  const fetchbanner = async()=>{
+    // showallbanners
+  try{
+    setLodding(true)
+      const response = await fetch(`${DomainUrl.url}showallbanners`)
+     const data = await response.json()
+    setLodding(false)
+    setallbanners(data)  
+  }catch(error){
+    toast.error(error.message)
+  }
+  }
  useEffect(()=>{ 
   fetchApi()
   categryapi()   
@@ -113,7 +126,7 @@ const randomProductApi = async ()=>{
   coutCartFetchApi()
   LatestProductApi()
   randomProductApi() 
-  
+  fetchbanner()
   if(isPopUp){
     document.body.style.overflow = 'hidden'
   }else{
@@ -125,7 +138,7 @@ const randomProductApi = async ()=>{
   },[isPopUp]) 
  
 // contextvalue
-const contextValue = {setIsPopUp,latestProduct,userFechApi,lodding,coutCartFetchApi,coutCartData,setUserDetails,userDetails,randomProduct, allProduct, allProductsCategry,fetchApi,categryapi}
+const contextValue = {setallbanners,allbanners,fetchbanner,setIsPopUp,latestProduct,userFechApi,lodding,coutCartFetchApi,coutCartData,setUserDetails,userDetails,randomProduct, allProduct, allProductsCategry,fetchApi,categryapi}
   return (
     <ContestContext.Provider value={contextValue}>
       {children}

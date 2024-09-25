@@ -12,9 +12,18 @@ const Home = ()=>{
  
   return(
      <>
-        <div style={{ scrollbarWidth: "none"}} className="overflow-x-auto no-scrollbar mx-3 my-1">
+        <div style={{ scrollbarWidth: "none"}} className="overflow-x-auto no-scrollbar mx-3 my-2">
        <div className="flex gap-1 ">
           {
+         lodding ?(
+          loddingArry.map(()=>{
+            return (
+              <div className="animate-pulse  bg-slate-300 rounded flex py-2   flex-col gap-1 items-center min-w-[110px]">
+            <div className="h-12 w-12  object-contain"></div>
+          </div>
+            )
+          })
+         ):
         allProductsCategry?.map((item,index)=>{
           return (
             <Link key={index} className="rounded flex border py-2 border-slate-500 flex-col gap-1 items-center min-w-[110px]"  to={`categryIteams/${item?.categry}`}>

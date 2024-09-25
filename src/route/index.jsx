@@ -13,6 +13,7 @@ import CategryIteams from '../pages/categryIteams'
 import UserDetails from '../pages/userDetails'
 import MyOrder from '../pages/myOrder'
 import About from '../pages/about'
+import AddBanner from '../pages/addbanner'
 import AllUsersOrderProduct from '../pages/allusersOrderProducts'
 const router = createBrowserRouter([
   { 
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
             {
               path:"AllUsersOrderProduct",
               element:<AllUsersOrderProduct/>
+            },
+            {
+              path:'addbanner',
+              element:<AddBanner />
             },
            ],
            

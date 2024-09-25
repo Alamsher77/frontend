@@ -54,7 +54,7 @@ const imageHandler = async()=>{
     
   try{ 
      const file = event.target.files[0];  
-     console.log(userDetails.profilePic)
+    
  const resposedeleteimage = await  DeleteImageCloudnary(userDetails?.profilePic || "dbeb3x4dh",'deleteCloudnaryImage') 
  if(!resposedeleteimage.success){
     toast.error(resposedeleteimage.message) 
