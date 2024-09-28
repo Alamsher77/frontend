@@ -39,7 +39,7 @@ const [viewProduct,setViewProduct] = useState({
      const data = await response.json()
      
      if(!data?.success){
-       toast.error(data?.message) 
+       console.log(data?.message) 
        SpeechMessage(data?.message)
       if(data.auth){
          navigate('/signup'); // Pushes 
@@ -54,7 +54,7 @@ const [viewProduct,setViewProduct] = useState({
      
      
    }catch(error){
-     toast.error('cart error',error)
+     console.log('cart error',error)
    }
  }
   

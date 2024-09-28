@@ -33,14 +33,14 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
     })
     const data = await response.json()
     if(!data.success){
-      toast.error(data.message)
+      console.log(data.message)
       return false
     }
     toast.success(data?.message)
     userOrderProductApi() 
     SpeechMessage(data?.message)
   }catch(error){
-    toast.error(error.message)
+    console.log(error.message)
     SpeechMessage(error?.message)
   }
 } 

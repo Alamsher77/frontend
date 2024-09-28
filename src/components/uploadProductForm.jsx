@@ -9,7 +9,7 @@ const UploadProductForm = (props)=>{
     try{ 
        const resposedeleteimage = await  DeleteImageCloudnary(img || "dbeb3x4dh",'deleteCloudnaryImage')
         if(!resposedeleteimage?.success){
-          toast.error(resposedeleteimage?.message)
+          console.log(resposedeleteimage?.message)
           SpeechMessage(resposedeleteimage?.message)
           return false
         } 
@@ -20,7 +20,7 @@ const UploadProductForm = (props)=>{
   props.setProducts({...products})
   toast.success('update')
     }catch(error){
-      toast.error(error?.message)
+      console.log(error?.message)
       SpeechMessage(error?.message)
     }
   }

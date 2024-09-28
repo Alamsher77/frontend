@@ -33,7 +33,7 @@ const cartIteamDeleteHandler = async (id)=>{
       setLodding(false)
      }
    }catch(error){
-     toast.error(error.message)
+     console.log(error.message)
      SpeechMessage(error?.message)
    }
 }
@@ -57,7 +57,7 @@ const cartIteamDeleteHandler = async (id)=>{
       SpeechMessage(data?.message)
       cartProductViewFetch() 
    }catch(error){
-      toast.error(error?.message)
+      console.log(error?.message)
       SpeechMessage(error?.message)
    }
  }
@@ -82,7 +82,7 @@ const cartIteamDeleteHandler = async (id)=>{
       cartProductViewFetch() 
     }
    }catch(error){
-     toast.error(error?.message)
+     console.log(error?.message)
      SpeechMessage(error?.message)
    }
  }  
@@ -113,7 +113,7 @@ const responsehandler = async(id)=>{
       setpopupupdate(false)
       cartProductViewFetch()
    }catch(error){
-     toast.error(error?.message)
+     console.log(error?.message)
      SpeechMessage(error?.message)
    }
 }

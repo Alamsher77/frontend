@@ -24,7 +24,7 @@ const userOrderProductApi = async()=>{
     setIsLodding(false)
     setUserOrderProduct(data.data) 
   }catch(error){
-    toast.error(error.message)
+    console.log(error.message)
   }
 } 
  
@@ -50,7 +50,7 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
     })
     const data = await response.json()
     if(!data.success){
-      toast.error(data.message)
+      console.log(data.message)
       SpeechMessage(data?.message)
       return false
     }
@@ -58,7 +58,7 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
     userOrderProductApi() 
     SpeechMessage(data?.message)
   }catch(error){
-    toast.error(error.message)
+    console.log(error.message)
     SpeechMessage(error?.message)
   }
 }

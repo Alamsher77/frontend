@@ -15,7 +15,7 @@ const LatestProduct = ()=>{
      {
        latestProduct.length == 0 && lodding ? (
      loddingArry.map((iteam,index)=>{
-        return <LoddingCardComponent/>
+        return <LoddingCardComponent key={index}/>
       })
      ):(
      

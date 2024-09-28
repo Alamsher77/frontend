@@ -18,7 +18,7 @@ const AddBanner = ()=>{
        await localStorage.setItem('banner',JSON.stringify(obj)) 
         setbannerimage(obj)
     }catch(error){
-      toast.error(error.message)
+      console.log(error.message)
     }
     
   }
@@ -28,7 +28,7 @@ const AddBanner = ()=>{
      const response = await DeleteImageCloudnary(bannerimage,'addbanner')
    
     if(!response.success){
-      toast.error(response.message)
+      console.log(response.message)
       return false
     }
     toast.success(response.message)
@@ -38,7 +38,7 @@ const AddBanner = ()=>{
     fetchbanner()
     }catch(error){
       console.log(error)
-      toast.error(error.message)
+      console.log(error.message)
     }
   }
   

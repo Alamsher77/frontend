@@ -41,7 +41,7 @@ const AddProduct = ()=>{
   SpeechMessage("image uploded")
  
  }catch(error){
-   toast.error(error?.message)
+   console.log(error?.message)
    SpeechMessage(error?.message)
  }
     
@@ -53,7 +53,7 @@ const AddProduct = ()=>{
     try{
     await  localStorage.setItem('products',JSON.stringify({...products})) 
     }catch(error){
-      toast.error(error?.message)
+      console.log(error?.message)
       SpeechMessage(error?.message)
     }
   
@@ -87,7 +87,7 @@ const AddProduct = ()=>{
     })
     .then((res)=> res.json()).then((data)=> { 
       if(!data?.success){
-        toast.error(data?.message)
+        console.log(data?.message)
         SpeechMessage(data?.message)
       } 
       if(data?.success){
@@ -111,7 +111,7 @@ const AddProduct = ()=>{
     
       
     }catch(error){
-     toast.error(error?.message)
+     console.log(error?.message)
      SpeechMessage(error?.message)
     }
   
@@ -124,7 +124,7 @@ const AddProduct = ()=>{
       const data = await response.json()
     
      if(!data.success){
-       toast.error(data.message)
+       console.log(data.message)
        SpeechMessage(data?.message)
      }
      if(data.success){
@@ -142,7 +142,7 @@ const AddProduct = ()=>{
      setUpdateForm(true)
      }
     }catch(error){
-      toast.error(error?.message)
+      console.log(error?.message)
       SpeechMessage(error?.message)
     }
   }
@@ -150,7 +150,7 @@ const AddProduct = ()=>{
   const updateHandler = async(e)=>{
     e.preventDefault() 
     if(!productId){
-      toast.error('Update Iteams not found')
+      console.log('Update Iteams not found')
       SpeechMessage("Update Iteams not found")
       return false
     }
@@ -165,7 +165,7 @@ const AddProduct = ()=>{
     })
     const data = await response.json() 
     if(!data.success){
-      toast.error(data.message)
+      console.log(data.message)
       SpeechMessage(data?.message)
       return false
     }
@@ -185,7 +185,7 @@ const AddProduct = ()=>{
      }
   
   }catch(error){
-   toast.error(error.message)
+   console.log(error.message)
    SpeechMessage(error?.message)
   }
   }
@@ -203,7 +203,7 @@ const AddProduct = ()=>{
   const resposedeleteimage = await  DeleteImageCloudnary(img || "dbeb3x4dh",'deleteCloudnaryImageMulltiple') 
  
   if(!resposedeleteimage?.success){
-    toast.error(resposedeleteimage.message) 
+    console.log(resposedeleteimage.message) 
     SpeechMessage(resposedeleteimage?.message)
     return false
  } 
@@ -220,7 +220,7 @@ const AddProduct = ()=>{
      })
     const data = await response.json()
     if(!data.success){
-      toast.error(data.message)
+      console.log(data.message)
       SpeechMessage(data?.message)
       return false
     }
@@ -228,7 +228,7 @@ const AddProduct = ()=>{
     toast.success(data.message)
     SpeechMessage(data?.message)
   }catch(error){
-    toast.error(error.message)
+    console.log(error.message)
     SpeechMessage(error?.message)
   }
   }

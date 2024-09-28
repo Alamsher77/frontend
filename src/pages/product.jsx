@@ -7,12 +7,13 @@ import { IoStarSharp } from "react-icons/io5";
 import DomainUrl from '../Configuration/Index'
 import{ toast } from 'react-hot-toast';
 import NoContent from '../components/noContent'
+import { MdDelete } from "react-icons/md";
 import ProductIteam from '../components/productIteam/productIteam' 
 const Product = ()=>{
   // products display functionality
   
   const {productId} = useParams()
-  const {allProduct}= useContext(ContestContext)
+  const {allProduct,userDetails}= useContext(ContestContext)
     const result = allProduct.find((e)=>{
     return e?._id === productId
     })
@@ -45,17 +46,7 @@ const Product = ()=>{
   );
 };
 
-// condition by messages
-
-if(rating <= 1){
-  message = 'Bade'
-}else if(rating <= 2){
-  message = 'Medium'
-}else if(rating <= 4){
-  message = 'Good'
-}else{
-  message = 'Verry Good '
-}
+ 
  
 // eatins handler each stars
  const  handalindex = (value)=>{
@@ -103,13 +94,63 @@ const fetchallcomments = async()=>{
   setproductreviewlodding(false)
   setallproductreview(data)
   }catch(error){
-    toast.error(error.message)
+    console.log(error.message)
   }
+}
+
+const commentsDelete = async(id)=>{ 
+ try{
+    const response = await fetch(`${DomainUrl.url}deleteReview`,{
+    method:'POST',
+    credentials:'include',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({id})
+  })
+  const data = await response.json()
+  if(!data?.success){
+    toast.error(data?.message)
+    return false
+  }
+  toast.success(data?.message)
+  fetchallcomments()
+ }catch(error){
+   toast.error(error.message)
+ }
 }
  
 useEffect(()=>{
   fetchallcomments()
 },[])
+
+ const totalratting = allproductreview?.reduce((prev,curent)=>{
+   
+            return prev + curent.rating
+          },0)
+const resultretting = totalratting / allproductreview?.length
+      
+ 
+ if(resultretting <= 1){
+  message = 'Bade'
+}else if(resultretting <= 2){
+  message = 'Medium'
+}else if(resultretting <= 4){
+  message = 'Good'
+}else{
+  message = 'Verry Good '
+}
+const countByRating = (users, rating) => users.filter(user => user.rating === rating).length;
+ 
+const allratingbyusers = {
+  rating5:countByRating(allproductreview,5),
+  rating4:countByRating(allproductreview,4),
+  rating3:countByRating(allproductreview,3),
+  rating2:countByRating(allproductreview,2),
+  rating1:countByRating(allproductreview,1)
+}
+ const all = allratingbyusers.rating4 / allproductreview?.length * 100
+ console.log(all)
   return(
      <>
       <Bredcrumb name={result?.name} categry={result?.categry}/>
@@ -156,32 +197,32 @@ useEffect(()=>{
           {Array.from({ length: totalStars }, (_, index) => (
         <Star 
           key={index}
-          filled={index < rating} 
+          filled={index < resultretting} 
         />
       ))}
       </div>
-          <p className="px-1 text-slate-700 text-[17px] text-center">345 ratings and 234 reviews</p>
+          <p className="px-1 text-slate-700 text-[17px] text-center">{totalratting} ratings and {allproductreview?.length} reviews</p>
          </div>
          <div className="w-44 flex flex-col gap-1">
           
            <div className="flex text-[14px] justify-center gap-1 h-6  items-center">
-           <span>5</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className="w-[100%] rounded-full h-full bg-green-600"></div> </div> <span>3634</span>
+           <span>5</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className={`w-[${allratingbyusers.rating5 / allproductreview?.length * 100}%] rounded-full h-full bg-green-600`}></div> </div> <span> {allratingbyusers?.rating5}</span>
           </div>
           
            <div className="flex text-[14px] justify-center gap-1 h-6  items-center">
-           <span>4</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className="w-[80%] rounded-full h-full bg-green-600"></div> </div> <span>342</span>
+           <span>4</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className={`w-[${allratingbyusers.rating4 / allproductreview?.length * 100}%] rounded-full h-full bg-green-600`}></div> </div> <span>{allratingbyusers?.rating4}</span>
           </div>
           
            <div className="flex text-[14px] justify-center gap-1 h-6  items-center">
-           <span>3</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className="w-[60%] rounded-full h-full bg-green-600"></div> </div> <span>865</span>
+           <span>3</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className={`w-[${allratingbyusers.rating3 / allproductreview?.length * 100}%] rounded-full h-full bg-green-600`}></div> </div> <span>{allratingbyusers?.rating3}</span>
           </div>
           
            <div className="flex text-[14px] justify-center gap-1 h-6  items-center">
-           <span>2</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className="w-[40%] rounded-full h-full bg-green-600"></div> </div> <span>86</span>
+           <span>2</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className={`w-[${allratingbyusers.rating2 / allproductreview?.length * 100}%] rounded-full h-full bg-green-600`}></div> </div> <span>{allratingbyusers?.rating2}</span>
           </div>
           
            <div className="flex text-[14px] justify-center gap-1 h-6  items-center">
-           <span>1</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24 bg-slate-200"><div className="w-[20%] rounded-full h-full bg-green-600"></div> </div> <span>534</span>
+           <span>1</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24 bg-slate-200"><div className={`w-[${allratingbyusers.rating1 / allproductreview?.length * 100}%] rounded-full h-full bg-green-600`}></div> </div> <span>{allratingbyusers?.rating1}</span>
           </div>
           
          </div>
@@ -238,14 +279,23 @@ useEffect(()=>{
                }else{
                 time = new Date(item?.createdAt).toLocaleDateString()
                }
+                
                 return(
-                 <div key={index} className="relative bg-slate-100 p-2  shadow rounded">
-                 
+                 <div key={index} className="group relative bg-slate-100 p-2  shadow rounded">
+                 {
+                   userDetails?.email == item.users?.email &&(
+                   <>
+                    <div className="top-0 right-14 font-bold underline absolute text-green-700">You</div>
+                    
+                    <div onClick={()=>commentsDelete(item?._id)} className="absolute group-hover:block hidden rounded-full cursor-pointer p-1 text-xl border border-red-500 top-0 left-0 text-red-500"><MdDelete /></div>
+                   </>
+                   )
+                 }
                  <div className="absolute text-blue-500 right-4 top-0">
                   <p>{time}</p>
                  </div>
                  
-                  <div className="px-3 py-2 flex gap-2">
+                  <div className="px-3 py-4 flex gap-2">
                    <div className="w-12 h-12 bg-slate-200 rounded-full"><img className="w-full h-full rounded-full object-cover" src={item?.users?.profilePic?.img} />
                    </div>
                    <div>

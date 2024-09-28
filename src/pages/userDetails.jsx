@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
+// import React,{useState,useEffect,useContext} from 'react'
 import {ContestContext} from '../api/ContestContext'
 import{ toast } from 'react-hot-toast';
 import DomainUrl from '../Configuration/Index'
@@ -9,7 +9,7 @@ import { FaRegUserCircle } from "react-icons/fa";
  import SpeechMessage from '../components/speechMessage'
 const UserDetails = ()=>{
   const navigate = useNavigate()
-const {userFechApi,userDetails,lodding} = useContext(ContestContext)
+const {userDetails,lodding} = useContext(ContestContext)
   const [showAdress,setShowAdress] = useState(false) 
  const [userValue,setUserValue] = useState({
 name :'',
@@ -43,7 +43,7 @@ name :'',
    
   setUpdateUser(true) 
     }catch(error){
-      toast.error(error?.message)
+      console.log(error?.message)
       SpeechMessage(error?.message)
     }
  } 
@@ -57,7 +57,7 @@ const imageHandler = async()=>{
     
  const resposedeleteimage = await  DeleteImageCloudnary(userDetails?.profilePic || "dbeb3x4dh",'deleteCloudnaryImage') 
  if(!resposedeleteimage.success){
-    toast.error(resposedeleteimage.message) 
+    console.log(resposedeleteimage.message) 
     SpeechMessage(resposedeleteimage?.message)
     return false
  }
@@ -70,7 +70,7 @@ const imageHandler = async()=>{
       SpeechMessage("तस्वीर सफलतापूर्वक अपलोड हो गया")
       // console.log(userValue)
   }catch(error){
-    toast.error(error?.message)
+    console.log(error?.message)
    SpeechMessage(error?.message)
   }
 } 
@@ -87,7 +87,7 @@ const submitHandler = async()=>{
       })
       const data = await response.json()
       if(!data?.success){
-        toast.error(data?.message)
+        console.log(data?.message)
         SpeechMessage(data?.message)
         return false
       }
@@ -98,7 +98,7 @@ const submitHandler = async()=>{
      }
    setUpdateUser(false)
   }catch(error){
-    toast.error(error?.message)
+    console.log(error?.message)
     SpeechMessage(error?.message)
   }
  } 

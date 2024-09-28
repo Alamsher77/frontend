@@ -36,15 +36,14 @@ const SignupForm = () => {
         },
         body: JSON.stringify(users),
       })
-      .catch(()=>{ toast?.error("fetch error")}) 
       const data = await response?.json()
         if (!data?.success) {
           toast.error(data?.message) 
           SpeechMessage(data?.message)
+          return false
         }
 
-        if (data?.success) {
-          toast.success(data?.message)
+        toast.success(data?.message)
           setUsers({
             name: '',
             email: '',
@@ -53,10 +52,9 @@ const SignupForm = () => {
           })
           SpeechMessage(data?.message)
           setIsLogin(true) 
-        } 
 
     }catch(error) {
-    toast.error(error)
+    toast.error(error.message)
     SpeechMessage(error.message)
     }
 
@@ -65,7 +63,7 @@ const SignupForm = () => {
   // login
   const loginHandler = async (e)=> {
     e.preventDefault()
-    try { 
+  
      const response =  await fetch(`${DomainUrl.url}singin`,
         {
           method: 'POST',
@@ -75,26 +73,14 @@ const SignupForm = () => {
             "Content-type": "application/json",
           },
           body: JSON.stringify(users),
-        })
-      .catch(()=>{
-         toast.error("fetch error")
-        })
-        
-     
-     if(!response?.ok){
-       toast.error('server error')
-       return false
-     }
-      
-   const data = await response?.json() 
-      
-     if (!data?.success || data?.ok){
+        })  
+   const data = await response?.json()  
+     if (!data?.success) {
        toast.error(data.message)
        SpeechMessage(data.message)
-     }
-
-     if (data?.success) { 
-      setUsers({
+     return false
+     } 
+    setUsers({
             name: '',
             email: '',
             password: '',
@@ -103,14 +89,7 @@ const SignupForm = () => {
           toast?.success(data?.message)
           navigate('/') 
           userFechApi() 
-          SpeechMessage(data?.message)
-     } 
-
-    }catch(error) {
-      toast.error(error.message)
-      SpeechMessage(error.message)
-    }
-
+          SpeechMessage(data?.message) 
   }
  
  

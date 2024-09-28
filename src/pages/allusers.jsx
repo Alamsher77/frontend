@@ -25,7 +25,7 @@ const AllUsers = ()=>{
        setAllUsers(data)
       setLodding(false)
       }catch(error){
-        toast.error(error?.message)
+        console.log(error?.message)
         SpeechMessage(error?.message)
       }
     }
@@ -46,7 +46,7 @@ const AllUsers = ()=>{
       
       const data = await response.json() 
       if(!data.success){
-        toast.error(data?.message)
+        console.log(data?.message)
         SpeechMessage(data?.message)
       }
       if(data.success){
@@ -57,7 +57,7 @@ const AllUsers = ()=>{
         setIsPopUp(false)
       }
      }catch(error){
-       toast.error(error?.message)
+       console.log(error?.message)
        SpeechMessage(error?.message)
      }
     }

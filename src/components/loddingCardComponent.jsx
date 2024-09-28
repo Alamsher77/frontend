@@ -1,7 +1,7 @@
 
-const LoddingCardComponent = ()=>{
+const LoddingCardComponent = ({key})=>{
   return(
-     <div  className='animate-pulse p-1 m-2 '>
+     <div key={key} className='animate-pulse p-1 m-2 '>
      <div className=" h-40 bg-gray-300">
        <span className="w-full h-full "></span>
      </div>

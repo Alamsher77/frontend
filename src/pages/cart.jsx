@@ -26,7 +26,7 @@ const cartProductViewFetch = async ()=>{
     setCartProductView(data.allProducts)
       setIslodding(false)
     }catch(error){
-      toast.error(error.message)
+      console.log(error.message)
     }
      
 }
@@ -54,13 +54,13 @@ const checkOutHandler = async(e)=>{
     } 
     
     if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.profilePic || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
-      toast.error('please add addres all fileds')
+      console.log('please add addres all fileds')
         SpeechMessage("please add addres all fileds")
       navigate('/userDetails')
       return false
     } 
    if(TotalPrice <= 200){
-     toast.error('You Can Buy MoreThan 200 ruppese')
+     console.log('You Can Buy MoreThan 200 ruppese')
      SpeechMessage('You Can Buy MoreThan 200 roopeese')
      return false
    }
@@ -76,7 +76,7 @@ const checkOutHandler = async(e)=>{
   
   const data = await response.json()
    if(!data.success){
-    toast.error(data?.message)
+    console.log(data?.message)
     SpeechMessage(data?.message)
     return false
    }
@@ -87,7 +87,7 @@ const checkOutHandler = async(e)=>{
    cartProductViewFetch()
    
   }catch(error){
-    toast.error(error?.message)
+    console.log(error?.message)
     SpeechMessage(error?.message)
   }
 }

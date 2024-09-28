@@ -18,7 +18,7 @@ const AllUsersOrderProduct = ()=>{
     setIsLodding(false)
     setAllOrders(data.data) 
   }catch(error){
-    toast.error(error.message)
+    console.log(error.message)
   }
 } 
   useEffect(()=>{

@@ -26,7 +26,7 @@ const imageHandler = async(e)=>{
   })
 
    }catch(error){
-    toast.error(error?.message)
+    console.log(error?.message)
     SpeechMessage(error?.message)
    }
     
@@ -44,7 +44,7 @@ const imageHandler = async(e)=>{
      
      const responseimagedelete = await DeleteImageCloudnary(image,"deleteCloudnaryImage")
      if(!responseimagedelete?.success){
-       toast.error(responseimagedelete?.message)
+       console.log(responseimagedelete?.message)
        SpeechMessage(responseimagedelete?.message)
      }
      toast.success(responseimagedelete?.message)
@@ -59,14 +59,14 @@ const imageHandler = async(e)=>{
     })
     const data = await respose.json()
     if(!data?.success){
-      toast.error(data?.message)
+      console.log(data?.message)
       SpeechMessage(data?.message)
     }
      toast.success(data?.message) 
      SpeechMessage(data?.message)
      categryapi()
     }catch(error){
-      toast.error(error?.message)
+      console.log(error?.message)
       SpeechMessage(error?.message)
     }
   }
@@ -83,7 +83,7 @@ const imageHandler = async(e)=>{
      })
     const data = await respose.json() 
     if(!data?.success){
-      toast.error(data?.message)
+      console.log(data?.message)
       SpeechMessage(data?.message)
       return false
     } 
@@ -93,7 +93,7 @@ const imageHandler = async(e)=>{
        setCategyValue({categry:'',catelogo:''})
        setShowCategryForm(false)
     }catch(error){
-      toast.error(error?.message)
+      console.log(error?.message)
       SpeechMessage(error?.message)
     }
     

@@ -8,7 +8,7 @@ import './header.css'
 import logo from '../asetes/logo4.png'
 export const Headers = ()=> {
    const navigate = useNavigate();
-  const {setIsPopUp,userFechApi,allProductsCategry, coutCartData,userDetails,setUserDetails} = useContext(ContestContext) 
+  const {setIsPopUp,allProductsCategry, coutCartData,userDetails,setUserDetails} = useContext(ContestContext) 
  
  const [toggleMenu,setToggleMenu] = useState('')
  const [usersPopupIteams,setUsersPopupIteams] = useState(false)
@@ -30,33 +30,34 @@ export const Headers = ()=> {
      setToggleMenu('')
      setIsPopUp(false)
      setUsersPopupIteams(false)
-     }
+     }  
   } 
   
  const logoutHandler = async ()=>{
-  try{
-    
+  try{ 
      const response = await fetch(`${DomainUrl.url}logout`,{
         method:"GET",
         credentials:"include",
       }) 
      const data = await response.json()
-     if(data.success){ 
+     if(!data?.success){ 
+      console.log(data?.message)
+      return false
+     }
+      
     toast.success(data.message)
     setToggleMenu("") 
     usersTogglePopup()
     menuhandler() 
     setUserDetails(null)
    navigate("/signup") 
-     }
-  
   }catch(error){
-    toast.error(error.message)
+    console.log(error.message)
   }
    } 
    
+   
 
-  
   return(
     <> 
     
@@ -114,27 +115,20 @@ export const Headers = ()=> {
         <div className="absolute flex flex-col gap-1 justify-center items-center  p-2 top-20 left-2 bg-white shadow-indigo-500/50 ">
          <div className="border border-yellow-600 px-3 py-1 text-yellow-500 rounded"><NavLink to="adminPanel/addproduct" onClick={usersTogglePopup,menuhandler } >Admin Panel</NavLink></div>
           <div className="border border-yellow-600 px-3 py-1 text-yellow-500 rounded"><NavLink to="UserDetails" onClick={usersTogglePopup,menuhandler } >Profile</NavLink></div>
-         <div className="border border-red-600 text-red-500 hover:text-red-600 hover:bg-red-200  px-3 rounded"> <NavLink to="signup" onClick={logoutHandler} >Log Out</NavLink></div>
+         <div className="border border-red-600 text-red-500 hover:text-red-600 hover:bg-red-200  px-3 rounded"> <button  onClick={logoutHandler} >Log Out</button></div>
         </div>
        )
         }
          
         </div> 
     {
-      userDetails ? (
-      <>
-         
-        
-   <NavLink to='cart' className="text-3xl relative -left-1 flex justify-center items-center w-8 h-8" >
+      userDetails && (
+       <NavLink to='cart' className="text-3xl relative -left-1 flex justify-center items-center w-8 h-8" >
         <sapn className="text-white absolute" > <MdShoppingCart/>  </sapn>
       <div className="bg-red-600 -top-1 left-2 absolute rounded-full text-white w-5 h-5 p-1 flex items-center justify-center">
         <p className="text-sm">{coutCartData}</p>
       </div>
       </NavLink>
-      </>
-      ):(
-       <>
-       </>
       )
     }
       

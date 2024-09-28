@@ -7,7 +7,7 @@
       utterance.text = message
       window.speechSynthesis.speak(utterance);
    }catch(error){
-     toast.error(error.message)
+    console.log(error.message)
    }
    }
   export default SpeechMessage

@@ -8,7 +8,7 @@ import RandomProduct from '../components/randomProducts'
 import LoddingCardComponent from '../components/loddingCardComponent'
 const Home = ()=>{
   const loddingArry = [1,2,3,4,5,6,7,8,9,10]
-   const {userFechApi,lodding,allProduct,allProductsCategry, coutCartData,userDetails,setUserDetails} = useContext(ContestContext) 
+  const {lodding,allProduct,allProductsCategry, coutCartData,userDetails} = useContext(ContestContext) 
  
   return(
      <>

@@ -20,104 +20,71 @@ export  const ContestProvider =  ({ children }) => {
  
   // api funciton
 const categryapi = async ()=>{
-    try{
-      setLodding(true)
+    setLodding(true)
     const response =  await fetch(`${DomainUrl.url}showproductcategry`) 
      const data = await response.json()
      if(!data?.success){
-       toast.error(data?.message)
+       console.log(data?.message)
        return false
      } 
        setLodding(false)
       setAllProductsCategry(data.data)
-    }catch(error){
-      toast?.error(error?.message)
-      SpeechMessage(error?.message)
-    }
 }
 const fetchApi = async ()=>{
-   try{
-      setLodding(true) 
+     setLodding(true) 
    const response =  await fetch(`${DomainUrl.url}showProduct`)
   const data = await response.json()  
     setAllProducts(data)
    setLodding(false)
-   }catch(error){
-    // toast?.error(error?.message)
-    // SpeechMessage(error?.message)
-    console.log('product error '+error)
-   }
   }
 const userFechApi = async ()=>{
-    try{
         setLodding(true)
-     const response = await fetch(`${DomainUrl.url}usergetinfo`,{
+    const response = await fetch(`${DomainUrl.url}usergetinfo`,{
         method:"GET",
         credentials:"include"
       })
-     const data = await response.json()
-     setLodding(false)
-     if(!data?.success){
-       toast?.error(data?.message)
-       return false
-     }
-     setUserDetails(data.data)
-    }catch(error){
-      toast.error(error?.message)
-      SpeechMessage(error?.message)
+    const data = await response.json() 
+    if(!data?.success){
+      console.log(data?.message)
+      return false
     }
+    setLodding(false)
+    setUserDetails(data.data)
+    console.log(data)
   }
 const coutCartFetchApi = async ()=>{
-    try{
-      const response = await fetch(`${DomainUrl.url}countCartProduct`,{
+   const response = await fetch(`${DomainUrl.url}countCartProduct`,{
         method:"GET",
         credentials:"include"
       })
       const data = await response.json()
      if(!data.success){ 
-      toast.error(data?.message)
+      console.log(data?.message)
       return false
      }
       setCoutCartData(data.data)
-    }catch(error){
-      toast.error(error?.message)
-    }
 }
 const LatestProductApi = async ()=>{
-   try{
-     setLodding(true) 
+      setLodding(true) 
   const response =  await fetch(`${DomainUrl.url}latestProduct`)
   const data = await response.json()
    setLodding(false)  
    setLatestProduct(data) 
-   }catch(error){
-     toast?.error(error?.message)
-   }
 }
 
 const randomProductApi = async ()=>{
-  try{
-       setLodding(true) 
+     setLodding(true) 
    const response = await fetch(`${DomainUrl.url}randomProduct`)
    const data = await response.json()
     setLodding(false) 
     setRandomProduct(data)
-   
-  }catch(error){
-    toast.error(error?.message)
-  }
 }
   const fetchbanner = async()=>{
-    // showallbanners
-  try{
-    setLodding(true)
+   setLodding(true)
       const response = await fetch(`${DomainUrl.url}showallbanners`)
      const data = await response.json()
     setLodding(false)
     setallbanners(data)  
-  }catch(error){
-    toast.error(error.message)
-  }
   }
  useEffect(()=>{ 
   fetchApi()
