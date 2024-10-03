@@ -1,31 +1,68 @@
 import logo3 from '../asetes/logo7.jpg'
 import logo4 from '../asetes/logo4.png'
 import {ContestContext} from '../api/ContestContext'
-import {useContext} from 'react'
+import {useContext,useState,useEffect} from 'react'
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 const HomeBanner = ()=>{
-  const {allbanners,lodding} = useContext(ContestContext)
- 
+  const {allbanners,lodding} = useContext(ContestContext) 
  if(allbanners?.length == 0 || lodding ){
+   
    return null
  }
-  return(
-   <div className="overflow-scroll flex gap-1 min-w-[340px] m-auto max-w-[340px] min-h-[150px] ">
-    {
-      lodding ?(
-      <div>lodding</div>
-      ):(
-      
-       allbanners?.map((item,index)=>{
-        console.log(item)
-         return(
-           <div key={index} className="overflow-hidden  min-w-full max-w-full min-h-[170px] max-h-[190px]">
-      <img src={item.bannerimage?.img} className="w-full h-full object-contain"/>
-    </div>
-    
-         )
-       })
-      )
+ 
+ const [imageindex,setimageindex] = useState(0)
+ 
+ const rigtharrowhandler =()=>{
+  
+   if(imageindex < allbanners.length  * 100 - 100){
+     setimageindex(imageindex+100)
+   }
+   
+ }
+ const leftarrowhandler = ()=>{
+   if(imageindex > 0){
+     setimageindex(imageindex-100)
+   }
+ }
+ 
+useEffect(()=>{
+try{
+    const intervel = setInterval(()=>{
+    if(imageindex < allbanners.length * 100 - 100){
+      setimageindex(imageindex + 100) 
+      return false
     }
+    if(imageindex > 0){
+      setimageindex(0)
+      return false
+    }
+  },5000)
+  return ()=> clearInterval(intervel)
+}catch(error){
+  console.log(error.message)
+}
+},[imageindex])
+  
+  return(
+   <div className="select-none ring-pink-300 ring-4 relative min-h-[150px] max-h-[170px] overflow-hidden shadow-slate-400 bg-white shadow m-auto max-w-[340px]">
+   
+   <div onClick={leftarrowhandler} className="cursor-pointer absolute left-1 flex justify-center items-center text-3xl z-50 top-[40%] border border-slate-300 text-slate-300 w-8 h-8"><IoIosArrowBack /></div>
+   <div onClick={rigtharrowhandler} className="cursor-pointer absolute right-1 flex justify-center items-center text-3xl z-50 top-[40%] border border-slate-300 text-slate-300 w-8 h-8"><IoIosArrowForward /></div>
+   
+   <div className={`right-[${imageindex}%] transition relative flex max-h-[170px] min-w-full mi-h-[150px]`}>
+    {
+allbanners?.map((item,index)=>{
+
+return(
+    <div key={index} className="overflow-hidden  min-w-full max-w-full min-h-full max-h-full">
+<img src={item.bannerimage?.img} className="w-full h-full object-contain"/>
+</div>
+   )
+  }) 
+    
+    }
+    </div>
    </div>
     )
 }

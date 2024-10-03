@@ -8,10 +8,10 @@ const RandomProducts = ()=>{
   
   return(
     <>
-    <div className="p-2">
+    <div className="">
     <h1 className="font-bold text-pink-400 ">RANDOM PRODUCTS</h1>
     </div>
-   <div  style={{ scrollbarWidth: "none"}} className="select-none  flex w-full overflow-scroll flex-wrap m-[3px] gap-1"> 
+   <div  style={{ scrollbarWidth: "none"}} className="select-none  flex w-full overflow-scroll flex-wrap justify-center gap-1"> 
      {
        randomProduct.length == 0 && lodding ? (
      loddingArry.map((iteam,index)=>{
@@ -20,7 +20,7 @@ const RandomProducts = ()=>{
      ):(
      
     randomProduct.map((iteam,index)=>{
-        return <ProductIteam width={38} key={index} name={iteam.name} image={iteam.image} newPrice={iteam.newPrice} oldPrice={iteam.oldPrice} id={iteam._id}/>
+        return <ProductIteam key={index} name={iteam.name} image={iteam.image} newPrice={iteam.newPrice} oldPrice={iteam.oldPrice} id={iteam._id}/>
       })
       )
      }

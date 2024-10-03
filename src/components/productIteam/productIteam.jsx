@@ -5,7 +5,7 @@ const ProductIteam = (props)=>{
  const l = Number(props.newPrice)
  const m = 100 - (Math.floor(l / p * 100)) 
   return(
-     <div key={props} className='min-w-[175px] max-w-[175px]'>
+     <div key={props} className='min-w-[174px] max-w-[174px]'>
      <div className={`min-w-${props.width ?props.width:38} h-40 bg-pink-100 `}>
        <Link className="w-full h-full max-w-full max-h-full" to={`/product/${props.id}`}><img onClick={()=> window.scrollTo(0,0)} src={props?.image[0].img} className="w-full h-full object-contain mix-blend-multiply"  /></Link>
      </div>

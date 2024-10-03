@@ -4,6 +4,7 @@ import logoupload from '../asetes/upload.jpg'
 import UploadImage from '../helpers/uploadsImage'
 import{ toast } from 'react-hot-toast';
 import DomainUrl from '../Configuration/Index'
+import { MdOutlineDelete } from "react-icons/md";
 import {ContestContext} from '../api/ContestContext'
 import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
 const AddBanner = ()=>{
@@ -42,13 +43,34 @@ const AddBanner = ()=>{
     }
   }
   
-   
   useEffect(()=>{ 
     const localgetimage = JSON.parse(localStorage.getItem('banner'))
       if(localgetimage){
         setbannerimage(localgetimage)
       }
   },[]) 
+  
+  // deletebanner
+  const deletehandler = async (image,id)=>{
+   try{
+     const imagedeleteresponse = await DeleteImageCloudnary(image,'deleteCloudnaryImage')
+     if(!imagedeleteresponse?.success){
+       toast.error(imagedeleteresponse.message)
+       return false
+     }
+     toast.success(imagedeleteresponse?.message)
+    const data = await DeleteImageCloudnary(id,'deletebanner')
+    
+    if(!data.success){
+      toast.error(data.message)
+      return false
+    }
+  toast.success(data.message)
+  fetchbanner()
+   }catch(error){
+     toast.error(error.message)
+   }
+  }
   return(
         <div className="select-none p-2 w-full max-w-full min-w-full ">
          <div className="w-full   flex justify-between">
@@ -97,8 +119,9 @@ const AddBanner = ()=>{
             })
             ):( allbanners?.map((item,index)=>{ 
               return(
-                <div key={index} className="border border-purple-500 min-w-[330px] h-[150px] min-h-[150px] max-h-[150px]  max-w-[330px]">
-            <img className="h-full object-contain w-full" src={item?.bannerimage?.img} />
+                <div key={index} className="relative border border-purple-500 min-w-[330px] h-[150px] min-h-[150px] max-h-[150px]  max-w-[330px]">
+                <div onClick={()=>deletehandler(item?.bannerimage,item?._id)} className="flex justify-center border border-red-500 items-center text-[30px] w-8 transition ease-in-out delay-150 text-red-500 hover:text-white hover:bg-red-500 right-1 cursor-pointer top-1 h-8 absolute"><MdOutlineDelete /></div>
+                <img className="h-full object-contain w-full" src={item?.bannerimage?.img} />
           </div>
               )
             }))
