@@ -16,9 +16,9 @@ const Home = ()=>{
        <div className="flex gap-1 ">
           {
          lodding ?(
-          loddingArry.map(()=>{
+          loddingArry.map((item,index)=>{
             return (
-              <div className="animate-pulse  bg-slate-300 rounded flex py-2   flex-col gap-1 items-center min-w-[110px]">
+              <div key={index} className="animate-pulse  bg-slate-300 rounded flex py-2   flex-col gap-1 items-center min-w-[110px]">
             <div className="h-12 w-12  object-contain"></div>
           </div>
             )

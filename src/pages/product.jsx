@@ -1,17 +1,18 @@
 import {useParams} from 'react-router-dom'
-import {useState,useEffect, useContext} from 'react'
+import {useState,useEffect, useContext,} from 'react'
 import {ContestContext} from '../api/ContestContext'
 import ProductDisplay from '../components/productdisplay'
 import Bredcrumb from '../components/bredcrumb' 
-import { IoStarSharp } from "react-icons/io5";
+import { IoStarSharp } from "react-icons/io5";  
 import DomainUrl from '../Configuration/Index'
 import{ toast } from 'react-hot-toast';
 import NoContent from '../components/noContent'
 import { MdDelete } from "react-icons/md";
+import { IoIosSend } from "react-icons/io";
 import ProductIteam from '../components/productIteam/productIteam' 
 const Product = ()=>{
   // products display functionality
-  
+
   const {productId} = useParams()
   const {allProduct,userDetails}= useContext(ContestContext)
     const result = allProduct.find((e)=>{
@@ -34,13 +35,13 @@ const Product = ()=>{
  const [allproductreview,setallproductreview] = useState([])
  const [producereviewlodding,setproductreviewlodding] = useState(false)
  let message 
- const totalStars = 5;
+ const totalStars = 5; 
  
 // starts componentes
 
- const Star = ({ filled,click}) => {
+ const Star = ({ filled,click,size}) => {
   return (
-    <span onClick={click} style={{ fontSize: "25px", marginRight: "1px" }}>
+    <span onClick={click} style={{ fontSize: size, marginRight: "1px" }}>
       {filled ? "★" : "☆"}
     </span>
   );
@@ -71,8 +72,9 @@ const Product = ()=>{
         return false
       }
       toast.success(data?.message)
-      fetchallcomments()
       setOpenRateProduct(false)
+      setRattingData({...rattingData,comment:""})
+        fetchallcomments()
    }catch(error){
      toast.error(error?.message)
    }
@@ -94,7 +96,7 @@ const fetchallcomments = async()=>{
   setproductreviewlodding(false)
   setallproductreview(data)
   }catch(error){
-    console.log(error.message)
+    toast.error(error.message)
   }
 }
 
@@ -121,9 +123,8 @@ const commentsDelete = async(id)=>{
 }
  
 useEffect(()=>{
-  fetchallcomments()
-},[])
-
+  fetchallcomments() 
+},[]) 
  const totalratting = allproductreview?.reduce((prev,curent)=>{
    
             return prev + curent.rating
@@ -143,14 +144,15 @@ const resultretting = totalratting / allproductreview?.length
 const countByRating = (users, rating) => users.filter(user => user.rating === rating).length;
  
 const allratingbyusers = {
-  rating5:countByRating(allproductreview,5),
-  rating4:countByRating(allproductreview,4),
-  rating3:countByRating(allproductreview,3),
-  rating2:countByRating(allproductreview,2),
-  rating1:countByRating(allproductreview,1)
+  5:countByRating(allproductreview,5),
+  4:countByRating(allproductreview,4),
+  3:countByRating(allproductreview,3),
+  2:countByRating(allproductreview,2),
+  1:countByRating(allproductreview,1)
 }
+
  const all = allratingbyusers.rating4 / allproductreview?.length * 100
- console.log(all)
+ 
   return(
      <>
       <Bredcrumb name={result?.name} categry={result?.categry}/>
@@ -165,83 +167,89 @@ const allratingbyusers = {
          <h1 className="text-slate-700">Ratings & Reviews</h1>
          <button onClick={()=>setOpenRateProduct(true)} className="font-[800] text-blue-400 rounded px-8 py-1 border">Rate Product</button>
         </div>
-        {
-          openRateProduct && (
-           <div  className="relative w-[300px] my-3 px-2 py-4 m-auto bg-slate-100 ">
-            <div onClick={()=>setOpenRateProduct(false)} className="absolute top-1 right-1 w-6 h-6 rounded   bg-red-400 hover:bg-white transition ease-in-out delay-100 cursor-pointer text-white  hover:text-red-500 flex justify-center items-center "><span className="text-4xl font-bold rotate-45">+</span></div>
-            <h1 className="font-[800] text-center text-green-600">Rate The Product</h1>
-             <div className="text-green-700 text-center">
-               {Array.from({ length: totalStars }, (_,index) => (
-        <Star 
-          key={index}
-          filled={index < rattingData?.userRatting} 
-          click={()=> handalindex(index + 1)}
-        />
-      ))}
-              </div>
-                <div className="text-center">
-                 <textarea value={rattingData?.comment} onChange={(e)=>setRattingData({...rattingData,comment:e.target.value})} className="bg-transparent border text-green-700 border-green-600 rounded p-2 h-40 w-full outline-none">
-                 
-                 </textarea>
-                  <button onClick={submithandler} className = "border-green-600 border px-8 py-2 rounded font-bold text-green-500 delay-150 ease-in-out transition  hover:text-white hover:bg-green-600 mt-3 text-xl uppercase">submit</button>
-                </div> 
-           </div>
-          )
-        }
+         
         {/*total ratings and review container*/}
         
         <div className="flex justify-between px-2">
          <div className="w-40 flex flex-col items-center">
-          <h1>{message}</h1>
+          <h1 className='text-sm font-bold uppercase' >{message}</h1>
           <div className="text-green-700">
           {Array.from({ length: totalStars }, (_, index) => (
         <Star 
           key={index}
           filled={index < resultretting} 
+          size='18px'
         />
       ))}
       </div>
-          <p className="px-1 text-slate-700 text-[17px] text-center">{totalratting} ratings and {allproductreview?.length} reviews</p>
+          <p className="px-1 text-slate-500 text-[14px] text-center">{totalratting} ratings and {allproductreview?.length} reviews</p>
          </div>
          <div className="w-44 flex flex-col gap-1">
           
-           <div className="flex text-[14px] justify-center gap-1 h-6  items-center">
-           <span>5</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className={`w-[${allratingbyusers.rating5 / allproductreview?.length * 100}%] rounded-full h-full bg-green-600`}></div> </div> <span> {allratingbyusers?.rating5}</span>
+        {
+         
+         Object.entries(allratingbyusers).map(([key,value])=>{ 
+         const reviewlentght = value / allproductreview?.length * 100  
+          return(
+             <div key={key} className="flex text-[12px] justify-center gap-1 h-3  items-center">
+           <span className="font-bold">{key}</span>  <IoStarSharp className="text-[10px]" />  <div className="h-1 rounded-full w-24  bg-slate-200"><div style={{width:allproductreview?.length == 0 ? 0 : reviewlentght}} className="rounded-full h-full bg-green-600" ></div> </div> <span className="font-bold"> {value}</span>
           </div>
-          
-           <div className="flex text-[14px] justify-center gap-1 h-6  items-center">
-           <span>4</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className={`w-[${allratingbyusers.rating4 / allproductreview?.length * 100}%] rounded-full h-full bg-green-600`}></div> </div> <span>{allratingbyusers?.rating4}</span>
-          </div>
-          
-           <div className="flex text-[14px] justify-center gap-1 h-6  items-center">
-           <span>3</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className={`w-[${allratingbyusers.rating3 / allproductreview?.length * 100}%] rounded-full h-full bg-green-600`}></div> </div> <span>{allratingbyusers?.rating3}</span>
-          </div>
-          
-           <div className="flex text-[14px] justify-center gap-1 h-6  items-center">
-           <span>2</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24  bg-slate-200"><div className={`w-[${allratingbyusers.rating2 / allproductreview?.length * 100}%] rounded-full h-full bg-green-600`}></div> </div> <span>{allratingbyusers?.rating2}</span>
-          </div>
-          
-           <div className="flex text-[14px] justify-center gap-1 h-6  items-center">
-           <span>1</span>  <IoStarSharp />  <div className="h-2 rounded-full w-24 bg-slate-200"><div className={`w-[${allratingbyusers.rating1 / allproductreview?.length * 100}%] rounded-full h-full bg-green-600`}></div> </div> <span>{allratingbyusers?.rating1}</span>
-          </div>
+          )
+         })
+        }
           
          </div>
         </div>
         
+        {/*review and ratting components of product */}
+        
+        <div  className="relative  mt-3  m-auto  ">
+             
+            <h1 className="font-[800] text-center text-slate-400">Rate The Product</h1>
+             <div className=" m-auto items-center text-green-700 max-w-[30%] flex justify-between text-center">
+               {Array.from({ length: totalStars }, (_,index) => (
+                <Star  
+                  key={index}
+                  filled={index < rattingData?.userRatting} 
+                  click={()=>{
+                     handalindex(index + 1)
+                     setOpenRateProduct(true)
+                  }}
+                  size="20px"
+                  />
+                  ))}
+              </div>
+          
+              {
+          openRateProduct && (
+             <div className="items-center flex relative mx-2">
+                 <textarea
+                 style={{overFlow:'scroll',scrollBarWidth:'none'}}
+                 value={rattingData?.comment}
+                 onChange={(e)=>setRattingData({...rattingData,comment:e.target.value})}
+                 className=" bg-transparent border text-green-700 border-green-600 rounded p-2 w-full outline-none">
+                 
+                 </textarea>
+                 <div className=" mx-1 rounded-full text-green-700 text-3xl" onClick={submithandler} ><IoIosSend /></div>
+                  
+                </div> 
+          )
+          }
+           </div>
+        
         {/*list of product comments*/}
-      <div className="mt-5 flex flex-col items-center">
-      
-         
+      <div className="mt-5  max-w-full min-w-full flex overflow-hidden flex-col items-center">
+       
        {
-         producereviewlodding ? 
-         <div className="flex-col flex gap-3">
-         {
-            [4,34,4,4,43].map(()=>{
+        producereviewlodding ? 
+        <div className="flex-col flex gap-3">
+        {
+            [4,34,4,4,43].map((item,index)=>{
         return(
-          <div className="w-[300px] animate-pulse p-2 bg-slate-100">
-          <div className="w-full h-6 bg-slate-300 mb-2"></div>
-          <div className="w-[230px] h-8 bg-slate-300"></div>
-         </div>
+          <div key={index} className="w-[300px] animate-pulse p-1 bg-slate-100">
+          <div className="w-full h-3 bg-slate-300 mb-2"></div>
+          <div className="w-[230px] h-3 bg-slate-300"></div>
+        </div>
         )
       })
          }
@@ -254,7 +262,7 @@ const allratingbyusers = {
          
          :
           
-          <div className="gap-4 m-2 flex flex-col">
+          <div className="gap-4  flex flex-col">
             {
               allproductreview.map((item,index)=>{
               
@@ -281,29 +289,29 @@ const allratingbyusers = {
                }
                 
                 return(
-                 <div key={index} className="group relative bg-slate-100 p-2  shadow rounded">
+                 <div key={index} className="group min-w-[340px] relative p-1  overflow-hidden border border-2 shadow rounded">
                  {
                    userDetails?.email == item.users?.email &&(
                    <>
-                    <div className="top-0 right-14 font-bold underline absolute text-green-700">You</div>
+                    <div className="top-0 right-16 text-[10px] font-bold underline absolute text-green-700">You</div>
                     
-                    <div onClick={()=>commentsDelete(item?._id)} className="absolute group-hover:block hidden rounded-full cursor-pointer p-1 text-xl border border-red-500 top-0 left-0 text-red-500"><MdDelete /></div>
+                    <div onClick={()=>commentsDelete(item?._id)} className="absolute cursor-pointer group-hover:block hidden rounded-full   hover:bg-red-500 hover:text-white p-1 text-sm border border-red-500 top-5 right-0 text-red-500"><MdDelete /></div>
                    </>
                    )
                  }
-                 <div className="absolute text-blue-500 right-4 top-0">
+                 <div className="absolute text-[10px] text-blue-500 right-1 top-0">
                   <p>{time}</p>
                  </div>
                  
-                  <div className="px-3 py-4 flex gap-2">
-                   <div className="w-12 h-12 bg-slate-200 rounded-full"><img className="w-full h-full rounded-full object-cover" src={item?.users?.profilePic?.img} />
+                  <div className="flex gap-2">
+                   <div className="w-8 h-8 bg-slate-200 rounded-full"><img className="w-full h-full rounded-full object-cover" src={item?.users?.profilePic?.img} />
                    </div>
                    <div>
-                    <h1 className="font-bold">{item?.users?.name}</h1>
-                    <p className="text-slate-500">{item?.users?.email}</p>
+                    <h1 className="font-bold text-[14px]">{item?.users?.name}</h1>
+                    <p className="text-slate-500 text-[12px]">{item?.users?.email}</p>
                    </div>
                   </div>
-                   <div className="text-green-700 text-center">
+                   <div className="text-green-700 ">
                      {Array.from({ length: totalStars }, (_, index) => (
                     <Star 
                      key={index}
@@ -312,9 +320,9 @@ const allratingbyusers = {
                       ))}
                      </div>
                      
-                     <div className="text-[14px]">
-                      <p>{item?.comment}</p>
-                     </div>
+                    <div className="p-1 m-auto w-[320px] text-[14px]">
+                     <p className="w-full text-ellipsis break-words overflow-hidden">{item?.comment}</p>
+                    </div>
                  </div>
                 )
               })

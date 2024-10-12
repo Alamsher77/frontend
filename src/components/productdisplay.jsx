@@ -12,6 +12,7 @@ import{ toast } from 'react-hot-toast';
 import { IoCloseSharp } from "react-icons/io5";
 import {useNavigate} from "react-router-dom";
 import DisplayCurrency from '../displayCurrancy'  
+import ZoomImage from './zoomimage'
 const ProductDisplay = (props)=>{
 const [viewProduct,setViewProduct] = useState({
   close:false,
@@ -39,7 +40,7 @@ const [viewProduct,setViewProduct] = useState({
      const data = await response.json()
      
      if(!data?.success){
-       console.log(data?.message) 
+       toast.error(data?.message) 
        SpeechMessage(data?.message)
       if(data.auth){
          navigate('/signup'); // Pushes 
@@ -54,7 +55,7 @@ const [viewProduct,setViewProduct] = useState({
      
      
    }catch(error){
-     console.log('cart error',error)
+     toast.error(error.message)
    }
  }
   
@@ -64,24 +65,28 @@ const [viewProduct,setViewProduct] = useState({
        <div className="flex w-full gap-1 max-w-full max-h-[300px] overflow-x-scroll" style={{scrollbarWidth:'none'}}>
           {props.image.map((image,indes)=>{
             return(
-            <div className='min-w-full h-[300px]'> 
-              <img className="duration-500 ease-in-out transition-transform hover:scale-110 w-[100%] h-full object-contain" src={image.img} />  
+            <div key={indes} className='min-w-full h-[300px]'> 
+              <img onClick={()=>{
+              setViewProduct({data:image.img,close:true})
+                setIsPopUp(true)
+              }} className="duration-500 ease-in-out transition-transform hover:scale-110 w-[100%] h-full object-contain" src={image.img} />  
             </div>
             )
           })}
        </div>
        
        {
-      // viewProduct.close &&(
-      //   <div className="fixed p-5 top-0 z-[2000] min-w-full min-h-[100vh] bg-slate-200">
-      //   <div onClick={()=>{
-      //     setViewProduct({...viewProduct,close:false})
-      //     setIsPopUp(false)
-      //   }} className='absolute right-2 top-2 text-red-600 shadow-red-400 text-3xl hover:bg-red-500 hover:text-white cursor-pointer rounded-full shadow border border-red-600'><IoCloseSharp /></div>
-         
+      viewProduct.close &&(
+        <div className="select-none fixed flex justify-center overflow-hidden items-center top-0 z-[2000] min-w-full min-h-[100%] bg-black">
+        <div onClick={()=>{
+          setViewProduct({...viewProduct,close:false})
+          setIsPopUp(false)
+        }} className='absolute right-2 top-2 text-red-600 shadow-red-400 text-3xl hover:bg-red-500 hover:text-white cursor-pointer rounded-full shadow border border-red-600'><IoCloseSharp /></div>
+       
+        <ZoomImage src={viewProduct.data}/>
         
-      // </div>
-      // )
+      </div>
+      )
          
        }
      
