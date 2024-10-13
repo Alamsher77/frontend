@@ -81,7 +81,7 @@ const [viewProduct,setViewProduct] = useState({
         <div onClick={()=>{
           setViewProduct({...viewProduct,close:false})
           setIsPopUp(false)
-        }} className='absolute right-2 top-2 text-red-600 shadow-red-400 text-3xl hover:bg-red-500 hover:text-white cursor-pointer rounded-full shadow border border-red-600'><IoCloseSharp /></div>
+        }} className='z-10 absolute right-2 top-2 text-red-600 shadow-red-400 text-3xl hover:bg-red-500 hover:text-white cursor-pointer rounded-full shadow border border-red-600'><IoCloseSharp /></div>
        
         <ZoomImage src={viewProduct.data}/>
         
