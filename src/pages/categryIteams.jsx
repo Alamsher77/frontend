@@ -2,8 +2,7 @@
  import {ContestContext} from '../api/ContestContext'
  import {useState,useEffect, useContext} from 'react'
  import ProductIteam from '../components/productIteam/productIteam'
-  import { DNA } from 'react-loader-spinner'
-  import NoContent from '../components/noContent'
+ import NoContent from '../components/noContent'
  const CategryIteams = ()=>{
     const navigate = useNavigate();
    const {categryId} = useParams()

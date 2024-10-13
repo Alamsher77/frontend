@@ -1,7 +1,5 @@
 import {useState,useEffect,useRef} from 'react'
 import{ toast } from 'react-hot-toast';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
  import DomainUrl from '../Configuration/Index'
  import { FaRegWindowClose } from "react-icons/fa";
  import DisplayCurrency from '../displayCurrancy'

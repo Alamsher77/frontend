@@ -1,7 +1,6 @@
  import {useState,useContext,useEffect} from "react"
  import DomainUrl from '../Configuration/Index'
  import CartIteam from "../components/cart.iteam"
- import { DNA } from 'react-loader-spinner'
  import{ toast } from 'react-hot-toast'; 
  import DisplayCurrency from '../displayCurrancy'
  import {useNavigate}  from 'react-router-dom'

@@ -1,6 +1,6 @@
 import React from 'react'
 import {RouterProvider} from 'react-router-dom'
-import ReactDOM from 'react-dom/client' 
+import ReactDOM from 'react-dom' 
 import router from './route/index.jsx'
 import './index.css' 
 import { ContestProvider } from './api/ContestContext';

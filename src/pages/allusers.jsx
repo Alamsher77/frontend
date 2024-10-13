@@ -1,7 +1,6 @@
 import {useState,useEffect,useContext} from 'react'
  import DomainUrl from '../Configuration/Index'
- import { DNA } from 'react-loader-spinner'
-  import { FaRegWindowClose } from "react-icons/fa";
+ import { FaRegWindowClose } from "react-icons/fa";
   import{ toast } from 'react-hot-toast';
  import { FaEdit } from "react-icons/fa";
  import {ContestContext} from '../api/ContestContext'
@@ -68,14 +67,7 @@ const AllUsers = ()=>{
     {
       lodding ? (
         <div className="flex justify-center " >
-           <DNA
-  visible={true}
-  height="80"
-  width="80"
-  ariaLabel="dna-loading"
-  wrapperStyle={{}}
-  wrapperClass="dna-wrapper"
-  />
+         lodding...
           </div>
         ):(
            

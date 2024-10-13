@@ -1,9 +1,5 @@
 import './displayProduct.css'
-import Zoom from 'react-medium-image-zoom';
-import ReactImageMagnify from 'react-image-magnify';
-import 'react-medium-image-zoom/dist/styles.css';
 import SpeechMessage from './speechMessage'
-import { FaBeer } from "@react-icons/all-files/fa/FaBeer";
 import {useState,useEffect, useContext} from 'react'
 import {ContestContext} from '../api/ContestContext'
 import { IoIosStarOutline } from "react-icons/io";
