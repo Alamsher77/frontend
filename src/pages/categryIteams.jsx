@@ -3,6 +3,7 @@
  import {useState,useEffect, useContext} from 'react'
  import ProductIteam from '../components/productIteam/productIteam'
  import NoContent from '../components/noContent'
+ import LoddingCardComponent from '../components/loddingCardComponent'
  const CategryIteams = ()=>{
     const navigate = useNavigate();
    const {categryId} = useParams()
@@ -10,21 +11,16 @@
    const result = allProduct.filter((e)=>{
     return e.categry === categryId
     })
-   
+ 
    return(
        <>
        {
-       allProduct.length == 0 && lodding ? (
+        lodding ? (
        
-        <div className="flex justify-center" >
-          <DNA
-  visible={true}
-  height="80"
-  width="80"
-  ariaLabel="dna-loading"
-  wrapperStyle={{}}
-  wrapperClass="dna-wrapper"
-  />
+        <div className="flex w-full flex-wrap justify-center" >
+          {
+            Array.from({length:6},(_,index)=>(<LoddingCardComponent key={index} />))
+          }
           </div>
   
   ):(

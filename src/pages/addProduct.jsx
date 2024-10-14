@@ -4,6 +4,8 @@ import {ContestContext} from '../api/ContestContext'
 import DomainUrl from '../Configuration/Index'
 import UploadImage from '../helpers/uploadsImage'
 import{ toast } from 'react-hot-toast';
+import { FaRegEdit } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 import UploadProductForm from '../components/uploadProductForm'
 import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
 import NoContent from '../components/noContent'
@@ -270,15 +272,20 @@ const AddProduct = ()=>{
              allProduct.length == 0 ? (
                <NoContent message='no products' />
                ):(
-                  <div className="showProduct">
-                {allProduct.map((iteam,index)=>{ 
+                  <div className="flex justify-center flex-wrap gap-1 min-h-40 w-full ">
+                {
+                
+                allProduct.map((iteam,index)=>{ 
                 return(
-                   <div className="productIteam" keys={index}>
-                    <div className="productDelete"onClick={()=>{productDelete(iteam?._id,iteam?.image)}}>✕</div>
-                    <img src={iteam?.image[0]?.img} alt="image" />
-                    <div className="productUpdata" onClick={()=>{productEdite(iteam?._id)}}>🖍</div>
-                   </div>
-                )})}
+                  <div className="group border shadow-md  relative min-w-[115px] max-w-[115px] max-h-[130px] min-h-[130px] bg-white" keys={index}>
+                   <div className="group-hover:block transitoin delay-150 ease-in-out hidden cursor-pointer p-1 border text-red-500 hover:bg-red-500 hover:text-white  bg-white border-red-600 absolute"onClick={()=>{productDelete(iteam?._id,iteam?.image)}}><MdDeleteForever /></div>
+                    <img className="object-contain h-full w-full" src={iteam?.image[0]?.img} alt="image" />
+                    <div className="group-hover:block hover:text-white hover:bg-green-600  cursor-pointer hidden top-0 border-green-600 border bg-white p-1 text-green-500 right-0 absolute" onClick={()=>{productEdite(iteam?._id)}}><FaRegEdit /></div>
+                 
+                  </div>
+                )})
+                  
+                }
                    </div>
                  ))} 
      </>

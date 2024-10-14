@@ -13,16 +13,15 @@ import ProductIteam from '../components/productIteam/productIteam'
 const Product = ()=>{
   // products display functionality
 
-  const {productId} = useParams()
-  const {allProduct,userDetails}= useContext(ContestContext)
+  const {productId} = useParams() 
+  const {allProduct,userDetails,lodding}= useContext(ContestContext)
     const result = allProduct.find((e)=>{
+      
     return e?._id === productId
     })
-    
- if(!result){
-   return false
- }
+  
  
+
 // reviews and reattings functionality
 
  const [rating, setRating] = useState(4);
@@ -153,7 +152,28 @@ const allratingbyusers = {
 
  const all = allratingbyusers.rating4 / allproductreview?.length * 100
  
-  return(
+ return(
+  // lodding components
+   
+   lodding || !result  ? 
+   <div className="w-full animate-pulse p-4">
+   <div className="h-4 mt-3 bg-slate-200"></div>
+   <div className="mt-3 h-40 bg-slate-200"></div>
+   <div className=" h-8 mt-3 bg-slate-200 w-20"></div>
+   <div className="h-4 mt-3 bg-slate-200"></div>
+   <div className="h-4 w-40 mt-3 bg-slate-400"></div>
+    <div className="h-4 mt-3 bg-slate-200"></div>
+   <div className="h-4 w-40 mt-3 bg-slate-400"></div>
+    <div className="h-4 mt-3 bg-slate-200"></div>
+   <div className="h-24 mt-3 bg-slate-200"></div>
+  <div className="w-[300px] mt-3 animate-pulse p-1 bg-slate-100">
+          <div className="w-full h-3 bg-slate-300 mb-2"></div>
+          <div className="w-[230px] h-3 bg-slate-300"></div>
+        </div>
+   </div>
+   
+   : 
+  // product iteams components
      <>
       <Bredcrumb name={result?.name} categry={result?.categry}/>
       
@@ -334,8 +354,7 @@ const allratingbyusers = {
       </div>
       
       </div>
-      
-     </>
-    )
+        </>    
+   )
 }
 export default Product
