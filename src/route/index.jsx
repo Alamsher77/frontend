@@ -14,6 +14,7 @@ import UserDetails from '../pages/userDetails'
 import MyOrder from '../pages/myOrder'
 import About from '../pages/about'
 import AddBanner from '../pages/addbanner'
+import Settings from '../pages/settings'
 import AllUsersOrderProduct from '../pages/allusersOrderProducts'
 const router = createBrowserRouter([
   { 
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
             {
               path:'addbanner',
               element:<AddBanner />
+            },
+            {
+              path:'settings',
+              element:<Settings />
             },
            ],
            

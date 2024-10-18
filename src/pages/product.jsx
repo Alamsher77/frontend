@@ -155,7 +155,7 @@ const allratingbyusers = {
  return(
   // lodding components
    
-   lodding || !result  ? 
+    !result  ? 
    <div className="w-full animate-pulse p-4">
    <div className="h-4 mt-3 bg-slate-200"></div>
    <div className="mt-3 h-40 bg-slate-200"></div>

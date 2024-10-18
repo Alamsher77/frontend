@@ -10,6 +10,7 @@ import {useState} from 'react'
           <NavLink className={({isActive})=>isActive ?'bg-green-500':''} to='addcategry'><li>addcategry</li></NavLink> 
           <NavLink className={({isActive})=>isActive ?'bg-green-500':''} to='AllUsersOrderProduct'><li>Orders</li></NavLink> 
           <NavLink className={({isActive})=>isActive ?'bg-green-500':''} to='addbanner'><li>addbanner</li></NavLink> 
+          <NavLink className={({isActive})=>isActive ?'bg-green-500':''} to='settings'><li>settings</li></NavLink> 
      </ul>
     </div>  
   )

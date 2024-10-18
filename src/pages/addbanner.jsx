@@ -53,12 +53,7 @@ const AddBanner = ()=>{
   // deletebanner
   const deletehandler = async (image,id)=>{
    try{
-     const imagedeleteresponse = await DeleteImageCloudnary(image,'deleteCloudnaryImage')
-     if(!imagedeleteresponse?.success){
-       toast.error(imagedeleteresponse.message)
-       return false
-     }
-     toast.success(imagedeleteresponse?.message)
+    
     const data = await DeleteImageCloudnary(id,'deletebanner')
     
     if(!data.success){

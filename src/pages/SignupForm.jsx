@@ -1,5 +1,5 @@
 // src/components/SignupForm.js
-import React, { useState,useContext} from 'react';
+import React, { useState,useEffect,useContext} from 'react';
 import {useNavigate} from "react-router-dom";
 import DomainUrl from '../Configuration/Index'
 import { FaRegUserCircle } from "react-icons/fa";
@@ -7,7 +7,7 @@ import{ toast } from 'react-hot-toast';
 import {ContestContext} from '../api/ContestContext'
  import SpeechMessage from '../components/speechMessage'
 const SignupForm = () => {
-    const {userFechApi,userDetails,setUserDetails} = useContext(ContestContext) 
+    const {userFechApi,lodding,userDetails,setUserDetails} = useContext(ContestContext) 
    const navigate = useNavigate();
   const [isLogin,setIsLogin] = useState(true)
   // sign up
@@ -90,11 +90,19 @@ const SignupForm = () => {
           navigate('/') 
           userFechApi() 
           SpeechMessage(data?.message) 
+  } 
+ 
+  if(lodding){
+   
+ }else{
+  if(userDetails){
+    navigate('/')
   }
- 
- 
+ }
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    
+   
+   <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
      
         {isLogin ? (

@@ -66,9 +66,13 @@ const AllUsers = ()=>{
    <>
     {
       lodding ? (
-        <div className="flex justify-center " >
-         lodding...
-          </div>
+        <div className="p-5 flex flex-col animate-pulse gap-3">
+         {
+         Array.from({length:8},(index)=>{
+        return  <div key={index} className="bg-slate-300 h-8 p-2" ></div>
+        })
+         }
+        </div>
         ):(
            
        <div className="select-none relative w-full flex flex-col  gap-1 mt-2">

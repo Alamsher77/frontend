@@ -78,7 +78,7 @@ const ZoomImage = ({ src }) => {
           transition: "transform 0.1s ease",
           width: "100%",
           height: "auto",
-          position: "absolute",
+          position: "absolute", 
         }}
       />
     </div>
