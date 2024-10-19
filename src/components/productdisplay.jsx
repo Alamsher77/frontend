@@ -16,6 +16,7 @@ const [viewProduct,setViewProduct] = useState({
   close:false,
   data:''
 })
+const [productviwindex,setproductviewindex] = useState(0)
   const navigate = useNavigate();
    const {setIsPopUp,coutCartFetchApi,cartProduct,addToCart}= useContext(ContestContext)
    const p = Number(props.oldPrice)
@@ -66,10 +67,28 @@ const [viewProduct,setViewProduct] = useState({
    })
  },[scroll])
  
- console.log(scroll)
    return(
-     <div className="relative " >
-       <div className="flex w-full gap-1 max-w-full max-h-[300px] overflow-x-scroll" style={{scrollbarWidth:'none'}}>
+     <div className="relative md:flex " >
+     { /*big screen container iamge */ }
+     
+     <div className="hidden border md:flex p-1 m-1 md:block max-h-[350px] min-w-[550px]">
+      <div style={{ scrollbarWidth: "none"}} className="w-[130px]  p-0.5 max-h-[350px]  overflow-scroll border border-slate-700">
+       {
+         props?.image?.map((item,index)=>{
+           return(
+             <div onClick={()=> setproductviewindex(index)}  key={index} className="h-[130px] mb-0.5  w-full bg-white">
+              <img className="w-full h-full object-cover" src={item?.img} />
+             </div>
+           )
+         })
+       }
+      </div>
+      <div className="h-[330px] w-[380px] m-auto" >
+       <img className="w-full object-contain h-full" src={props?.image[productviwindex]?.img} />
+      </div>
+     </div>
+      { /*big mobile screen container iamge */ }
+       <div className="md:hidden flex w-full gap-1 max-w-full max-h-[300px] overflow-x-scroll" style={{scrollbarWidth:'none'}}>
           {props.image.map((image,indes)=>{
             return(
             <div key={indes} className='min-w-full h-[300px]'> 
@@ -84,7 +103,7 @@ const [viewProduct,setViewProduct] = useState({
        
        {
       viewProduct.close &&(
-        <div className="select-none fixed flex justify-center overflow-hidden items-center top-0 z-[2000] min-w-full min-h-[100%] bg-black">
+        <div className="md:hidden select-none fixed flex justify-center overflow-hidden items-center top-0 z-[2000] min-w-full min-h-[100%] bg-black">
         <div onClick={()=>{
           setViewProduct({...viewProduct,close:false})
           setIsPopUp(false)
@@ -96,7 +115,7 @@ const [viewProduct,setViewProduct] = useState({
       )
          
        }
-     
+     <div className="md:flex border md:p-2   md:m-1 md:flex-col md:gap-5">
         <div className="product-info">
            <div className="ProductName">
        <p> <b className="text-slate-700">Product-Name : </b><span> {props.name} </span></p>
@@ -104,7 +123,7 @@ const [viewProduct,setViewProduct] = useState({
        
         <div className="">
         <p className="line-through text-gray-400">{DisplayCurrency(props.oldPrice)}</p>
-       <strong className="text-red-600">{DisplayCurrency(props.newPrice)}</strong> <span className="text-green-600">-{m}%</span>
+       <strong className="text-2xl text-red-600">{DisplayCurrency(props.newPrice)}</strong> <span className="text-green-600">-{m}%</span>
      
       </div>
  </div>
@@ -114,8 +133,19 @@ const [viewProduct,setViewProduct] = useState({
     <p>{props.productInfo}</p>
  </div>
  
+  <div className="md:block md:flex md:gap-3 hidden">
+    <button onClick={()=>{addToCartController(props.id)}} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
+      <FaCartPlus /> <span>cart</span>
+     </button>
+     
+     <button className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-green-500 border-green-500 flex tracking-widest font-bold uppercase bg-green-500 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
+      <TbPlayerTrackNextFilled className="text-2xl" /> <span>Buy</span>
+     </button>
+  </div>
+ </div>
+ 
  { /* button for addtocard and bay*/ }
-     <div className={`fixed ${scroll < 200 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>
+     <div className={`md:hidden fixed ${scroll < 200 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>
      
      <button onClick={()=>{addToCartController(props.id)}} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
       <FaCartPlus /> <span>cart</span>

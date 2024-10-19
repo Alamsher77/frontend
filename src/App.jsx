@@ -13,7 +13,7 @@ function App() {
   const title = document.querySelector('title')
   link.type = 'image/png'
   link.href = appnameicon?.icon?.img
-  title.innerText = appnameicon?.name
+  title.innerText = appnameicon?.name || 'Easy Shope'
  
   return (
     <>

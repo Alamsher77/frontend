@@ -1,6 +1,6 @@
  
 const DisplayCurrency = (amount) => { 
- return `${'\u20B9'}${amount}.00`
+ return <span> <span className="text-[18px]">{'\u20B9'}</span>{amount}.00</span>
 };
 
 export default DisplayCurrency;

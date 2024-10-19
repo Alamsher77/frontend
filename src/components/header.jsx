@@ -57,33 +57,44 @@ export const Headers = ()=> {
    } 
    
    
+     
 
   return(
-    <> 
-    
-   
+    <>  
     <div className={`header ${toggleMenu}`}> 
-   <div className='navebars-background' onClick={menuhandler}></div>
+      <div className='navebars-background' onClick={menuhandler}></div>
       
-     <div className="menu" onClick={menuhandler}>
-      <div className="menu-iteam"></div>
-      <div className="menu-iteam"></div>
-      <div className="menu-iteam"></div>
-      </div>
-      
+      <div className="menu md:hidden" onClick={menuhandler}>
+       <div className="menu-iteam"></div>
+       <div className="menu-iteam"></div>
+       <div className="menu-iteam"></div>
+       </div>
+       
        <NavLink  className="w-32 overflow-hidden bg-slate-200 ml-14 rounded" to="/" onClick={()=> 
-    document.body.removeAttribute('class','close')}>
-    <img className="mix-blend-multiply "  src={logo} />
-    </NavLink>  
-       
-       
-       <div className="sidbar-container">  
-       <div className="close-sid-width " onClick={menuhandler}></div>
-  
-        <div className="user-info">
+       document.body.removeAttribute('class','close')}>
+       <img className="mix-blend-multiply "  src={logo} />
+      </NavLink>  
+      
+        {
+      userDetails && (
+      <NavLink to='cart' className="text-3xl relative -left-1 flex justify-center items-center w-8 h-8" >
+        <sapn className="text-white absolute" > <MdShoppingCart/>  </sapn>
+      <div className="bg-red-600 -top-1 left-2 absolute rounded-full text-white w-5 h-5 p-1 flex items-center justify-center">
+        <p className="text-sm">{coutCartData}</p>
+      </div>
+      </NavLink>
+      )
+    }
+      
+      </div> 
+      <div className="sidbar-container">  
+      <div className="close-sid-width " onClick={menuhandler}></div>
+        
+        {/*navigation*/}
+          <div className="user-info">
         {
           userDetails ? (
-           <>
+          <>
             <div className="cursor-pointer user-image bg-slate-200"   onClick={usersTogglePopup}>{userDetails?.profilePic ? (
               <img src={userDetails?.profilePic?.img} alt="image" />):(
                 <h1 className="font-bold text-4xl text-slate-500">{userDetails?.name.charAt(0)}</h1>
@@ -93,46 +104,37 @@ export const Headers = ()=> {
                 
                 <p> <b>{userDetails?.name}</b> <br /><span>{userDetails?.email}</span></p>
             </div>
-           </>
+          </>
           ):(
-           <NavLink to="signup" className="border  px-3 py-1 text-slate-500 rounded" onClick={menuhandler} >Login now</NavLink>  
+          <NavLink to="signup" className="border  px-3 py-1 text-slate-500 rounded" onClick={menuhandler} >Login now</NavLink>  
            
           )
         } 
         </div>
-         
-         {/*navigation*/}
-         <div className="bg-slate-200 w-full px-3 py-2 flex gap-1 flex-col">
+   
+   
+  <div className="bg-slate-200 w-full px-3 py-2 flex gap-1 flex-col">
            
-           <NavLink onClick={menuhandler} className={({isActive})=> isActive ? 'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-800  flex flex-col items-center py-2':'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-500 flex flex-col items-center py-2'} to="/myOrderProducts"  >My Orders</NavLink> 
+          <NavLink onClick={menuhandler} className={({isActive})=> isActive ? 'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-800  flex flex-col items-center py-2':'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-500 flex flex-col items-center py-2'} to="/myOrderProducts"  >My Orders</NavLink> 
             
-           <NavLink onClick={menuhandler} className={({isActive})=> isActive ? 'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-800 flex flex-col items-center py-2':'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-500 flex flex-col items-center py-2'} to="about"  >Contact</NavLink> 
-         </div>
+          <NavLink onClick={menuhandler} className={({isActive})=> isActive ? 'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-800 flex flex-col items-center py-2':'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-500 flex flex-col items-center py-2'} to="about"  >Contact</NavLink> 
+        </div>
          
         {
-       //userinfo popup iteams
-         usersPopupIteams && (
+      //userinfo popup iteams
+        usersPopupIteams && (
         <div className="absolute flex flex-col gap-1 justify-center items-center  p-2 top-20 left-2 bg-white shadow-indigo-500/50 ">
-         <div className="border border-yellow-600 px-3 py-1 text-yellow-500 rounded"><NavLink to="adminPanel/addproduct" onClick={usersTogglePopup,menuhandler } >Admin Panel</NavLink></div>
+        <div className="border border-yellow-600 px-3 py-1 text-yellow-500 rounded"><NavLink to="adminPanel/addproduct" onClick={usersTogglePopup,menuhandler } >Admin Panel</NavLink></div>
           <div className="border border-yellow-600 px-3 py-1 text-yellow-500 rounded"><NavLink to="UserDetails" onClick={usersTogglePopup,menuhandler } >Profile</NavLink></div>
-         <div className="border border-red-600 text-red-500 hover:text-red-600 hover:bg-red-200  px-3 rounded"> <button  onClick={logoutHandler} >Log Out</button></div>
+        <div className="border border-red-600 text-red-500 hover:text-red-600 hover:bg-red-200  px-3 rounded"> <button  onClick={logoutHandler} >Log Out</button></div>
         </div>
-       )
+      )
         }
          
         </div> 
-    {
-      userDetails && (
-       <NavLink to='cart' className="text-3xl relative -left-1 flex justify-center items-center w-8 h-8" >
-        <sapn className="text-white absolute" > <MdShoppingCart/>  </sapn>
-      <div className="bg-red-600 -top-1 left-2 absolute rounded-full text-white w-5 h-5 p-1 flex items-center justify-center">
-        <p className="text-sm">{coutCartData}</p>
-      </div>
-      </NavLink>
-      )
-    }
-      
-    </div> 
+        
+         
+    
     < />
   )
 }

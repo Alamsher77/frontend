@@ -179,7 +179,7 @@ const allratingbyusers = {
       
       <ProductDisplay id={result?._id} name={result?.name} image={result?.image} newPrice={result?.newPrice} oldPrice={result?.oldPrice} productInfo={result?.productInfo} />
   
-      <div className="mt-3 border py-6 select-none">
+      <div className="mt-3  border md:max-w-[450px] py-6 select-none">
       
       {/*ratings and reviews buttons*/}
       

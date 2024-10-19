@@ -26,78 +26,8 @@ body{
   position: fixed;
   z-index: 1000;
 }
-.header .navContainer{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;  
-}
-.header .navContainer .users{
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center; 
-  border: 1px solid gray;
-  width: 45px;
-  height: 45px;
-  overflow: hidden;
-  border-radius: 50%;
-  user-select: none;
-  cursor: pointer;
-  font-size: 25px;
-}
  
-.header .menu{
-  display: none;
-  visibility: hidden;
-}
-.header .brand a{
-  color: white;
-  text-decoration: none;
-  padding: 0 0 0 10px;
-  font-family: Courier New ;
-  font-size: 25px;
-}
-.header  .navebars a{
-text-decoration: none;
-padding: 10px 15px; 
-color: white;
-font-size: 12px;
-text-transform: uppercase;
-transition: all ease-out .5s;
-}
-.header .navebars a:hover{
-  color: white;
-  background: green;
-  transition: all ease-out .5s;
-}
-.header  .cartiteam{
-display: flex;
-justify-content:center;
-align-items: center;
-  width: 35px;
-  height: 35px;   
-  padding: 2px;
-  margin: 0 10px 0 5px; 
-  position: relative;
-  cursor: pointer;
-  user-select: none;
-}
-.header  .cartiteam .carts{
-   font-size: 30px;
-   color: lightgreen;
-}
-.header  .cartiteam .cartnum{
-  position: absolute; 
-  color: white; 
-  background: red; 
-  font-weight: 900; 
-  padding: 0 5px;
-  font-size: 12px;
-  border-radius: 50% ;
-  top: -2px;
-  right: -5px;
-}
+ /* addmin panner sidbar */
 .sidebar{ 
  padding: 0 20px;
  background: rgba(0, 0, 0, 0.9);
@@ -130,41 +60,8 @@ align-items: center;
 .sidebar ul li:hover a{
   color: white;
 }
-.main{
-display: flex;   
-flex-direction: column;  
-}
-.route{
- border-top: 1px solid black; 
-}
-.route h4{
-  text-align: center;
-  color: gray;
-}
-.route .container{
-  margin-top: 10px; 
-  width: 100%;
-  padding: 5px 10px;
-  display: flex;
-  gap: 5px; 
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.route .container .iteam{
-  width: 157px ;
-  height: 100px;
-  color: black;
-  font-size: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.route .container .iteam .total{
-  font-size: 20px;
-color: green;
-}
+ 
+/* admin panner ka design hai */
 .addProduct{
   display: flex;
   justify-content: space-between; 
@@ -200,9 +97,7 @@ color: green;
   padding: 10px;
   margin: auto;
 }
-.AddProductForm.hide{
-  display: none;
-}
+ 
 .AddProductForm .closeForm{
   color: white;
   position: absolute; 
@@ -311,68 +206,8 @@ color: green;
   background: green;
   color: white;
 }
-
-.showProduct{ 
-  width: 100%; 
- display: grid;
-  grid-template-columns:repeat(7,1fr);
-  gap: 5px; 
-margin-top: 30px;
-}
-.showProduct .productIteam{
-/* width:70px; */
-height: 130px;
-  position: relative;
-  box-shadow: 0 5px 5px gray;
-  transition: all ease-out .2s;
-}
-.showProduct .productIteam:hover{
-  scale: 1.04;
-}
-.showProduct .productIteam img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.showProduct .productIteam .productUpdata{
-  position: absolute;
-  bottom:0;
-  right: 0;
-  width: 20px;
-  height: 20px;
-  background: white;
-  font-size: 13px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: all .5s ease;
-  cursor: pointer;
-  visibility: hidden;
-}
-
-.showProduct .productIteam .productDelete{
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 15px;
-  padding: 0 4px 1px 4px;
-  background: red;
-  color: white;
-  cursor: pointer;
-  opacity: 0;
-  transition: .5s;
-  visibility: hidden;
  
-}
-.showProduct .productIteam:hover .productUpdata{
-  opacity: 1;
-  visibility: visible;
-}
-.showProduct .productIteam:hover .productDelete{
-  opacity: 1;
-  visibility: visible;
-}
+ /* addmin panner ka add categry form hia */
 .addCategry{
   height: 40px; 
   display: flex;
@@ -431,7 +266,7 @@ height: 130px;
   margin-top: 5px;
   padding: 5px 10px;
   background: rgba(56,67,867,.3);
-
+  color: white;
   text-transform: uppercase;
   font-weight: 600;
   transition: all ease-in-out .5s;
@@ -479,6 +314,7 @@ height: 130px;
   gap: 5px;
   box-shadow: 0 10px 20px  rgba(0 ,0,0,0.3);
 }
+/* cart page ka checkout product hai */
 .cart-checkout h1{
   padding: 10px;
   text-transform: uppercase;
@@ -489,21 +325,9 @@ height: 130px;
    color: white;
    padding: 3px 15px;
 }
-@media (max-width:700px){
-body{
-  display: block;
-}
-.navebars{
- display: none; 
-position: absolute;
-width: 10px;
-height: 10px;  
-  overflow: hidden;
-  transition: all ease-out .5s;
-}
-.showProduct{
-   grid-template-columns: repeat(4,1fr);
-}
+ 
+  
+ 
   .header .menu{
     position: absolute;
     width: 30px;
@@ -522,10 +346,8 @@ height: 10px;
      border-radius: 70px;
      transition: all
      ease-out .5s;
-   }
-  .header .brand a {
-  margin-left: 40px;
-   }
+   } 
+
    .header .menu .menu-iteam:nth-child(2){
      /* width: 60%; */
      position: relative;
@@ -535,15 +357,14 @@ height: 10px;
      /* width: 60%; */
      display: none;
    }
-    .header.close .menu .menu-iteam:nth-child(1){
-     /* width: 60%; */
+    .header.close .menu .menu-iteam:nth-child(1){ 
      transform: rotate(-45deg) translatex(-3px);
    }
    .header.close .menu .menu-iteam:nth-child(3){
      /* width: 60%; */
      transform: rotate(45deg) translatex(-3px);
    }
-    .header .navebars-background{
+   .header .navebars-background{
       display: none;
     }
  .header.close .navebars-background{
@@ -553,35 +374,34 @@ height: 10px;
   left: 0;
   top: 0;
   position: fixed; 
-  background: rgba(0,0,0,.4);
+  background: rgba(0,0,0,.3);
   z-index: 999;
   overscroll-behavior-block: none; 
  }
  body.close{
     overflow: hidden;
   }
- .header.close  .navebars {
-   display: flex;
-  flex-direction: column; 
-  position: absolute;
-  width: auto;
-  height: auto; 
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,50%); 
-  box-shadow: 0 0 20px white ; 
-  background: white;   
-  z-index: 1000;
-  transition: all ease-out .6s ;
+/*  .header.close  .navebars {
+  display: flex;
+ flex-direction: column; 
+ position: absolute;
+ width: auto;
+ height: auto; 
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%,50%); 
+ box-shadow: 0 0 20px white ; 
+ background: white;   
+ z-index: 1000;
+ transition: all ease-out .6s ;
+} */
+/*  .header.close  .navebars a{
+  color: black;
+  padding: 10px 100px;
 }
- .header.close  .navebars a{
-   color: black;
-   padding: 10px 100px;
- }
 .header.close .navebars a:hover{
-  color: white;
-  background: green;
-  transition: all ease-out .5s;
+ color: white;
+ background: green;
+ transition: all ease-out .5s;
 }
-  
-}
+  */

@@ -65,12 +65,12 @@ const [touches,settouches] = useState({
  
   return(
    <>
-   <div className="select-none ring-pink-300 ring-4 relative flex justify-center items-center h-[170px] m-auto  max-w-[340px]">
+   <div className="select-none md:my-5 ring-pink-300 ring-4 relative flex justify-center items-center h-[170px] m-auto md:h-[480px] md:min-w-[950px]  max-w-[340px]">
    
    <div onClick={leftarrowhandler} className="cursor-pointer absolute left-1 flex justify-center items-center text-3xl z-50 top-[40%] border border-slate-300 text-slate-300 w-8 h-8"><IoIosArrowBack /></div>
    <div onClick={rigtharrowhandler} className="cursor-pointer absolute right-1 flex justify-center items-center text-3xl z-50 top-[40%] border border-slate-300 text-slate-300 w-8 h-8"><IoIosArrowForward /></div>
  
-     <img  onTouchStart={touchstart} onTouchEnd={touchend} src={allbanners[imageindex].bannerimage.img} className="h-full w-full object-contain"/>
+     <img  onTouchStart={touchstart} onTouchEnd={touchend} src={allbanners[imageindex].bannerimage.img} className="h-full w-full "/>
    </div>
    </>
     )
