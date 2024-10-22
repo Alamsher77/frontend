@@ -50,7 +50,7 @@ export const Headers = ()=> {
     usersTogglePopup()
     menuhandler() 
     setUserDetails(null)
-   navigate("/signup") 
+   navigate("/login") 
   }catch(error){
     console.log(error.message)
   }
@@ -106,7 +106,7 @@ export const Headers = ()=> {
             </div>
           </>
           ):(
-          <NavLink to="signup" className="border  px-3 py-1 text-slate-500 rounded" onClick={menuhandler} >Login now</NavLink>  
+          <NavLink to="login" className="border  px-3 py-1 text-slate-500 rounded" onClick={menuhandler} >Login now</NavLink>  
            
           )
         } 

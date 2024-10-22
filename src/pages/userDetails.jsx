@@ -55,7 +55,8 @@ const imageHandler = async()=>{
   try{ 
      const file = event.target.files[0];  
     
- const resposedeleteimage = await  DeleteImageCloudnary(userDetails?.profilePic || "dbeb3x4dh",'deleteCloudnaryImage') 
+ const resposedeleteimage = await  DeleteImageCloudnary(userDetails?.profilePic || {public_id:'ashdfhasd'},'deleteCloudnaryImage') 
+ 
  if(!resposedeleteimage.success){
     console.log(resposedeleteimage.message) 
     SpeechMessage(resposedeleteimage?.message)
@@ -101,7 +102,7 @@ const submitHandler = async()=>{
     console.log(error?.message)
     SpeechMessage(error?.message)
   }
- } 
+ }  
   return(
      <div className="select-none w-full flex flex-col items-center bg-white p-4">
       <h1 className="shadow shadow-gray-600 rounded-full px-10 py-1 mb-2 font-bold uppercase text-gray-500 bg-pink-100">Your Profile</h1>

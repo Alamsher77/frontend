@@ -52,7 +52,7 @@ const checkOutHandler = async(e)=>{
       return false
     } 
     
-    if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.profilePic || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
+    if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
       console.log('please add addres all fileds')
         SpeechMessage("please add addres all fileds")
       navigate('/userDetails')

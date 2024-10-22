@@ -5,7 +5,8 @@ import AdminPanel from '../pages/adminPanel'
 import AddProduct from '../pages/addProduct'
 import AllUsers from '../pages/allusers'
 import NoPage from '../pages/noPages'
-import SignupForm from '../pages/SignupForm'
+import Resistration from '../pages/resistration'
+import Login from '../pages/login'
 import AddCategry from '../pages/addCategry'
 import Product from '../pages/product'
 import Cart from '../pages/cart'
@@ -15,6 +16,7 @@ import MyOrder from '../pages/myOrder'
 import About from '../pages/about'
 import AddBanner from '../pages/addbanner'
 import Settings from '../pages/settings'
+import ForgetePassword from '../pages/forgetePassword'
 import AllUsersOrderProduct from '../pages/allusersOrderProducts'
 const router = createBrowserRouter([
   { 
@@ -41,8 +43,16 @@ const router = createBrowserRouter([
        },
       {
     path:"signup",
-    element:<SignupForm/>,
+    element:<Resistration/>,
     },
+      {
+        path:'login',
+        element:<Login />
+      },
+      {
+        path:"forgetePassword",
+        element:<ForgetePassword />
+      },
       {
         path:'product',
         element:<Product/>,
