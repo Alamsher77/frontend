@@ -20,7 +20,15 @@ const Product = ()=>{
     return e?._id === productId
     })
   
+  const similarproduct = allProduct?.filter((e)=>{
+    // console.log(e.similarName)
+    if(e?.similarName){
+        return e?.similarName === result?.similarName
+    }
+  
+  })
  
+console.log(similarproduct)
 
 // reviews and reattings functionality
 
@@ -177,7 +185,7 @@ const allratingbyusers = {
      <>
       <Bredcrumb name={result?.name} categry={result?.categry}/>
       
-      <ProductDisplay id={result?._id} name={result?.name} image={result?.image} newPrice={result?.newPrice} oldPrice={result?.oldPrice} productInfo={result?.productInfo} />
+      <ProductDisplay similarproduct={similarproduct} result={result}/>
   
       <div className="mt-3  border md:max-w-[450px] py-6 select-none">
       

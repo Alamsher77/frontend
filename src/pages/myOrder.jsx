@@ -138,7 +138,7 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
           <div className="flex flex-col gap-1">
              {
                item?.productDetails.map((product,index)=>{
-                
+              
                  return(
                     <div key={index} className="flex items-center justify-between p-1 bg-slate-100"> 
                     
@@ -149,7 +149,8 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
                       <div className="p-2 w-56 bg-white">
                        <p className="text-nowrap text-ellipsis overflow-hidden  text-[10px] text-slate-800"><span className="font-bold">Name : </span>{product?.productId?.name}</p>
                        <p className="text-[10px] text-slate-800"><span className="font-bold">Price : </span>{product?.productId?.newPrice}</p>
-                       <p className="text-[10px] text-slate-800"><span className="font-bold">Quantity : </span>{product?.quantity}</p>
+                        <p className="text-[10px] text-slate-800"><span className="font-bold">Quantity : </span>{product?.quantity}</p>
+                        <p className="text-[10px] text-slate-800"><span className="font-bold">Size : </span>{product?.size}</p>
                       </div>
                     </div>
                  )

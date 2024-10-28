@@ -1,37 +1,52 @@
 import { MdDelete } from "react-icons/md";
 import{ toast } from 'react-hot-toast'; 
+import {useState} from 'react'
 import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
 import SpeechMessage from './speechMessage'
-const UploadProductForm = (props)=>{ 
-  const productValue = props.productValue
-  const products = props.products
+import LoddingButton from './loddingbutton'
+const UploadProductForm = ({submitproductlodding,setFormBox,updateForm,categProduct,products,submitHandler,image,setProducts,productValue,fetchApi,formHeader,imageHandler})=>{ 
+  
   const removeImage = async(e,img)=>{
     try{ 
        const resposedeleteimage = await  DeleteImageCloudnary(img || "dbeb3x4dh",'deleteCloudnaryImage')
         if(!resposedeleteimage?.success){
-          console.log(resposedeleteimage?.message)
-          SpeechMessage(resposedeleteimage?.message)
+          toast.error(resposedeleteimage?.message) 
           return false
         } 
-        toast.success(resposedeleteimage?.message)
-        SpeechMessage(resposedeleteimage?.message)  
+        toast.success(resposedeleteimage?.message) 
        products.image.splice(e,1) 
-     localStorage.setItem('products',JSON.stringify({...products})) 
-  props.setProducts({...products})
-  toast.success('update')
+       localStorage.setItem('products',JSON.stringify({...products})) 
+        setProducts({...products})
+       toast.success('update')
     }catch(error){
-      console.log(error?.message)
-      SpeechMessage(error?.message)
+      toast.error(error?.message) 
     }
+  }
+  const [showsizebutton,setshowsizebutton] = useState(false)
+  const [productsize,setprosize] = useState('')
+  console.log(products)
+  const productsizehandlar = ()=>{
+     try {
+       
+          setProducts((prev)=>({...prev,size:[...prev.size,productsize]}))
+           localStorage.setItem('products',JSON.stringify({...products})) 
+           setprosize('')
+           
+           setshowsizebutton(false)
+     } catch (e) {
+       toast.error(e.message)
+     }
+        
   }
   return(
     
      <div className='AddProductForm'>
         <div className='closeForm' onClick={()=> { 
-        props.updateForm.setUpdateForm(false)
-        props.setFormBox(false)  }}>✕</div>
-        <h3>{props.formHeader ? "UpdateProduct" :"AddProduct"}</h3>
-        <form onSubmit={props.submitHandler}>
+         updateForm(false)
+         setFormBox(false)  }}>✕</div>
+        <h3>{ formHeader ? "UpdateProduct" :"AddProduct"}</h3>
+        <form onSubmit={ submitHandler}>
+         
          <div className="inputfields">
           <label>Product Name</label>
           <input type="text" value={products.name} onChange={productValue} name='name' placeholder="ProductName"/>
@@ -44,24 +59,82 @@ const UploadProductForm = (props)=>{
           <label>NewPrice</label>
           <input type="number"  value={products.newPrice} onChange={productValue} name='newPrice' placeholder="NewPrice"/>
          </div>
+         
          <div className="inputfields">
-         <select value={products.categry} onChange={productValue} name="categry">
-          <option>...Select Categry...</option>
-           
+          <label>Similar Name</label>
+          <input type="text" value={products.similarName} onChange={productValue} name='similarName' placeholder="similarname"/>
+         </div>
+         
+         
+         
+           <div className="inputfields">
+         <label>product sizale</label>
+         <select value={products.sizable} onChange={productValue} name="sizable">
+           <option>select product sizable</option>
+           <option value="false">false</option>
+           <option value="true">true</option>
+         </select>
+         </div>
+         
+         {
+           products.sizable &&(
+              <div className="inputfields">
+          <label>Add size</label>
+          <input type="text" onFocus={()=>setshowsizebutton(true)} value={productsize} onChange={(e)=>setprosize(e.target.value)} name='size' placeholder="add size"/>
+          
           {
-            props.categProduct.map((iteam,index)=>{
+            showsizebutton && (
+             <div className="p-1 text-center w-20 text-white rounded mt-1 bg-green-500">
+           <span onClick={productsizehandlar}>add size</span>
+          </div>
+            )
+          }
+         </div>
+           )
+            
+         }
+         {
+           !products?.size ? null:
+           <div className="flex gap-2 ">
+           {
+           products?.size?.map((iteam,index)=>{
+             return <div className="border font-bold text-white px-4 py-2 bg-red-500" onClick={()=>{
+               products.size.splice(index,1)
+              setProducts({...products})
+             }} key={index}>{iteam}</div>
+           })
+           }
+           </div>
+         }
+           <div className="inputfields">
+         <label>Stock</label>
+         <select value={products.stock} onChange={productValue} name="stock">
+           <option>select stock</option>
+           <option value="available">available</option>
+           <option value="notavailable">notavailable</option>
+         </select>
+         </div>
+         
+         <div className="inputfields">
+         <label>Categry</label>
+         <select value={products.categry} onChange={productValue} name="categry">
+         <option>select a categy</option>
+           {
+             categProduct.map((iteam,index)=>{
               return <option key={index} value={iteam.categry}>{iteam.categry}</option>
                      
             })
           }
          </select>
          </div>
+        
+        
           <div className="flex flex-col items-center gap-2">
            <div className="w-28">
             <label htmlFor="file-name">
-            <img src={props.image} className="w-full border"  alt="imag"/>
+            <img src={ image} className="w-full border"  alt="imag"/>
            </label>
-           <input type="file" onChange={props.imageHandler}  id="file-name" hidden />  
+           <input type="file" onChange={ imageHandler}  id="file-name" hidden />  
            </div>
            <div  className='flex flex-1  '>
             {
@@ -91,7 +164,7 @@ const UploadProductForm = (props)=>{
           <textarea type="text"  value={products.productInfo} onChange={productValue} name='productInfo' placeholder="type heare...." />
          </div>
          <div className="button" >
-         <button type="submit">submit</button>
+         <button type="submit">{submitproductlodding ? <LoddingButton />: formHeader ? 'update' : 'add'}</button>
          </div>
         </form>
       </div>

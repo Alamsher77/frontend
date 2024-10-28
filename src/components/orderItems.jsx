@@ -129,6 +129,7 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
                        <p className="text-nowrap text-ellipsis overflow-hidden  text-[10px] text-slate-800"><span className="font-bold">Name : </span>{product?.productId?.name}</p>
                        <p className="text-[10px] text-slate-800"><span className="font-bold">Price : </span>{product?.productId?.newPrice}</p>
                        <p className="text-[10px] text-slate-800"><span className="font-bold">Quantity : </span>{product?.quantity}</p>
+                        <p className="text-[10px] text-slate-800"><span className="font-bold">Size : </span>{product?.size}</p>
                       </div>
                     </div>
                  )

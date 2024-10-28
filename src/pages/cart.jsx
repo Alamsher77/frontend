@@ -44,26 +44,27 @@ const cartProductViewFetch = async ()=>{
     
 const checkOutHandler = async(e)=>{
   try{
-    SpeechMessage("Are You Sure ? You want to order this Product")
+   
+   toast('Are You Sure ? You want to order this Product',{
+     icon:"⚠️"
+   }) 
     const grant = confirm('Are You Sure ? You want to order this Product')
   
-    if(!grant){
-        SpeechMessage("You are cancel this process")
-      return false
-    } 
+    if(!grant) return false
     
     if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
-      console.log('please add addres all fileds')
-        SpeechMessage("please add addres all fileds")
+ 
       navigate('/userDetails')
       return false
     } 
-   if(TotalPrice <= 200){
-     console.log('You Can Buy MoreThan 200 ruppese')
+    
+   if(TotalPrice < 200){
+      toast.info('You Can Buy MoreThan 200 ruppese')
      SpeechMessage('You Can Buy MoreThan 200 roopeese')
      return false
    }
-    const response = await fetch(`${DomainUrl.url}cheqoutAndPayment`,{
+    
+  const response = await fetch(`${DomainUrl.url}cheqoutAndPayment`,{
       method: 'POST',
        credentials:'include',
         headers: {
@@ -75,21 +76,19 @@ const checkOutHandler = async(e)=>{
   
   const data = await response.json()
    if(!data.success){
-    console.log(data?.message)
-    SpeechMessage(data?.message)
+    toast.error(data?.message) 
     return false
    }
-   toast.success(data?.message)
-   SpeechMessage(data?.message)
+   toast.success(data?.message) 
    navigate('/myOrderProducts')
    coutCartFetchApi()
    cartProductViewFetch()
    
   }catch(error){
-    console.log(error?.message)
-    SpeechMessage(error?.message)
+    toast.error(error?.message) 
   }
 }
+console.log(cartProductView)
  
   return (
    <>

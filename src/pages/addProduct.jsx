@@ -10,24 +10,30 @@ import UploadProductForm from '../components/uploadProductForm'
 import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
 import NoContent from '../components/noContent'
 import LoddingCardComponent from '../components/loddingCardComponent'
- import SpeechMessage from '../components/speechMessage'
+import SpeechMessage from '../components/speechMessage' 
 const AddProduct = ()=>{
 
   const [formBox,setFormBox] = useState(false)
   const [formHeader,setFormHeader] = useState(false)
   const [updateForm,setUpdateForm] = useState(false)
   const [productId,setProductId] = useState('')
-  const [products,setProducts] = useState({
-    name:'',
-    oldPrice:'',
-    newPrice:'',
-    image:[],
-    categry:'',
-    productInfo:'',
+  const [products,setProducts] = useState({ 
+      categry:'',
+      name:'',
+      productInfo:'',
+      oldPrice:'',
+      newPrice:'',
+      similarName:'',
+      image:[],
+      size:[],
+      sizable:'',
+      stock:'',
   })
   const [image,setImage] = useState('')
+  const [addproductlodding,setaddproductlodding] = useState(false)
+  const [updateproductlodding,setupdateproductlodding] = useState(false)
   const {allProduct,fetchApi,lodding,allProductsCategry}= useContext(ContestContext)
- 
+  
   const imageHandler = async(e)=>{
  try{
       const uploadsimage = e.target.files[0] 
@@ -43,78 +49,67 @@ const AddProduct = ()=>{
   SpeechMessage("image uploded")
  
  }catch(error){
-   console.log(error?.message)
-   SpeechMessage(error?.message)
+   toast.error(error?.message) 
  }
     
-  }
-  
+  } 
   
   const productValue = async(e)=>{
-    setProducts({...products,[e.target.name]:e.target.value})
+    setProducts({...products,[e.target.name]:e.target.value}) 
     try{
     await  localStorage.setItem('products',JSON.stringify({...products})) 
     }catch(error){
-      console.log(error?.message)
-      SpeechMessage(error?.message)
+      toast.error(error?.message) 
     }
   
      
   }
+  
   useEffect(()=>{
       const getproduct = JSON.parse(localStorage.getItem('products')) 
+       
       if(getproduct){
         setProducts({
-     name:getproduct?.name,
-    oldPrice:getproduct?.oldPrice,
-    newPrice:getproduct?.newPrice,
-    image:getproduct?.image,
-    categry:getproduct?.categry,
-    productInfo:getproduct?.productInfo,
-     }) 
+        categry:getproduct?.categry,
+        name:getproduct?.name,
+        oldPrice:getproduct?.oldPrice,
+        newPrice:getproduct?.newPrice,
+        productInfo:getproduct?.productInfo,
+        similarName:getproduct?.similarName,
+        image:getproduct?.image,
+        stock:getproduct?.stock, 
+        size:getproduct?.size,
+        sizable:getproduct?.sizable
+    }) 
       }
-      
-     console.log(getproduct)
+       
   },[])
+  
   const submitHandler = async (e)=>{
     e.preventDefault()   
     try{
-     await fetch(`${DomainUrl?.url}addproduct`,{
+      setaddproductlodding(true)
+   const response =   await fetch(`${DomainUrl?.url}addproduct`,{
       method:'POST',
       headers:{
         Accept:'application/json',
         "Content-type":"application/json",
       },
       body:JSON.stringify(products),
-    })
-    .then((res)=> res.json()).then((data)=> { 
-      if(!data?.success){
-        console.log(data?.message)
-        SpeechMessage(data?.message)
+    }) 
+  const data = await response.json()  
+      setaddproductlodding(false)
+     if(!data?.success){
+        toast.error(data?.message) 
+        return false
       } 
-      if(data?.success){
-        toast.success(data?.message)
+       toast.success(data?.message)
         fetchApi()
         localStorage?.removeItem('products')
-        setProducts({
-    name:'',
-    oldPrice:'',
-    newPrice:'',
-    image:'',
-    categry:'',
-    productInfo:'',
-  })
-   SpeechMessage(data?.message)
-      }
-      
-    })
-      
-    
-    
-      
+        setProducts({  name:'',similarName:'',stock:'',sizable:'',oldPrice:'',newPrice:'',size:[],image:[],categry:'', productInfo:'',})
     }catch(error){
-     console.log(error?.message)
-     SpeechMessage(error?.message)
+      setaddproductlodding(false)
+     toast.error(error?.message) 
     }
   
      
@@ -126,37 +121,38 @@ const AddProduct = ()=>{
       const data = await response.json()
     
      if(!data.success){
-       console.log(data.message)
-       SpeechMessage(data?.message)
+       toast.error(data.message)
+       return false
      }
-     if(data.success){
        toast.success(data.message)
-       SpeechMessage(data?.message)
         await setProducts({
      name:data?.data?.name,
     oldPrice:data?.data?.oldPrice,
     newPrice:data?.data?.newPrice,
     image:data?.data?.image,
     categry:data?.data?.categry,
+    similarName:data?.data?.similarName,
+    stock:data?.data?.stock,
+    size:data?.data?.size,
+    sizable:data?.data?.sizable,
     productInfo:data?.data?.productInfo,
      }) 
      setProductId(e)
      setUpdateForm(true)
-     }
+     setFormHeader(true)
     }catch(error){
-      console.log(error?.message)
-      SpeechMessage(error?.message)
+      toast.error(error?.message) 
     }
   }
   
   const updateHandler = async(e)=>{
     e.preventDefault() 
     if(!productId){
-      console.log('Update Iteams not found')
-      SpeechMessage("Update Iteams not found")
+      toast.error('please select whitch product edite')
       return false
     }
   try{
+    setupdateproductlodding(true)
      const response = await fetch(`${DomainUrl.url}updateProduct/${productId}`,{
       method:'POST',
       headers:{
@@ -166,35 +162,25 @@ const AddProduct = ()=>{
       body:JSON.stringify(products),
     })
     const data = await response.json() 
+    setupdateproductlodding(false)
     if(!data.success){
-      console.log(data.message)
-      SpeechMessage(data?.message)
+      toast.error(data.message) 
       return false
     }
-     if(data.success){
-       toast.success(data.message)
-         fetchApi()
+     toast.success(data.message)
+       fetchApi()
         localStorage.removeItem('products')
-        setProducts({
-    name:'',
-    oldPrice:'',
-    newPrice:'',
-    image:'',
-    categry:'',
-    productInfo:'',
-  })
-  SpeechMessage(data?.message)
-     }
-  
+        setProducts({sizable:"",size:[],stock:"",name:'',similarName:'',oldPrice:'',newPrice:'',image:[],categry:'',productInfo:'',})
+ 
   }catch(error){
-   console.log(error.message)
-   SpeechMessage(error?.message)
+    setupdateproductlodding()
+   toast.error(error.message) 
   }
   }
+  
   const productDelete = async (id,img)=>{
   try{
-    
-  
+     
   const confirm = window.confirm('are you sure you want to delete this')
     
     if(!confirm){
@@ -205,13 +191,10 @@ const AddProduct = ()=>{
   const resposedeleteimage = await  DeleteImageCloudnary(img || "dbeb3x4dh",'deleteCloudnaryImageMulltiple') 
  
   if(!resposedeleteimage?.success){
-    console.log(resposedeleteimage.message) 
-    SpeechMessage(resposedeleteimage?.message)
+    toast.error(resposedeleteimage.message)
     return false
  } 
-  toast.success(resposedeleteimage?.message) 
-  SpeechMessage(resposedeleteimage?.message)
-  //  alert('product deleted ---'+ id) 
+  toast.success(resposedeleteimage?.message)
     const response = await fetch(`${DomainUrl.url}imageDelete`,{
        method:'DELETE',
        headers:{
@@ -222,7 +205,7 @@ const AddProduct = ()=>{
      })
     const data = await response.json()
     if(!data.success){
-      console.log(data.message)
+     toast.error(data.message)
       SpeechMessage(data?.message)
       return false
     }
@@ -230,7 +213,7 @@ const AddProduct = ()=>{
     toast.success(data.message)
     SpeechMessage(data?.message)
   }catch(error){
-    console.log(error.message)
+    toast.error(error.message)
     SpeechMessage(error?.message)
   }
   }
@@ -239,29 +222,36 @@ const AddProduct = ()=>{
   
   return(
      <> 
-      <div className="addProduct">
-        <h5>AddProducts</h5>
-        <div className="additeam" onClick={()=> {
-        setFormHeader(false) 
-        setFormBox(true)}}>Add</div> <div className="additeam" onClick={()=> {
+      <div className="flex flex-col items-center ">
+        <h5 className="p-2 text-slate-700 my-2 px-12 uppercase font-bold bg-yellow-300">AddProducts</h5>
+         <div className="flex mb-2 justify-center gap-2">
+             <div 
+        className="px-8 font-bold hover:bg-green-600 hover:text-white cursor-pointer py-1 bg-green-100 text-green-700"
+        onClick={()=> { 
+        setUpdateForm(false)
+        setFormHeader(false)
+        setFormBox(true)
+          
+        }}>Add</div> <div className="px-8 font-bold cursor-pointer hover:bg-green-600 hover:text-white py-1 bg-green-100 text-green-700" onClick={()=> {
         setUpdateForm(true)
         setFormHeader(true)
+        setFormBox(false)
         }}>Update</div>
+         </div>
       </div>
       
        {
          formBox && (
-             <UploadProductForm fetchApi={fetchApi} formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} setProducts={setProducts} submitHandler={submitHandler} categProduct={allProductsCategry} updateForm={{setUpdateForm,updateForm}} setFormBox={setFormBox}/>
+             <UploadProductForm submitproductlodding={addproductlodding} fetchApi={fetchApi} formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} setProducts={setProducts} submitHandler={submitHandler} categProduct={allProductsCategry} updateForm={setUpdateForm} setFormBox={setFormBox}/>
            )
             
        }
+       
        {
-             updateForm && (
-             <UploadProductForm formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} submitHandler={updateHandler} categProduct={allProductsCategry} updateForm={{setUpdateForm,updateForm}}  setFormBox={setFormBox}/>
-           )
-           
-           
-       } 
+         updateForm && (
+             <UploadProductForm submitproductlodding={updateproductlodding} formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} submitHandler={updateHandler} setProducts={setProducts} categProduct={allProductsCategry} updateForm={setUpdateForm}  setFormBox={setFormBox}/>
+           ) 
+       }
        
        {
          lodding ?(
@@ -277,10 +267,10 @@ const AddProduct = ()=>{
                 
                 allProduct.map((iteam,index)=>{ 
                 return(
-                  <div className="group border shadow-md  relative min-w-[115px] max-w-[115px] max-h-[130px] min-h-[130px] bg-white" keys={index}>
+                  <div key={index} className="group border shadow-md  relative min-w-[115px] max-w-[115px] max-h-[130px] min-h-[130px] bg-white" >
                    <div className="group-hover:block transitoin delay-150 ease-in-out hidden cursor-pointer p-1 border text-red-500 hover:bg-red-500 hover:text-white  bg-white border-red-600 absolute"onClick={()=>{productDelete(iteam?._id,iteam?.image)}}><MdDeleteForever /></div>
-                    <img className="object-contain h-full w-full" src={iteam?.image[0]?.img} alt="image" />
                     <div className="group-hover:block hover:text-white hover:bg-green-600  cursor-pointer hidden top-0 border-green-600 border bg-white p-1 text-green-500 right-0 absolute" onClick={()=>{productEdite(iteam?._id)}}><FaRegEdit /></div>
+                    <img className="object-contain h-full w-full" SRC={iteam?.image[0]?.img} alt="image" />
                  
                   </div>
                 )})
