@@ -1,7 +1,7 @@
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import {useState} from 'react'
   const Conformation = ({children})=>{ 
- const [show,setshow] = useState(true)
+ const [show,setshow] = useState(false)
   return (
      <div className={`fixed ${show ? "" : "hidden"} flex delay-150 transition ease-in-out flex-col items-center pt-2 rounded-tl-2xl overflow-hidden px-2 rounded-tr-2xl   bottom-0 z-[2000] pb-4 bg-slate-100 w-full`}> 
      <div className="absolute cursor-pointer text-red-500 right-2 top-1 text-3xl"><IoIosCloseCircleOutline /></div>

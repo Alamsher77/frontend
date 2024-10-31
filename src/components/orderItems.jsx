@@ -157,8 +157,9 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
                }} className={`${item.orderType == 'cancel' || item.orderType == 'done' ? 'border border-slate-200 bg-slate-100  text-slate-400':'border border-green-700 hover:bg-green-500 hover:text-white'} font-bold uppercase rounded px-3 py-1 mt-3`}>seemore</button> 
             {
               viewalluserdetail &&(
-              <div  className="fixed px-2 py-3 left-5 overflow-scroll w-[325px] max-h-[70vh] border border-gray-400 shadow shadow-gray-400 top-20  bg-slate-200 flex justify-center items-center flex-col">
-                <div onClick={()=>{setviewalluserdetail(false)}} className="fixed top-20 right-4  w-8 h-8 border text-white bg-red-500 border-red-700 rounded text-xl overflow-scroll flex items-center justify-center"><FaRegWindowClose /></div>
+              
+              <div style={{transform:'translate(-50%,-50%)'}}  className="fixed px-2 py-3  overflow-scroll w-[325px] max-h-[70vh] border border-gray-400 shadow  shadow-gray-400 left-[50%] top-[55%]  bg-slate-200 flex justify-center items-center flex-col">
+                <div onClick={()=>{setviewalluserdetail(false)}} className="absolute top-0 right-0  w-8 h-8 border cursor-pointer text-white bg-red-500 border-red-700 rounded text-xl overflow-scroll flex items-center justify-center"><FaRegWindowClose /></div>
             <div className="mx-2 overflow-scroll   my-6  p-2">
                 <h2 className="text-center uppercase font-bold underline mb-2" >User Details</h2>
                 <p><strong>Name :</strong> {seealluserDetail?.name}</p>
