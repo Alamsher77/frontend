@@ -8,19 +8,6 @@ import {Outlet} from "react-router-dom";
 import CategryIteams from './pages/categryIteams'
 import {ContestContext} from './api/ContestContext'
 function App() {
-  
-  const {appnameicon,applogoandiconlodding} = useContext(ContestContext)
-  const link = document.querySelector('link')
-  const title = document.querySelector('title')
-  if(applogoandiconlodding){
-    return <div className="flex justify-center w-full h-[90vh] items-center">
-    <div className="flex items-center "> <span className="w-8 animate-spin border mr-3 border-red-500 h-8"></span> Lodding....</div>
-    </div>
-  }else{
-  link.type = 'image/png' 
-  link.href = appnameicon?.icon?.img || logo3
-  title.innerText = appnameicon?.name || 'Easy Shope'
-  }
  
   return (
     <>
