@@ -5,6 +5,7 @@ import {ContestContext} from '../api/ContestContext'
 import {useState,useContext,useEffect} from "react"
 import {Link,useNavigate} from "react-router-dom";
 import RandomProduct from '../components/randomProducts'
+import Conformation from '../components/conformation'
 import LoddingCardComponent from '../components/loddingCardComponent'
 const Home = ()=>{
   const loddingArry = [1,2,3,4,5,6,7,8,9,10]
@@ -12,6 +13,11 @@ const Home = ()=>{
  
   return(
      <>
+       <Conformation >
+       <div className="">
+        <p>weldone from me</p>
+       </div>
+      </Conformation>
         <div style={{ scrollbarWidth: "none"}} className="overflow-x-auto no-scrollbar mx-3 my-2">
        <div className="flex gap-1 ">
           {
