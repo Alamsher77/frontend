@@ -62,15 +62,33 @@ const [touches,settouches] = useState({
    const touchend = (e)=>{ 
   settouches({...touches,padx:padsx,pady:padsy,touchendx:e.changedTouches[0].screenX,touchendy:e.changedTouches[0].screenY})
   }
+  console.log(imageindex)
  
   return(
    <>
    <div className="select-none md:my-5 ring-pink-300 ring-4 relative flex justify-center items-center h-[170px] m-auto md:h-[480px] md:min-w-[950px]  max-w-[340px]">
    
-   <div onClick={leftarrowhandler} className="cursor-pointer absolute left-1 flex justify-center items-center text-3xl z-50 top-[40%] border border-slate-300 text-slate-300 w-8 h-8"><IoIosArrowBack /></div>
-   <div onClick={rigtharrowhandler} className="cursor-pointer absolute right-1 flex justify-center items-center text-3xl z-50 top-[40%] border border-slate-300 text-slate-300 w-8 h-8"><IoIosArrowForward /></div>
+  {
+    imageindex != 0 &&(
+     <div onClick={leftarrowhandler} className="cursor-pointer absolute left-1 flex justify-center items-center bg-pink-500 text-3xl z-50 top-[40%] border border-slate-300 text-slate-300 w-8 h-8"><IoIosArrowBack /></div>
+    )
+  }
+  {
+   imageindex != (allbanners?.length -1) &&(
+     <div onClick={rigtharrowhandler} className="cursor-pointer absolute right-1 flex justify-center items-center bg-pink-500 text-3xl z-50 top-[40%] border border-slate-300 text-slate-300 w-8 h-8"><IoIosArrowForward /></div>
+   )
+  }
  
      <img  onTouchStart={touchstart} onTouchEnd={touchend} src={allbanners[imageindex].bannerimage.img} className="h-full w-full "/>
+   </div>
+   <div className="w-full gap-2 flex justify-center pt-3">
+    {
+      allbanners?.map((item,index)=>{
+        return (
+         <span className={`w-3 ${imageindex == index ? 'bg-pink-400':'' } rounded-full h-3 border border-pink-400 transition ease-in-out delay-150`} key={index}></span>
+        )
+      })
+    }
    </div>
    </>
     )

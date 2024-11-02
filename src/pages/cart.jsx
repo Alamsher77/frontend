@@ -4,6 +4,8 @@
  import{ toast } from 'react-hot-toast'; 
  import DisplayCurrency from '../displayCurrancy'
  import {useNavigate}  from 'react-router-dom'
+ import { FiShoppingCart } from "react-icons/fi";
+ import { FaBasketShopping } from "react-icons/fa6";
  import {ContestContext} from '../api/ContestContext'
  import NoContent from '../components/noContent'
   import SpeechMessage from '../components/speechMessage'
@@ -114,9 +116,10 @@ console.log(cartProductView)
           </div>
          ):(
      cartProductView?.length == 0   ? (
-        <div className="text-center ">
-          <NoContent message='empaty carts' />
-          <button onClick={()=>{navigate('/')}} className="px-3 py-1 border border-green-500 rounded hover:bg-green-500 hover:text-white">Shop now</button>
+        <div className="flex flex-col h-[70vh] justify-center items-center">
+          <div className="text-7xl text-pink-500 mb-4"><FiShoppingCart /></div>
+          <p className="text-sm text-slate-500 capitalize">Your Cart is Eampty</p>
+          <button onClick={()=>navigate('/')} className="flex px-5 py-1 mt-3 rounded text-pink-600 border border-pink-500 gap-2  justify-center items-center" >continue <span><FaBasketShopping /></span></button>
           </div>
         ):(
         <>    

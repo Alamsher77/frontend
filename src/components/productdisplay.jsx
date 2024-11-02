@@ -5,11 +5,12 @@ import {ContestContext} from '../api/ContestContext'
 import { IoIosStarOutline } from "react-icons/io";
 import DomainUrl from '../Configuration/Index'
 import{ toast } from 'react-hot-toast';
-import { IoCloseSharp } from "react-icons/io5";
+import { IoCloseSharp,IoRemoveCircleSharp,IoAddCircleSharp } from "react-icons/io5";
 import {useNavigate,Link} from "react-router-dom";
 import DisplayCurrency from '../displayCurrancy'  
 import ZoomImage from './zoomimage'
-import { FaCartPlus } from "react-icons/fa";
+import Conformation from './conformation'
+import { FaCartPlus } from "react-icons/fa"; 
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
 const ProductDisplay = ({result,similarproduct})=>{
   const [sizeselect,setsizeselect] = useState(null)
@@ -24,15 +25,18 @@ const [productviwindex,setproductviewindex] = useState(0)
  const l = Number(result?.newPrice)
  const m = 100 - (Math.floor(l / p * 100))  
  
- const bysingleproduct = [{
+ const [bysingleproduct,setsingleproduct] = useState([{
    userId:userDetails?._id,
    productId:result,
    quantity:1,
    size:sizeselect
- }]
- console.log(sizeselect)
+ }])
+ const [isvisible,setIsVisible]  = useState(false)
+ const [cartconformation,setcartconformmation] = useState(false)
  const addToCartController = async (prodId)=>{
-    
+    setIsVisible(true)
+    setcartconformmation(true)
+    return false
    try{
      const response = await fetch(`${DomainUrl.url}addToCart`,{
        method:'POST',
@@ -79,11 +83,10 @@ const [productviwindex,setproductviewindex] = useState(0)
 // buy singale product 
 
 const singleproductbuyhandler = async()=>{
-   const grant = confirm('Are You Sure ? You want to order this Product')
   
-    if(!grant) return false
-    
-  
+    setcartconformmation(false)
+    setIsVisible(true)
+    return false
    if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
       toast.error('please add all your details')
       navigate('/userDetails')
@@ -112,9 +115,61 @@ const singleproductbuyhandler = async()=>{
   }
 }
  
+  
+ const onconform = ()=>{
+  if(cartconformation){
+    toast.success('product added to cart')
+  }else{
+    toast.success('product order succesfull')
+  }
+  
+  
+   setIsVisible(false)
+ } 
+const quantityIncress = ()=>{
+ setsingleproduct((prevItems) =>
+      prevItems.map((item) =>
+        item.quantity >= 1  ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    ); 
+}
+const quantityDecress = ()=>{
+   setsingleproduct((prevItems) =>
+      prevItems.map((item) =>
+        item.quantity > 1  ? { ...item, quantity: item.quantity - 1 } : item
+      )
+    );
+}
+
  
    return(
      <div className="relative md:flex " >
+      {
+      
+       !cartconformation &&(
+         <Conformation onClose={()=> setIsVisible(false)} onconform={onconform} isvisible={isvisible} onCancel={()=> setIsVisible(false)}>
+       <div className="">
+        <p>Product Orderd Price {DisplayCurrency(bysingleproduct[0].quantity * result?.newPrice)}</p>
+        <div className="flex gap-2 items-center">
+         <p> Quantity <span>{bysingleproduct[0]?.quantity}</span></p>
+         <div className="flex text-2xl gap-2 items-center" >
+            <IoRemoveCircleSharp onClick={quantityDecress} className="cursor-pointer text-red-600" />
+            <IoAddCircleSharp onClick={quantityIncress} className="cursor-pointer text-green-600" />
+         </div>
+        </div>
+       </div>
+      </Conformation>
+        ) 
+      }
+      {
+       cartconformation && (
+         <Conformation onClose={()=> setIsVisible(false)} onconform={onconform} isvisible={isvisible} onCancel={()=> setIsVisible(false)}>
+       <div className="">
+        <p>You are added product to cart</p>
+       </div>
+      </Conformation>
+        )
+      }
      { /*big screen container iamge */ }
        <div className="hidden border md:flex p-1 m-1 md:block max-h-[350px] min-w-[550px]">
       <div style={{ scrollbarWidth: "none"}} className="w-[130px]  p-0.5 max-h-[350px]  overflow-scroll border border-slate-700">
@@ -131,6 +186,7 @@ const singleproductbuyhandler = async()=>{
       <div className="h-[330px] w-[380px] m-auto" >
        <img className="w-full object-contain h-full" src={result?.image[productviwindex]?.img} />
       </div>
+      
      </div>
    
       { /*big mobile screen container iamge */ }
@@ -161,8 +217,7 @@ const singleproductbuyhandler = async()=>{
       )
          
        }
-      
-       {
+        {
        similarproduct?.length == 0 ? null : 
        <div className="">
        <p className="px-2 text-sm"><strong>similarproduct</strong> <span>( {similarproduct?.length} )</span></p>
@@ -179,6 +234,7 @@ const singleproductbuyhandler = async()=>{
        </div>
        </div>
        }
+     
      <div className="md:flex border md:p-2   md:m-1 md:flex-col md:gap-5">
         <div className="product-info">
            <div className="ProductName">
@@ -193,7 +249,7 @@ const singleproductbuyhandler = async()=>{
       
      
         {
-        !result?.sizable ? null:
+        result?.sizable != 'true' ? null:
          <div className="w-full select-none p-2"  >
        <p className="py-2 text-slate-600">Select Size</p>
        <div className="flex items-center gap-2 flex-wrap">
@@ -215,18 +271,18 @@ const singleproductbuyhandler = async()=>{
  </div>
  
   <div className="md:block md:flex md:gap-3 hidden">
-    <button onClick={()=>{addToCartController(result?.id)}} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
+    <button onClick={()=>{addToCartController(result?._id)}} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
       <FaCartPlus /> <span>cart</span>
      </button>
      
-     <button className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-green-500 border-green-500 flex tracking-widest font-bold uppercase bg-green-500 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
+     <button onClick={singleproductbuyhandler} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-green-500 border-green-500 flex tracking-widest font-bold uppercase bg-green-500 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
       <TbPlayerTrackNextFilled className="text-2xl" /> <span>Buy</span>
      </button>
   </div>
  </div>
  
  { /* button for addtocard and bay*/ }
-     <div className={`md:hidden fixed ${scroll < 200 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>
+     <div className={`md:hidden fixed ${scroll < 600 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>
      
      <button onClick={()=>{addToCartController(result?._id)}} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
       <FaCartPlus /> <span>cart</span>

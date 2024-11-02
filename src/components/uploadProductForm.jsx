@@ -23,11 +23,10 @@ const UploadProductForm = ({submitproductlodding,setFormBox,updateForm,categProd
     }
   }
   const [showsizebutton,setshowsizebutton] = useState(false)
-  const [productsize,setprosize] = useState('')
-  console.log(products)
+  const [productsize,setprosize] = useState('') 
   const productsizehandlar = ()=>{
      try {
-       
+       if(!productsize) return false
           setProducts((prev)=>({...prev,size:[...prev.size,productsize]}))
            localStorage.setItem('products',JSON.stringify({...products})) 
            setprosize('')
@@ -77,20 +76,20 @@ const UploadProductForm = ({submitproductlodding,setFormBox,updateForm,categProd
          </div>
          
          {
-           products.sizable &&(
+           products.sizable == 'true' ? (
               <div className="inputfields">
           <label>Add size</label>
           <input type="text" onFocus={()=>setshowsizebutton(true)} value={productsize} onChange={(e)=>setprosize(e.target.value)} name='size' placeholder="add size"/>
           
           {
             showsizebutton && (
-             <div className="p-1 text-center w-20 text-white rounded mt-1 bg-green-500">
+             <div className="p-1 cursor-pointer select-none text-center w-20 text-white rounded mt-1 bg-green-500">
            <span onClick={productsizehandlar}>add size</span>
           </div>
             )
           }
          </div>
-           )
+           ):null
             
          }
          {
