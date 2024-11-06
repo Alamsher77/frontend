@@ -29,15 +29,43 @@ const [productviwindex,setproductviewindex] = useState(0)
    userId:userDetails?._id,
    productId:result,
    quantity:1,
-   size:sizeselect
+   size:null
  }])
  const [isvisible,setIsVisible]  = useState(false)
  const [cartconformation,setcartconformmation] = useState(false)
- const addToCartController = async (prodId)=>{
-    setIsVisible(true)
-    setcartconformmation(true)
-    return false
-   try{
+ const addToCartController = ()=>{ 
+   setIsVisible(true)
+   setcartconformmation(true) 
+ }
+ 
+ const [scroll,setscroll] = useState(0)
+ 
+ 
+ useEffect(()=>{
+   window.addEventListener('scroll',()=>{
+     setscroll(window.scrollY)
+   })
+ },[scroll])
+ 
+ useEffect(()=>{
+   setsizeselect(result?.size[0])
+   setsingleproduct((preve)=>[{...preve[0],size:result?.size[0]}])
+ },[])
+ 
+ 
+// buy singale product 
+
+const singleproductbuyhandler = async()=>{ 
+    setcartconformmation(false)
+    setIsVisible(true) 
+    console.log(bysingleproduct)
+}
+ 
+  
+ const onconform = async(id)=>{
+  if(cartconformation){
+    // product addet to cart function
+     try{
      const response = await fetch(`${DomainUrl.url}addToCart`,{
        method:'POST',
        credentials:"include",
@@ -45,7 +73,7 @@ const [productviwindex,setproductviewindex] = useState(0)
         Accept:'application/json',
         "Content-type":"application/json",
       },
-      body:JSON.stringify({productId:prodId,size:sizeselect}),
+      body:JSON.stringify({productId:result?._id,size:sizeselect}),
      })
      
      const data = await response.json()
@@ -68,26 +96,10 @@ const [productviwindex,setproductviewindex] = useState(0)
    }catch(error){
      toast.error(error.message)
    }
- }
+  }else{
+    // single product order 
  
- const [scroll,setscroll] = useState(0)
- 
- 
- useEffect(()=>{
-   window.addEventListener('scroll',()=>{
-     setscroll(window.scrollY)
-   })
- },[scroll])
- 
- 
-// buy singale product 
-
-const singleproductbuyhandler = async()=>{
-  
-    setcartconformmation(false)
-    setIsVisible(true)
-    return false
-   if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
+      if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
       toast.error('please add all your details')
       navigate('/userDetails')
       return false
@@ -110,20 +122,10 @@ const singleproductbuyhandler = async()=>{
  toast.success(data?.message)
   navigate('/myOrderProducts')
   } catch (e) {
-    
-   toast.error(e.message)
+  toast.error(e.message)
   }
-}
- 
-  
- const onconform = ()=>{
-  if(cartconformation){
-    toast.success('product added to cart')
-  }else{
-    toast.success('product order succesfull')
   }
-  
-  
+   
    setIsVisible(false)
  } 
 const quantityIncress = ()=>{
@@ -140,7 +142,6 @@ const quantityDecress = ()=>{
       )
     );
 }
-
  
    return(
      <div className="relative md:flex " >
@@ -149,14 +150,17 @@ const quantityDecress = ()=>{
        !cartconformation &&(
          <Conformation onClose={()=> setIsVisible(false)} onconform={onconform} isvisible={isvisible} onCancel={()=> setIsVisible(false)}>
        <div className="">
-        <p>Product Orderd Price {DisplayCurrency(bysingleproduct[0].quantity * result?.newPrice)}</p>
+        <p>Product Orderd Price : {DisplayCurrency(bysingleproduct[0].quantity * result?.newPrice)}</p>
         <div className="flex gap-2 items-center">
-         <p> Quantity <span>{bysingleproduct[0]?.quantity}</span></p>
+         <p> Quantity : <span>{bysingleproduct[0]?.quantity}</span></p>
          <div className="flex text-2xl gap-2 items-center" >
             <IoRemoveCircleSharp onClick={quantityDecress} className="cursor-pointer text-red-600" />
             <IoAddCircleSharp onClick={quantityIncress} className="cursor-pointer text-green-600" />
-         </div>
+         </div> 
         </div>
+         {
+           result?.sizable ? <p className="font-bold text-yellow-800">product Size : ( {sizeselect ? sizeselect : result?.size[0]} )</p> : null
+         }
        </div>
       </Conformation>
         ) 
@@ -165,7 +169,7 @@ const quantityDecress = ()=>{
        cartconformation && (
          <Conformation onClose={()=> setIsVisible(false)} onconform={onconform} isvisible={isvisible} onCancel={()=> setIsVisible(false)}>
        <div className="">
-        <p>You are added product to cart</p>
+        <p>You are added product to cart</p> 
        </div>
       </Conformation>
         )
@@ -256,7 +260,9 @@ const quantityDecress = ()=>{
        {
           result?.size?.map((item,index)=>{
             return (
-             <p onClick={()=>{setsizeselect(item) }} className={`text-[12px] ${sizeselect == item ? "text-white bg-yellow-600":''} flex hover:text-white font-bold hover:bg-yellow-600 border-yellow-600 cursor-pointer justify-center items-center w-8 h-8 border rounded-full`} key={index}>{item}</p>
+             <p onClick={()=>{
+               setsizeselect(item)
+               setsingleproduct((preve)=>[{...preve[0],size:item}])}} className={`text-[12px] ${sizeselect == item ? "text-white bg-yellow-600":''} flex hover:text-white font-bold hover:bg-yellow-600 border-yellow-600 cursor-pointer justify-center items-center w-8 h-8 border rounded-full`} key={index}>{item}</p>
             )
           })
         }
@@ -271,7 +277,7 @@ const quantityDecress = ()=>{
  </div>
  
   <div className="md:block md:flex md:gap-3 hidden">
-    <button onClick={()=>{addToCartController(result?._id)}} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
+    <button onClick={addToCartController}  className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
       <FaCartPlus /> <span>cart</span>
      </button>
      
@@ -284,7 +290,7 @@ const quantityDecress = ()=>{
  { /* button for addtocard and bay*/ }
      <div className={`md:hidden fixed ${scroll < 600 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>
      
-     <button onClick={()=>{addToCartController(result?._id)}} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
+     <button onClick={addToCartController} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
       <FaCartPlus /> <span>cart</span>
      </button>
      

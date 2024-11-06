@@ -17,12 +17,17 @@ import About from '../pages/about'
 import AddBanner from '../pages/addbanner'
 import Settings from '../pages/settings'
 import ForgetePassword from '../pages/forgetePassword'
+import OrderSuccess from '../pages/Ordersuccessfullpage'
 import AllUsersOrderProduct from '../pages/allusersOrderProducts'
 const router = createBrowserRouter([
   { 
     path: "/", 
     element: <App />,
     children: [
+      {
+        path:'Ordersuccessfullpage',
+        element:<OrderSuccess />
+      },
       {
          path : "",
          element: <Home />

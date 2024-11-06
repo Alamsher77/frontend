@@ -138,7 +138,7 @@ const responsehandler = async(id)=>{
          
          {
          popupupdate && (
-           <button onClick={()=>responsehandler(products?._id)} className="px-3 bg-white border border-green-500 cursor-pointer absolute -bottom-9 left-4">update</button>
+           <button onClick={()=>responsehandler(products?._id)} className="px-3 bg-white border border-green-500 z-10 cursor-pointer absolute -bottom-9 left-4">update</button>
         ) }
         </div>
         <button className="absolute right-1 top-1 text-bold text-red-400 hover:text-red-500  text-3xl " onClick={()=> cartIteamDeleteHandler(products._id)}><IoCloseCircle /></button>

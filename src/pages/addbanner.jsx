@@ -29,7 +29,7 @@ const AddBanner = ()=>{
      const response = await DeleteImageCloudnary(bannerimage,'addbanner')
    
     if(!response.success){
-      console.log(response.message)
+      toast.error(response.message)
       return false
     }
     toast.success(response.message)
@@ -38,8 +38,8 @@ const AddBanner = ()=>{
     setbanneropen(false)
     fetchbanner()
     }catch(error){
-      console.log(error)
-      console.log(error.message)
+     
+     toast.error(error.message)
     }
   }
   
@@ -53,9 +53,14 @@ const AddBanner = ()=>{
   // deletebanner
   const deletehandler = async (image,id)=>{
    try{
+    const removebannerimage = await DeleteImageCloudnary(image,'deleteCloudnaryImage')
+    if(!removebannerimage.success){
+      toast.error(removebannerimage.message)
+      return false
+    }
+    toast.success(removebannerimage.message)
     
-    const data = await DeleteImageCloudnary(id,'deletebanner')
-    
+    const data = await DeleteImageCloudnary(id,'deletebanner') 
     if(!data.success){
       toast.error(data.message)
       return false
@@ -65,7 +70,7 @@ const AddBanner = ()=>{
    }catch(error){
      toast.error(error.message)
    }
-  }
+  } 
   return(
         <div className="select-none p-2 w-full max-w-full min-w-full ">
          <div className="w-full   flex justify-between">

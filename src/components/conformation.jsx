@@ -3,7 +3,7 @@ import {useState} from 'react'
   const Conformation = ({children,onCancel,onClose,onconform,isvisible})=>{ 
  
   return (
-     <div className={`fixed  ${isvisible ? "visible" : "hidden"} flex delay-150 transition ease-in-out flex-col select-none items-center pt-2 rounded-tl-2xl overflow-hidden px-2 rounded-tr-2xl   bottom-0 z-[2000] pb-4 bg-white w-full`}> 
+     <div style={{transform:'translate(-50%,0)',left:'50%',boxShadow:'0 0 15px rgba(0,0,0,0.3)'}} className={`fixed  ${isvisible ? "visible" : "hidden"}  max-w-[400px] flex delay-150 transition ease-in-out flex-col select-none items-center pt-2 rounded-tl-2xl overflow-hidden px-2 rounded-tr-2xl md:bottom-20  bottom-0 z-[2000] pb-4 bg-white w-full`}> 
      <div onClick={onClose} className="absolute cursor-pointer text-red-500 right-2 top-1 text-3xl"><IoIosCloseCircleOutline /></div>
      <h1 className="text-center text-green-500 font-bold text-2xl">Conformation</h1>
      {children}

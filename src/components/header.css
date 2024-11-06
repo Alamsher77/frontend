@@ -171,18 +171,3 @@
   background-color: rgba(0,0,0,0.3); 
   color: #154273;
 }
-
-/* home banner styles */
-/* styles.css */
-.homebanner img { 
-  transform-origin: center;
-  perspective: 1000px;
-  transition: transform 5s ease-in-out;
-  cursor: pointer;
-}
-
-.homebanner img:hover {
-  transform: rotateY(360deg);
-}
-
-  

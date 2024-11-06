@@ -7,18 +7,20 @@
  import { FiShoppingCart } from "react-icons/fi";
  import { FaBasketShopping } from "react-icons/fa6";
  import {ContestContext} from '../api/ContestContext'
- import NoContent from '../components/noContent'
-  import SpeechMessage from '../components/speechMessage'
+ import Conformation from '../components/conformation'
+ import LoddingButton from '../components/loddingbutton'
 const Cart = () => { 
    
  const {userDetails,lodding,coutCartFetchApi} = useContext(ContestContext) 
   const navigate = useNavigate()
  const [cartProductView,setCartProductView] = useState([])
  const [islodding,setIslodding] = useState(false) 
+ 
+// fetch cart products list
 const cartProductViewFetch = async ()=>{
     try{
-       setIslodding(true)
-         // allproduct api
+       
+       setIslodding(true) 
    const response =   await fetch(`${DomainUrl.url}cartProductView`,{
         method:'GET',
         credentials:'include'
@@ -27,7 +29,7 @@ const cartProductViewFetch = async ()=>{
     setCartProductView(data.allProducts)
       setIslodding(false)
     }catch(error){
-      console.log(error.message)
+      toast.error(error.message)
     }
      
 }
@@ -35,6 +37,7 @@ const cartProductViewFetch = async ()=>{
      cartProductViewFetch()   
    },[])
  
+// get the value of total cart product quantity and  prices
   const totalquatity = cartProductView?.reduce((prev,curent)=>{
             return prev + curent.quantity
           },0)
@@ -43,29 +46,20 @@ const cartProductViewFetch = async ()=>{
           },0)
           
   // make a payment function
-    
+  const [isVisible,setIsVisible] = useState(false)
+  const [isConform,setIsConform]  = useState(false)
+  const [checkOutlodding,setcheckoutlodding] = useState(false)
+  // procide to cheqoutAndPayment
 const checkOutHandler = async(e)=>{
   try{
-   
-   toast('Are You Sure ? You want to order this Product',{
-     icon:"⚠️"
-   }) 
-    const grant = confirm('Are You Sure ? You want to order this Product')
-  
-    if(!grant) return false
-    
+    setIsVisible(false) 
     if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
  
       navigate('/userDetails')
       return false
-    } 
-    
-   if(TotalPrice < 200){
-      toast.info('You Can Buy MoreThan 200 ruppese')
-     SpeechMessage('You Can Buy MoreThan 200 roopeese')
-     return false
-   }
-    
+    }  
+    setcheckoutlodding(true)
+     
   const response = await fetch(`${DomainUrl.url}cheqoutAndPayment`,{
       method: 'POST',
        credentials:'include',
@@ -77,6 +71,7 @@ const checkOutHandler = async(e)=>{
     })
   
   const data = await response.json()
+  setcheckoutlodding(false)
    if(!data.success){
     toast.error(data?.message) 
     return false
@@ -87,16 +82,21 @@ const checkOutHandler = async(e)=>{
    cartProductViewFetch()
    
   }catch(error){
+    setcheckoutlodding(false)
     toast.error(error?.message) 
   }
-}
-console.log(cartProductView)
+} 
  
   return (
    <>
+   <Conformation onconform={()=>{ 
+     checkOutHandler()
+     setIsVisible(false)
+   }} onCancel={()=>setIsVisible(false)} onClose={()=>setIsVisible(false)} isvisible={isVisible} >
+   <p>Your All Cart Products Order !</p>
+   </Conformation>
   {
-   
-    islodding ? (   
+     islodding ? (   
             [1,2,3,2,3,4,3].map((item,index)=>{
             return (
               <div  key={index} className="animate-pulse select-none  mt-2 bg-slate-200 p-1 shadow shadow-gray-600 h-28 w-screen  flex items-center">
@@ -132,9 +132,7 @@ console.log(cartProductView)
       
       })
      
-  }
-      
-    
+  } 
     </div>
     
       
@@ -147,8 +145,8 @@ console.log(cartProductView)
       <div className="w-full px-4 py-2 flex justify-between gap-2">
     <p>Total Amount</p> <p>{DisplayCurrency(TotalPrice)}</p>
       </div>
-      <div onClick={checkOutHandler} className="border border-pink-500 my-5">
-      <p className="px-7 py-2 text-black hover:bg-pink-500 hover:text-white rounded cursor-pointer select-none">Order now</p>
+      <div  onClick={()=>setIsVisible(true)} className="border border-pink-500 my-5">
+      <p className="px-7 py-2 text-black hover:bg-pink-500 hover:text-white rounded cursor-pointer select-none">{checkOutlodding ? <LoddingButton /> : 'Order now'}</p>
       </div>
     </div>
     
@@ -157,8 +155,7 @@ console.log(cartProductView)
            )
           
     )
-     
-    
+      
   }
    </>
   );
