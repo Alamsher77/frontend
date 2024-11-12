@@ -1,4 +1,4 @@
-import {useParams} from 'react-router-dom'
+import {useParams,useNavigate} from 'react-router-dom'
 import {useState,useEffect, useContext,} from 'react'
 import {ContestContext} from '../api/ContestContext'
 import ProductDisplay from '../components/productdisplay'
@@ -6,17 +6,17 @@ import Bredcrumb from '../components/bredcrumb'
 import { IoStarSharp } from "react-icons/io5";  
 import DomainUrl from '../Configuration/Index'
 import{ toast } from 'react-hot-toast';
-import NoContent from '../components/noContent'
-import { MdDelete } from "react-icons/md";
+import NoContent from '../components/noContent' 
+import errorimage from '../asetes/error.png'
+import { MdDelete,MdCommentsDisabled } from "react-icons/md";
 import { IoIosSend } from "react-icons/io";
 import ProductIteam from '../components/productIteam/productIteam' 
 const Product = ()=>{
   // products display functionality
-
+const navigate = useNavigate();
   const {productId} = useParams() 
   const {allProduct,userDetails,lodding}= useContext(ContestContext)
-    const result = allProduct.find((e)=>{
-      
+    const result = allProduct.find((e)=>{ 
     return e?._id === productId
     })
   
@@ -27,9 +27,7 @@ const Product = ()=>{
     }
   
   })
- 
-console.log(similarproduct)
-
+  
 // reviews and reattings functionality
 
  const [rating, setRating] = useState(4);
@@ -163,7 +161,7 @@ const allratingbyusers = {
  return(
   // lodding components
    
-    !result  ? 
+    lodding && !result ? 
    <div className="w-full animate-pulse p-4">
    <div className="h-4 mt-3 bg-slate-200"></div>
    <div className="mt-3 h-40 bg-slate-200"></div>
@@ -181,6 +179,17 @@ const allratingbyusers = {
    </div>
    
    : 
+   
+   !result ?
+   
+   <div className="w-screen h-screen select-none  gap-1 items-center flex flex-col justify-center" >
+     <img className="w-48 h-48 object-cover" src={errorimage} /> 
+    <h1 className="font-bold text-xl" >Something went wrong!</h1>
+    <p className="text-slate-700 capitalize">Please try again later</p>
+    <p className="text-slate-400">E002</p>
+    <button onClick={()=>navigate('/')} className="bg-blue-500 text-sm font-bold uppercase px-4 py-2 text-white">go home</button>
+   </div>
+   :
   // product iteams components
      <>
       <Bredcrumb name={result?.name} categry={result?.categry}/>
@@ -285,9 +294,10 @@ const allratingbyusers = {
          :
          
          allproductreview == 0 ?
-          
-          <NoContent message="no comments" /> 
-         
+          <div className="w-full flex flex-col items-center">
+           <div className="text-5xl text-pink-400" ><MdCommentsDisabled /></div>
+           <p className="text-slate-500" >No comments</p>
+          </div>
          :
           
           <div className="gap-4  flex flex-col">
@@ -304,14 +314,14 @@ const allratingbyusers = {
                  time = `${Math.floor(totaltime / 1000)} sec`
                }else if( totaltime /1000/60 < 60){
                  time = `${Math.floor(totaltime /1000 /60)} min`
-               }else if(totaltime /1000/60/60 < 60){
+               }else if(totaltime /1000/60/60 < 24){
                  time = `${Math.floor(totaltime /1000 /60/60)} h`
-               }else if(totaltime /1000/60/60/24 < 24){
+               }else if(totaltime /1000/60/60/24 < 7){
                  time = `${Math.floor(totaltime /1000 /60/60/24)} day`
-               }else if(totaltime /1000/60/60/24/7 < 7){
-                 time = `${Math.floor(totaltime /1000 /60/60/24/7)} w`
-               }else if(totaltime /1000/60/60/24/30 < 30){
-                 time = `${Math.floor(totaltime /1000 /60/60/24/30)} m`
+               }else if(totaltime /1000/60/60/24 / 7 < 4){
+                 time = `${Math.floor(totaltime /1000 /60/60/24 / 7)} w`
+               }else if(totaltime /1000/60/60/24 / 30 < 4){
+                 time = `${Math.floor(totaltime /1000 /60/60/24 / 30)} m`
                }else{
                 time = new Date(item?.createdAt).toLocaleDateString()
                }

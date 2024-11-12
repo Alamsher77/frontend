@@ -51,7 +51,7 @@ const Home = ()=>{
     <div className="p-2 " key={index}>
      <h1 className="font-bold text-pink-400 uppercase">{filtercatagryProduct.length == 0 ? null :catitem?.categry}</h1>
     </div>
-    <div   className="select-none mx-1 flex gap-1 overflow-x-auto"> 
+    <div style={{ scrollbarWidth: "none"}}   className="select-none mx-1 flex gap-1 overflow-x-auto"> 
      {
       lodding ? (
      loddingArry.map((lodd,index)=>{

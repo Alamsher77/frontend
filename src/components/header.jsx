@@ -52,7 +52,7 @@ export const Headers = ()=> {
     setUserDetails(null)
    navigate("/login") 
   }catch(error){
-    console.log(error.message)
+    toast.error(error.message)
   }
    } 
    

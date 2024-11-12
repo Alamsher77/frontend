@@ -119,7 +119,7 @@ const checkOutHandler = async(e)=>{
         <div className="flex flex-col h-[70vh] justify-center items-center">
           <div className="text-7xl text-pink-500 mb-4"><FiShoppingCart /></div>
           <p className="text-sm text-slate-500 capitalize">Your Cart is Eampty</p>
-          <button onClick={()=>navigate('/')} className="flex px-5 py-1 mt-3 rounded text-pink-600 border border-pink-500 gap-2  justify-center items-center" >continue <span><FaBasketShopping /></span></button>
+          <button onClick={()=>navigate('/')} className="flex px-5 py-1 mt-3 rounded text-pink-600 border hover:text-white capitalize font-bold ring-pink-200 hover:ring-4 hover:bg-pink-500 border-pink-500 gap-2  justify-center items-center" >continue <span><FaBasketShopping /></span></button>
           </div>
         ):(
         <>    

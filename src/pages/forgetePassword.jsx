@@ -1,9 +1,11 @@
 import {useState,useEffect} from 'react'
 import PostAndGetApi from '../helpers/postsendapi'
 import LoddingButton from '../components/loddingbutton'
+import {useNavigate} from "react-router-dom";
 import{ toast } from 'react-hot-toast';
 import Otp from '../components/otp'
 const ForgetePassword = ()=>{
+  const navigate = useNavigate()
   const [isfocuse,setisfocuse] = useState(false)
   const [email,setemail] = useState('')
   const [otptime,setotptime] = useState(0)
@@ -71,7 +73,7 @@ const newpasswordchangehandler = async (e)=>{
        return false
      }
      toast.success(data.message)
-     setcreatepssword(false)
+     navigate("/login")
      localStorage.removeItem('changepassword')
   } catch (e) {
     setpasswordchanglodding(false)

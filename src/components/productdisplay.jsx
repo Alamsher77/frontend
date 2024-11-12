@@ -142,6 +142,23 @@ const quantityDecress = ()=>{
       )
     );
 }
+
+const [conteint,setconteint] = useState(false)
+// back button press functionality
+ useEffect(()=>{
+  window.addEventListener('popstate',()=>{
+  setViewProduct({...viewProduct,close:false})
+  setIsPopUp(false)
+  })
+  return ()=>{
+    window.removeEventListener('popstate',()=>{
+    setViewProduct({...viewProduct,close:false})
+    setIsPopUp(false)
+    })
+  }
+   
+ },[])
+ 
  
    return(
      <div className="relative md:flex " >
@@ -159,7 +176,7 @@ const quantityDecress = ()=>{
          </div> 
         </div>
          {
-           result?.sizable ? <p className="font-bold text-yellow-800">product Size : ( {sizeselect ? sizeselect : result?.size[0]} )</p> : null
+           result?.sizable === "true" ? <p className="font-bold text-yellow-800">product Size : ( {sizeselect ? sizeselect : result?.size[0]} )</p> : null
          }
        </div>
       </Conformation>
