@@ -159,7 +159,6 @@ const [conteint,setconteint] = useState(false)
    
  },[])
  
- 
    return(
      <div className="relative md:flex " >
       {
@@ -211,7 +210,8 @@ const [conteint,setconteint] = useState(false)
      </div>
    
       { /*big mobile screen container iamge */ }
-       <div className="md:hidden flex w-full gap-1 max-w-full max-h-[300px] overflow-x-scroll" style={{scrollbarWidth:'none'}}>
+       <div className={`md:hidden flex w-full gap-1 relative max-w-full max-h-[300px] ${result?.stock == "available" ? "overflow-x-scroll" : "overflow-x-hidden left-0"}`} style={{scrollbarWidth:'none'}}>
+       
           {result?.image.map((image,indes)=>{
             return( 
             <div key={indes} className='min-w-full h-[300px]'> 
@@ -222,6 +222,14 @@ const [conteint,setconteint] = useState(false)
             </div>
             )
           })}
+          
+        {
+          result?.stock != "available" &&(
+            <div className="absolute  select-none text-3xl font-bold flex items-center text-white justify-center w-full h-full opacity-70 bg-slate-800">
+              <h1>Out Of Stock</h1>
+          </div>
+          )
+        }
        </div>
        
        {
@@ -256,7 +264,9 @@ const [conteint,setconteint] = useState(false)
        </div>
        }
      
-     <div className="md:flex border md:p-2   md:m-1 md:flex-col md:gap-5">
+  {
+    result?.stock == 'available' &&(
+        <div className="md:flex border md:p-2   md:m-1 md:flex-col md:gap-5">
         <div className="product-info">
            <div className="ProductName">
        <p> <b className="text-slate-700">Product-Name : </b><span> {result?.name} </span></p>
@@ -303,6 +313,8 @@ const [conteint,setconteint] = useState(false)
      </button>
   </div>
  </div>
+    )
+  }
  
  { /* button for addtocard and bay*/ }
      <div className={`md:hidden fixed ${scroll < 600 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>

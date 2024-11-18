@@ -3,6 +3,7 @@ import{ toast } from 'react-hot-toast';
  import DomainUrl from '../Configuration/Index'
  import { FaRegWindowClose } from "react-icons/fa";
  import DisplayCurrency from '../displayCurrancy'
+ import { FaRegCopy } from "react-icons/fa";
  import { MdCancel } from "react-icons/md";
 import {NavLink,useNavigate} from "react-router-dom";
 import NoContent from './noContent'
@@ -43,6 +44,19 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
   }
 } 
  
+ const [coppyproduct,setcoppyproduct] = useState(null)
+
+const orderidcoppyhandler = async (id)=>{
+ try {
+    await navigator.clipboard.writeText(id);
+   setcoppyproduct(id)
+             setTimeout(function() {
+               setcoppyproduct(null)
+             }, 2000);
+ } catch (e) {
+   toast.error(e.message)
+ }
+}
   return(
      <div className="m-1 flex flex-col gap-2">
      <p className='px-3 '><strong>Total: </strong> <span className="ml-3">{allOrders?.length}</span></p>
@@ -113,6 +127,8 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
            
            <p className="select-none text-slate-600 text-[12px]"><span className="text-slate-800 font-bold">Time : </span>{time}</p>
            </div>
+           
+            <div className="flex items-center my-2 gap-2 text-sm"><strong>Order Id : </strong><span>{item?._id}</span> <span onClick={()=>orderidcoppyhandler(item?._id)} className={`flex justify-center ${coppyproduct == item?._id ? 'ring-2 ring-green-300 bg-green-500 text-white': ''} hover:ring-2 cursor-pointer items-center p-1 border`} >{coppyproduct == item?._id ? 'Copied !' : <FaRegCopy />}</span></div>
         
           <div className="flex flex-col gap-1">
              {

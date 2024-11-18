@@ -118,6 +118,11 @@ export const Headers = ()=> {
           <NavLink onClick={menuhandler} className={({isActive})=> isActive ? 'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-800  flex flex-col items-center py-2':'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-500 flex flex-col items-center py-2'} to="/myOrderProducts"  >My Orders</NavLink> 
             
           <NavLink onClick={menuhandler} className={({isActive})=> isActive ? 'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-800 flex flex-col items-center py-2':'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-500 flex flex-col items-center py-2'} to="about"  >Contact</NavLink> 
+          
+           <NavLink onClick={menuhandler} className={({isActive})=> isActive ? 'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-800 flex flex-col items-center py-2':'rounded  text-white hover:bg-slate-800  cursor-pointer bg-slate-500 flex flex-col items-center py-2'} to="Ordersuccessfullpage"  >Calculate</NavLink> 
+          
+          
+ 
         </div>
          
         {

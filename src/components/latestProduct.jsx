@@ -20,7 +20,7 @@ const LatestProduct = ()=>{
      ):(
      
     latestProduct.map((iteam,index)=>{
-        return <ProductIteam key={index} name={iteam.name} image={iteam.image} newPrice={iteam.newPrice} oldPrice={iteam.oldPrice} id={iteam._id}/>
+        return <ProductIteam key={index} iteam={iteam} name={iteam.name} image={iteam.image} newPrice={iteam.newPrice} oldPrice={iteam.oldPrice} id={iteam._id}/>
       })
       )
      }
