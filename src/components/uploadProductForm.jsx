@@ -107,11 +107,7 @@ const UploadProductForm = ({submitproductlodding,setFormBox,updateForm,categProd
          }
            <div className="inputfields">
          <label>Stock</label>
-         <select value={products.stock} onChange={productValue} name="stock">
-           <option>select stock</option>
-           <option value="available">available</option>
-           <option value="notavailable">notavailable</option>
-         </select>
+          <input type="number"  value={products.stock} onChange={productValue} name='stock' placeholder="ProductName"/>
          </div>
          
          <div className="inputfields">

@@ -4,8 +4,8 @@
     min-width: 200px;
     height: 100vh;  
     position: fixed;  
-    top: 5px;
-    left: -1000px; 
+    top: 5px; 
+    left: -1000px;
     transition: all ease-in-out .5s;
     backdrop-filter:blur(5px);
     user-select: none;
@@ -14,11 +14,10 @@
     border: 1px solid gray;
     box-shadow: 0 0 5px gray;
     z-index: 1000;
-}
+} 
 .sidbar-container.active{
-    left: 0;
+  left: 0;
 }
- 
 .close-sid-width{
     position: absolute;
     top: 17px;

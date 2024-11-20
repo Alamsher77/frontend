@@ -10,7 +10,7 @@ import NoContent from '../components/noContent'
 import errorimage from '../asetes/error.png'
 import { MdDelete,MdCommentsDisabled } from "react-icons/md";
 import { IoIosSend } from "react-icons/io";
-import ProductIteam from '../components/productIteam/productIteam' 
+import ProductIteam from '../components/productIteam/productIteam'  
 const Product = ()=>{
   // products display functionality
 const navigate = useNavigate();
@@ -156,8 +156,10 @@ const allratingbyusers = {
   1:countByRating(allproductreview,1)
 }
 
+const [imageerror,setimageerror] = useState(false)
+const [imageurlerror,setimageurlerror ] = useState(null)
  const all = allratingbyusers.rating4 / allproductreview?.length * 100
- 
+  
  return(
   // lodding components
    
@@ -342,7 +344,10 @@ const allratingbyusers = {
                  </div>
                  
                   <div className="flex gap-2">
-                   <div className="w-8 h-8 bg-slate-200 rounded-full"><img className="w-full h-full rounded-full object-cover" src={item?.users?.profilePic?.img} />
+                   <div className="w-8 h-8 bg-slate-200 rounded-full"><img hidden={imageurlerror == item?.users?.profilePic?.img ? imageerror : false} onError={()=>{
+                     setimageerror(true)
+                     setimageurlerror(item?.users?.profilePic?.img)
+                   }} className="w-full h-full rounded-full object-cover" src={item?.users?.profilePic?.img} />
                    </div>
                    <div>
                     <h1 className="font-bold text-[14px]">{item?.users?.name}</h1>

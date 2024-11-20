@@ -159,6 +159,7 @@ const [conteint,setconteint] = useState(false)
    
  },[])
  
+ console.log(result)
    return(
      <div className="relative md:flex " >
       {
@@ -210,7 +211,7 @@ const [conteint,setconteint] = useState(false)
      </div>
    
       { /*big mobile screen container iamge */ }
-       <div className={`md:hidden flex w-full gap-1 relative max-w-full max-h-[300px] ${result?.stock == "available" ? "overflow-x-scroll" : "overflow-x-hidden left-0"}`} style={{scrollbarWidth:'none'}}>
+       <div className={`md:hidden flex w-full gap-1 relative max-w-full max-h-[300px] ${!result?.stock <= 0 ? "overflow-x-scroll" : "overflow-x-hidden left-0"}`} style={{scrollbarWidth:'none'}}>
        
           {result?.image.map((image,indes)=>{
             return( 
@@ -224,7 +225,7 @@ const [conteint,setconteint] = useState(false)
           })}
           
         {
-          result?.stock != "available" &&(
+          result?.stock <= 0 &&(
             <div className="absolute  select-none text-3xl font-bold flex items-center text-white justify-center w-full h-full opacity-70 bg-slate-800">
               <h1>Out Of Stock</h1>
           </div>
@@ -253,10 +254,11 @@ const [conteint,setconteint] = useState(false)
        <div className="px-2 justify-center gap-2 items-center flex my-1 w-full h-28 border border-yellow-600">
         {
            similarproduct?.map((item,index)=>{ 
-          return(
-          <Link to={`/product/${item._id}`} key={index} className="w-24 h-24 border border-yellow-600">
-           <img className="p-1 w-full h-full object-cover" src={item?.image[0]?.img}  />
-          </Link>
+          return( 
+          <Link to={`/product/${item._id}`} key={index} className="w-24 h-24 relative border border-yellow-600">
+           <img className="p-1 w-full h-full object-contain" src={item?.image[0]?.img}  />
+          
+          </Link> 
           )
         })
         }
@@ -265,8 +267,13 @@ const [conteint,setconteint] = useState(false)
        }
      
   {
-    result?.stock == 'available' &&(
+    !result?.stock <= 0 &&(
         <div className="md:flex border md:p-2   md:m-1 md:flex-col md:gap-5">
+       {
+          result?.stock <= 5 ?
+           <div className="px-2 font-bold text-red-600"><p>In Stock left : {result.stock}</p></div>
+         : ''
+       }
         <div className="product-info">
            <div className="ProductName">
        <p> <b className="text-slate-700">Product-Name : </b><span> {result?.name} </span></p>

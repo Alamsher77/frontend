@@ -24,11 +24,11 @@ export const Headers = ()=> {
      if(toggleMenu == ''){ 
      sidbarContainer.classList.add('active')
      setToggleMenu('close') 
-     setIsPopUp(true)
+    setIsPopUp(true)
      }else{
      sidbarContainer.classList.remove('active') 
      setToggleMenu('')
-     setIsPopUp(false)
+    setIsPopUp(false)
      setUsersPopupIteams(false)
      }  
   } 

@@ -1,4 +1,4 @@
-import {useState,useEffect,useRef} from 'react'
+import {useState,useEffect,useContext,useRef} from 'react'
 import{ toast } from 'react-hot-toast';
  import DomainUrl from '../Configuration/Index'
  import { FaRegWindowClose } from "react-icons/fa";
@@ -8,10 +8,12 @@ import{ toast } from 'react-hot-toast';
 import {NavLink,useNavigate} from "react-router-dom";
 import NoContent from './noContent'
 import SpeechMessage from './speechMessage'
+import {ContestContext } from '../api/ContestContext'
   import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
   
 const OrderItems = ({allOrders,islodding,userOrderProductApi,text})=>{
      const printRef = useRef(); 
+     const {setIsPopUp} = useContext(ContestContext)
   const [viewalluserdetail,setviewalluserdetail] = useState(false)
   const navigate = useNavigate()
   const [seealluserDetail,setseealluserdetail] = useState() 
@@ -120,7 +122,7 @@ const orderidcoppyhandler = async (id)=>{
        }
     
          return(
-       <div key={index} className="select-none border border-green-500 p-2">
+       <div key={index} className="  border border-green-500 p-2">
        
            <div className="flex gap-3">
             <p className="select-none text-slate-600 text-[12px]"><span className="text-slate-800 font-bold">Date : </span>{date}</p>
@@ -173,13 +175,16 @@ const orderidcoppyhandler = async (id)=>{
                 disabled={item.orderType == 'cancel' || item.orderType == 'done' ? true : false}
                onClick={()=>{
                   viewuserdetails(item.userDetails)
+                  setIsPopUp(true)
                   setviewalluserdetail(true) 
                }} className={`${item.orderType == 'cancel' || item.orderType == 'done' ? 'border border-slate-200 bg-slate-100  text-slate-400':'border border-green-700 hover:bg-green-500 hover:text-white'} font-bold uppercase rounded px-3 py-1 mt-3`}>seemore</button> 
             {
               viewalluserdetail &&(
               
               <div style={{transform:'translate(-50%,-50%)'}}  className="fixed px-2 py-3  overflow-scroll w-[325px] max-h-[70vh] border border-gray-400 shadow  shadow-gray-400 left-[50%] top-[55%]  bg-slate-200 flex justify-center items-center flex-col">
-                <div onClick={()=>{setviewalluserdetail(false)}} className="absolute top-0 right-0  w-8 h-8 border cursor-pointer text-white bg-red-500 border-red-700 rounded text-xl overflow-scroll flex items-center justify-center"><FaRegWindowClose /></div>
+                <div onClick={()=>{
+                setIsPopUp(false)
+                setviewalluserdetail(false)}} className="absolute top-0 right-0  w-8 h-8 border cursor-pointer text-white bg-red-500 border-red-700 rounded text-xl overflow-scroll flex items-center justify-center"><FaRegWindowClose /></div>
             <div className="mx-2 overflow-scroll   my-6  p-2">
                 <h2 className="text-center uppercase font-bold underline mb-2" >User Details</h2>
                 <p><strong>Name :</strong> {seealluserDetail?.name}</p>
