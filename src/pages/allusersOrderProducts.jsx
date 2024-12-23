@@ -3,6 +3,7 @@ import{ toast } from 'react-hot-toast';
  import DomainUrl from '../Configuration/Index' 
 import {NavLink,useNavigate} from "react-router-dom"; 
 import OrderItems from '../components/orderItems'
+import SearchAndFilter from "../components/search"
 const AllUsersOrderProduct = ()=>{ 
   const [allOrders,setAllOrders] = useState([])
   const [islodding,setIsLodding] = useState(false)
@@ -49,6 +50,8 @@ const AllUsersOrderProduct = ()=>{
  }
   return(
     <>
+    <SearchAndFilter allOrders={allOrders} />
+    
     <div style={{ scrollbarWidth: "none"}} className="w-screen border overflow-scroll border-b-2 mb-2 border-slate-500 gap-1 py-2 px-3 flex">
      <NavLink onClick={()=>setTab('all')}   className={`${style('green')} ${tab == 'all'?'bg-green-500 text-white':''}`}>All</NavLink> 
      <NavLink onClick={()=>setTab('Orders')}    className={`${style('pink')} ${tab == 'Orders'?'bg-pink-500 text-white':''}`}>Orders</NavLink>

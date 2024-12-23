@@ -58,7 +58,6 @@ const [productviwindex,setproductviewindex] = useState(0)
 const singleproductbuyhandler = async()=>{ 
     setcartconformmation(false)
     setIsVisible(true) 
-    console.log(bysingleproduct)
 }
  
   
@@ -159,7 +158,6 @@ const [conteint,setconteint] = useState(false)
    
  },[])
  
- console.log(result)
    return(
      <div className="relative md:flex " >
       {
@@ -225,11 +223,11 @@ const [conteint,setconteint] = useState(false)
           })}
           
         {
-          result?.stock <= 0 &&(
-            <div className="absolute  select-none text-3xl font-bold flex items-center text-white justify-center w-full h-full opacity-70 bg-slate-800">
-              <h1>Out Of Stock</h1>
-          </div>
-          )
+        //   result?.stock <= 0 &&(
+        //     <div className="absolute  select-none text-3xl font-bold flex items-center text-white justify-center w-full h-full opacity-70 bg-slate-800">
+        //       <h1>Out Of Stock</h1>
+        //   </div>
+        //   )
         }
        </div>
        
@@ -266,12 +264,11 @@ const [conteint,setconteint] = useState(false)
        </div>
        }
      
-  {
-    !result?.stock <= 0 &&(
+    
         <div className="md:flex border md:p-2   md:m-1 md:flex-col md:gap-5">
        {
           result?.stock <= 5 ?
-           <div className="px-2 font-bold text-red-600"><p>In Stock left : {result.stock}</p></div>
+           <div className="px-2 font-bold text-red-600">{result?.stock == 0 ? <p>Curently unavailable this product</p> : <p>In Stock left : {result.stock}</p>}</div>
          : ''
        }
         <div className="product-info">
@@ -311,7 +308,7 @@ const [conteint,setconteint] = useState(false)
  </div>
  
   <div className="md:block md:flex md:gap-3 hidden">
-    <button onClick={addToCartController}  className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
+    <button  onClick={addToCartController}  className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
       <FaCartPlus /> <span>cart</span>
      </button>
      
@@ -320,13 +317,14 @@ const [conteint,setconteint] = useState(false)
      </button>
   </div>
  </div>
-    )
-  }
+   
  
  { /* button for addtocard and bay*/ }
-     <div className={`md:hidden fixed ${scroll < 600 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>
+    {
+      result?.stock != 0 &&(
+        <div className={`md:hidden fixed ${scroll < 600 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>
      
-     <button onClick={addToCartController} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
+     <button   onClick={addToCartController} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
       <FaCartPlus /> <span>cart</span>
      </button>
      
@@ -334,6 +332,8 @@ const [conteint,setconteint] = useState(false)
       <TbPlayerTrackNextFilled className="text-2xl" /> <span>Buy</span>
      </button>
      </div>
+      )
+    }
   </div>
     
     )

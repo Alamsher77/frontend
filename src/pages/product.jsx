@@ -227,11 +227,14 @@ const [imageurlerror,setimageurlerror ] = useState(null)
           
         {
          
-         Object.entries(allratingbyusers).map(([key,value])=>{ 
-         const reviewlentght = value / allproductreview?.length * 100  
+         Object.entries(allratingbyusers).map(([key,value],index)=>{ 
+         const reviewlentght = value / allproductreview?.length * 100
+         
+         key == 1 ? console.log("first",1) : key == 2 ? console.log(2) : key == 3 ? console.log(3) :key == 4 ? console.log(4) : console.log(5)
+         
           return(
              <div key={key} className="flex text-[12px] justify-center gap-1 h-3  items-center">
-           <span className="font-bold">{key}</span>  <IoStarSharp className="text-[10px]" />  <div className="h-1 rounded-full w-24  bg-slate-200"><div style={{width:allproductreview?.length == 0 ? 0 : reviewlentght}} className="rounded-full h-full bg-green-600" ></div> </div> <span className="font-bold"> {value}</span>
+           <span className="font-bold">{key}</span>  <IoStarSharp className="text-[10px]" />  <div className="h-1 rounded-full w-24  bg-slate-200"><div style={{width:allproductreview?.length == 0 ? 0 : reviewlentght}} className={`rounded-full h-full bg-${key == 1 ? "red-500" : key == 2 ? "blue-400": key == 3 ? "yellow-400" : key == 4 ? "green-500" : "green-500"}`}  ></div> </div> <span className="font-bold"> {value}</span>
           </div>
           )
          })
