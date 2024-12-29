@@ -268,7 +268,7 @@ const [conteint,setconteint] = useState(false)
         <div className="md:flex border md:p-2   md:m-1 md:flex-col md:gap-5">
        {
           result?.stock <= 5 ?
-           <div className="px-2 font-bold text-red-600">{result?.stock == 0 ? <p>Curently unavailable this product</p> : <p>In Stock left : {result.stock}</p>}</div>
+           <div className="px-2 font-bold text-red-600">{result?.stock == 0 ? <p>Currently unavailable this product </p> : <p>In Stock left : {result.stock}</p>}</div>
          : ''
        }
         <div className="product-info">

@@ -11,7 +11,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 // }
 
 import {useState} from 'react';
-
+import Calculatesteel from '../components/calculatesteel'
 const OrderSuccess = () => {
   const [totalValue, setTotalValue] = useState("");
   const [dividedValue, setDividedValue] = useState("");
@@ -23,6 +23,7 @@ const OrderSuccess = () => {
 
   return (
     <div className="flex flex-col w-full mt-20 justify-center items-center" >
+    <Calculatesteel />
     <div className="flex flex-col items-center gap-4 p-6 bg-gray-100 rounded-lg shadow-lg w-80">
       <div className="w-full">
         <label htmlFor="totalValue" className="block text-gray-700 font-medium mb-2">
