@@ -14,6 +14,7 @@ import { FaCartPlus } from "react-icons/fa";
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
 const ProductDisplay = ({result,similarproduct})=>{
   const [sizeselect,setsizeselect] = useState(null)
+  const [lodding,setlodding] = useState(false)
 const [viewProduct,setViewProduct] = useState({
   close:false,
   data:''
@@ -62,9 +63,11 @@ const singleproductbuyhandler = async()=>{
  
   
  const onconform = async(id)=>{
+ 
   if(cartconformation){
     // product addet to cart function
      try{
+       setlodding(true)
      const response = await fetch(`${DomainUrl.url}addToCart`,{
        method:'POST',
        credentials:"include",
@@ -93,17 +96,13 @@ const singleproductbuyhandler = async()=>{
      
      
    }catch(error){
+     
      toast.error(error.message)
    }
   }else{
-    // single product order 
- 
-      if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
-      toast.error('please add all your details')
-      navigate('/userDetails')
-      return false
-    } 
+    
   try {
+    setlodding(true)
  const response = await fetch(`${DomainUrl.url}cheqoutAndPayment`,{
       method: 'POST',
        credentials:'include',
@@ -113,14 +112,17 @@ const singleproductbuyhandler = async()=>{
         },
         body: JSON.stringify(bysingleproduct),
     })
+    setlodding(false)
  const data  = await response.json()
+ 
  if(!data?.success){
    toast.error(data?.message)
    return false
  }
  toast.success(data?.message)
-  navigate('/myOrderProducts')
+  // navigate('/myOrderProducts')
   } catch (e) {
+    setlodding(false)
   toast.error(e.message)
   }
   }
@@ -163,7 +165,7 @@ const [conteint,setconteint] = useState(false)
       {
       
        !cartconformation &&(
-         <Conformation onClose={()=> setIsVisible(false)} onconform={onconform} isvisible={isvisible} onCancel={()=> setIsVisible(false)}>
+         <Conformation islodding={lodding} onClose={()=> setIsVisible(false)} onconform={onconform} isvisible={isvisible} onCancel={()=> setIsVisible(false)}>
        <div className="">
         <p>Product Orderd Price : {DisplayCurrency(bysingleproduct[0].quantity * result?.newPrice)}</p>
         <div className="flex gap-2 items-center">
@@ -182,7 +184,7 @@ const [conteint,setconteint] = useState(false)
       }
       {
        cartconformation && (
-         <Conformation onClose={()=> setIsVisible(false)} onconform={onconform} isvisible={isvisible} onCancel={()=> setIsVisible(false)}>
+         <Conformation islodding={lodding} onClose={()=> setIsVisible(false)} onconform={onconform} isvisible={isvisible} onCancel={()=> setIsVisible(false)}>
        <div className="">
         <p>You are added product to cart</p> 
        </div>
@@ -268,7 +270,7 @@ const [conteint,setconteint] = useState(false)
         <div className="md:flex border md:p-2   md:m-1 md:flex-col md:gap-5">
        {
           result?.stock <= 5 ?
-           <div className="px-2 font-bold text-red-600">{result?.stock == 0 ? <p>Currently unavailable this product </p> : <p>In Stock left : {result.stock}</p>}</div>
+           <div className="px-2 font-bold text-red-600">{result?.stock <= 0 ? <p>Currently unavailable this product </p> : <p>In Stock left : {result.stock}</p>}</div>
          : ''
        }
         <div className="product-info">
@@ -321,7 +323,7 @@ const [conteint,setconteint] = useState(false)
  
  { /* button for addtocard and bay*/ }
     {
-      result?.stock != 0 &&(
+      result?.stock <= 0 ? null : (
         <div className={`md:hidden fixed ${scroll < 600 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>
      
      <button   onClick={addToCartController} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">

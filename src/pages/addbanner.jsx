@@ -51,9 +51,13 @@ const AddBanner = ()=>{
   },[]) 
   
   // deletebanner
+  const [deletebanerlodding,setdeletebannerlodding] = useState(false)
   const deletehandler = async (image,id)=>{
+    
    try{
+     setdeletebannerlodding(true)
     const removebannerimage = await DeleteImageCloudnary(image,'deleteCloudnaryImage')
+    setdeletebannerlodding(false)
     if(!removebannerimage.success){
       toast.error(removebannerimage.message)
       return false
@@ -68,6 +72,7 @@ const AddBanner = ()=>{
   toast.success(data.message)
   fetchbanner()
    }catch(error){
+     setdeletebannerlodding(false)
      toast.error(error.message)
    }
   } 
@@ -120,7 +125,7 @@ const AddBanner = ()=>{
             ):( allbanners?.map((item,index)=>{ 
               return(
                 <div key={index} className="relative border border-purple-500 min-w-[330px] h-[150px] min-h-[150px] max-h-[150px]  max-w-[330px]">
-                <div onClick={()=>deletehandler(item?.bannerimage,item?._id)} className="flex justify-center border border-red-500 items-center text-[30px] w-8 transition ease-in-out delay-150 text-red-500 hover:text-white hover:bg-red-500 right-1 cursor-pointer top-1 h-8 absolute"><MdOutlineDelete /></div>
+                <button disabled={deletebanerlodding} onClick={()=>deletehandler(item?.bannerimage,item?._id)} className="flex justify-center border border-red-500 items-center text-[30px] w-8 transition ease-in-out delay-150 text-red-500 hover:text-white hover:bg-red-500 right-1 cursor-pointer top-1 h-8 absolute"><MdOutlineDelete /></button>
                 <img className="h-full object-contain w-full" src={item?.bannerimage?.img} />
           </div>
               )

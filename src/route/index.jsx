@@ -19,6 +19,7 @@ import Settings from '../pages/settings'
 import ForgetePassword from '../pages/forgetePassword'
 import OrderSuccess from '../pages/Ordersuccessfullpage'
 import AllUsersOrderProduct from '../pages/allusersOrderProducts'
+import Ludo from '../pages/ludo'
 const router = createBrowserRouter([
   { 
     path: "/", 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
          path:"UserDetails",
          element:<UserDetails />,
+       },
+       {
+         path:"ludogames",
+         element:<Ludo />,
        },
       {
          path:"categryIteams",

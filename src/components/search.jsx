@@ -18,13 +18,7 @@ console.log(filteredItems)
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <ul>
-        {filteredItems.map((item, index) => (
-         <li key={index}>{item?._id}</li>
-      ))
-          
-        }
-      </ul>
+      
     </div>
   );
 };

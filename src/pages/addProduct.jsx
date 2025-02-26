@@ -268,6 +268,7 @@ const AddProduct = ()=>{
                 allProduct.map((iteam,index)=>{ 
                 return(
                   <div key={index} className="group border shadow-md  relative min-w-[115px] max-w-[115px] max-h-[130px] min-h-[130px] bg-white" >
+                  <div className="text-white px-1 absolute top-0 right-[40%] border bg-black">{iteam.stock}</div>
                    <div className="group-hover:block transitoin delay-150 ease-in-out hidden cursor-pointer p-1 border text-red-500 hover:bg-red-500 hover:text-white  bg-white border-red-600 absolute"onClick={()=>{productDelete(iteam?._id,iteam?.image)}}><MdDeleteForever /></div>
                     <div className="group-hover:block hover:text-white hover:bg-green-600  cursor-pointer hidden top-0 border-green-600 border bg-white p-1 text-green-500 right-0 absolute" onClick={()=>{productEdite(iteam?._id)}}><FaRegEdit /></div>
                     <img className="object-contain h-full w-full" SRC={iteam?.image[0]?.img} alt="image" />

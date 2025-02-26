@@ -77,7 +77,7 @@ const checkOutHandler = async(e)=>{
     return false
    }
    toast.success(data?.message) 
-   navigate('/myOrderProducts')
+  // navigate('/myOrderProducts')
    coutCartFetchApi()
    cartProductViewFetch()
    

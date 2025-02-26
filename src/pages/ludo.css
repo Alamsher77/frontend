@@ -1,0 +1,63 @@
+.ludo-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.board {
+  width: 400px;
+  height:400px;
+  background: red;
+  border: 2px solid #000;
+  position: relative;
+  background-image: 
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 20px 20px;
+}
+
+.player-section {
+  position: absolute;
+  width: 40%;
+  height: 40%;
+}
+
+.token {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #000;
+}
+
+.token.home {
+  position: relative;
+  margin: 5px;
+}
+
+.dice {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  margin: 20px;
+}
+
+.controls {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.red { background-color: #ff4444; }
+.green { background-color: #44ff44; }
+.yellow { background-color: #ffff44; }
+.blue { background-color: #4444ff; }

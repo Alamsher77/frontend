@@ -10,10 +10,20 @@ const [total_steel_in_kg,set_total_steel_in_kg] = useState(0)
 
   
   const handleInputChange = (id, newValue) => {
+   
     const updatedInputs = getlengthofdata?.map((input) =>
       input.id === id ? { ...input, value: parseFloat(newValue) || ""} : input
     );
     setgetlengthofdata(updatedInputs);
+    console.log(updatedInputs)
+  };
+  
+const handleInputChangecount = (id, newValue) => {
+    const updatedInputs = getlengthofdata?.map((input) =>
+      input.id === id ? { ...input, count: parseFloat(newValue) || ""} : input
+    );
+    setgetlengthofdata(updatedInputs);
+    console.log(updatedInputs)
   };
  
   // Function to add the Steel value and input
@@ -22,8 +32,8 @@ const [total_steel_in_kg,set_total_steel_in_kg] = useState(0)
       alert("please enter the steel value !!")
       return false
     }
-    setLengthInputs((prev)=>[...prev,{id:lengthInputs.length + 1,value:"",steel:steelValue}])
-    localStorage.setItem("steelofvalue", JSON.stringify([...lengthInputs,{id:lengthInputs.length + 1,value:"",steel:steelValue}]))
+    setLengthInputs((prev)=>[...prev,{id:lengthInputs.length + 1,value:"",steel:steelValue,count:""}])
+    localStorage.setItem("steelofvalue", JSON.stringify([...lengthInputs ,{id:lengthInputs.length + 1,value:"",steel:steelValue,count:""}]))
     setSteelValue("")
     setShowPopup(false)
   };
@@ -39,18 +49,33 @@ const [total_steel_in_kg,set_total_steel_in_kg] = useState(0)
   
   const getdataoflocalstorage = JSON.parse(localStorage.getItem("steelofvalue")) 
   if(getdataoflocalstorage){
+    setLengthInputs(getdataoflocalstorage)
     setgetlengthofdata(getdataoflocalstorage)
   }
-  },[lengthInputs])
+  },[steelValue])
   
   const totalsteelofkg = ()=>{
     let countinkg = 0
     getlengthofdata?.map((item)=>{
-     const gettotalcount = Number(item?.steel) * Number(item?.steel) / 162 * item?.value
+      if(!item?.count || !item?.value){
+        alert("please add any number of count")
+        return false
+      }
+     const gettotalcount = Number(item?.steel) * Number(item?.steel) / 162 * item?.value * item?.count;
      countinkg += gettotalcount
-     console.log(countinkg)
+     console.log(item)
     })
     set_total_steel_in_kg(countinkg)
+  
+    
+  }
+  
+  const removesteelhandler =(id)=>{
+      const newsplice = [...getlengthofdata]
+    
+   const filterremove = newsplice.filter((item)=>item?.id !== id)
+    setgetlengthofdata(filterremove)
+     localStorage.setItem("steelofvalue", JSON.stringify(filterremove))
   }
   return (
     <div className="flex gap-2 flex-col" style={{ padding: '20px' }}>
@@ -59,28 +84,49 @@ const [total_steel_in_kg,set_total_steel_in_kg] = useState(0)
         <div className="border p-2 flex justify-center text-xl text-slate-500 mb-3">
          <strong>Total : {total_steel_in_kg.toFixed(3)} kg</strong>
         </div>
-      <button className="border px-2" onClick={()=>setShowPopup(true)}>Add Steel</button>
+      <button className="border hover:bg-pink-500 hover:text-white px-2" onClick={()=>setShowPopup(true)}>Add Steel</button>
       
       
       {
         getlengthofdata?.map((item,index)=>{
           
           return(
-          <div className="border border-pink-300 p-2" key={index}>
+          <div className="border relative border-pink-300 p-2" key={index}>
+          <button onClick={()=>removesteelhandler(item?.id)} className="absolute flex justify-center items-center border w-6 h-6 border-l-2 text-red-500 border-b-2 right-0 top-0 border-pink-300" >
+          <IoCloseSharp/>
+          </button>
           <p>THIS STEEL {item?.steel} MM</p>
-            <input
+          <div className="flex justify-between items-center">
+          <div className="p-2 w-32 border ">
+             <input
             value={item?.value}
             onChange={(e) => handleInputChange(item?.id, e.target.value)}
-          className="px-2 border outline-none"
+          className="px-2 w-full border outline-none"
             type="number"
             placeholder="Enter The Number In Meter "
           />
+            <input
+            value={item?.count}
+            onChange={(e) => handleInputChangecount(item?.id, e.target.value)}
+          className="px-2 w-full border  outline-none"
+            type="number"
+            placeholder="Enter The Steel Count"
+          />
+          </div>
+          <div className="text-pink-500">
+           <span>{(Number(item?.steel) * Number(item?.steel) / 162 * item?.value * item?.count).toFixed(2)} kg</span>
+          </div>
+          </div>
           </div>
           )
         })
       }
       
-        <button onClick={totalsteelofkg} className="border px-2" >Calculate Total Kg Of Steel</button>
+       {
+         getlengthofdata.length !== 0 &&(
+           <button onClick={totalsteelofkg} className="border hover:bg-pink-500 px-2 hover:text-white" >Calculate</button>
+         )
+       }
 
       {/* Popup */}
       {showPopup && (
