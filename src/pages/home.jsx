@@ -7,10 +7,10 @@ import {Link,useNavigate} from "react-router-dom";
 import RandomProduct from '../components/randomProducts'
 import Conformation from '../components/conformation'
 import LoddingCardComponent from '../components/loddingCardComponent'
+import DomainUrl from '../Configuration/Index'
 const Home = ()=>{
   const loddingArry = [1,2,3,4,5,6,7,8,9,10]
-  const {lodding,allProduct,allProductsCategry, coutCartData,userDetails} = useContext(ContestContext) 
- 
+  const {lodding,allProduct,allProductsCategry,coutCartData,userDetails} = useContext(ContestContext)  
   return(
      <>
       

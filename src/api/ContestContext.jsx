@@ -17,6 +17,9 @@ export  const ContestProvider =  ({ children }) => {
   const [isPopUp,setIsPopUp] = useState(false)
   const [allbanners,setallbanners] = useState([])
   const [applogoandiconlodding,setapplogoandiconlodding] = useState(false)
+  
+  // all lodding constaints
+  const [allProductLodding,setallProductLodding] = useState(false)
   const [appnameicon,setappnameicon] = useState()
 
    const appnameandicon = async ()=>{ 
@@ -103,8 +106,10 @@ const randomProductApi = async ()=>{
   LatestProductApi()
   randomProductApi() 
   fetchbanner()
-  appnameandicon()
-  if(isPopUp){
+  appnameandicon() 
+  },[]) 
+ useEffect(()=>{
+   if(isPopUp){
     document.body.style.overflow = 'hidden'
   }else{
     document.body.style.overflow = ''
@@ -112,8 +117,7 @@ const randomProductApi = async ()=>{
   return ()=>{
     document.body.style.overflow = ''
   }
-  },[isPopUp]) 
- 
+ },[isPopUp])
 // contextvalue
 const contextValue = {applogoandiconlodding,appnameandicon,appnameicon,setallbanners,allbanners,fetchbanner,setIsPopUp,latestProduct,userFechApi,lodding,coutCartFetchApi,coutCartData,setUserDetails,userDetails,randomProduct, allProduct, allProductsCategry,fetchApi,categryapi}
   return (
