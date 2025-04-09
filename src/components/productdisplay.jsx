@@ -24,8 +24,7 @@ const [productviwindex,setproductviewindex] = useState(0)
    const {setIsPopUp,userDetails,coutCartFetchApi,cartProduct,addToCart}= useContext(ContestContext)
    const p = Number(result?.oldPrice)
  const l = Number(result?.newPrice)
- const m = 100 - (Math.floor(l / p * 100))  
- 
+ const m = 100 - (Math.floor(l / p * 100))   
  const [bysingleproduct,setsingleproduct] = useState([{
    userId:userDetails?._id,
    productId:result,
@@ -102,6 +101,9 @@ const singleproductbuyhandler = async()=>{
   }else{
     
   try {
+    
+  userDetails ?  navigate("/orderconformation",{state:bysingleproduct}) : navigate('/login')
+    return false
     setlodding(true)
  const response = await fetch(`${DomainUrl.url}cheqoutAndPayment`,{
       method: 'POST',

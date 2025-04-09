@@ -10,7 +10,10 @@ import LoddingCardComponent from '../components/loddingCardComponent'
 import DomainUrl from '../Configuration/Index'
 const Home = ()=>{
   const loddingArry = [1,2,3,4,5,6,7,8,9,10]
-  const {lodding,allProduct,allProductsCategry,coutCartData,userDetails} = useContext(ContestContext)  
+  const {lodding,allProduct,allProductsCategry,coutCartData,userDetails} = useContext(ContestContext) 
+  
+  const getlocaldata = JSON.parse(localStorage.getItem('viewProduct'))
+ 
   return(
      <>
       
@@ -39,38 +42,27 @@ const Home = ()=>{
        </div>
       </div>
        <HomeBanner />
+       
+       
+       { /*view product list of data */}
+       {
+        getlocaldata &&
+       <div className="p-2">
+         <h1 className="font-bold uppercase text-pink-400 ">View Product</h1>
+         <div style={{scrollbarWidth:"none"}} className="flex gap-1  overflow-x-auto">
+           {
+             getlocaldata.map((iteam,index)=>{ 
+               return(
+              <ProductIteam key={index} name={iteam.name} image={iteam.image} newPrice={iteam.newPrice} oldPrice={iteam.oldPrice} id={iteam?.id}/>
+               )
+             })
+           }
+         </div>
+         
+       </div>
+       }
       <LatestProduct /> 
-      {
-       allProductsCategry.map((catitem,index)=>{ 
-        const filtercatagryProduct = allProduct?.filter((fillitem)=>{
-          return catitem.categry == fillitem.categry
-        })
-  
-         return( 
-           <>
-    <div className="p-2 " key={index}>
-     <h1 className="font-bold text-pink-400 uppercase">{filtercatagryProduct.length == 0 ? null :catitem?.categry}</h1>
-    </div>
-    <div style={{ scrollbarWidth: "none"}}   className="select-none mx-1 flex gap-1 overflow-x-auto"> 
-     {
-      lodding ? (
-     loddingArry.map((lodd,index)=>{
-        return <LoddingCardComponent />
-      })
-     ):(
-      filtercatagryProduct.length == 0 ? null:( 
-    filtercatagryProduct.map((iteam,index)=>{
-        return <ProductIteam key={index} name={iteam.name} image={iteam.image} newPrice={iteam.newPrice} oldPrice={iteam.oldPrice} id={iteam._id}/>
-      }) 
-      )
-      )
-     }
      
-    </div>
-     </>
-           )
-       })
-      }
      <RandomProduct />
      </>
     )

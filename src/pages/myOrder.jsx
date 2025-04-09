@@ -4,11 +4,11 @@ import{ toast } from 'react-hot-toast';
   import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
   import DomainUrl from '../Configuration/Index'
  import DisplayCurrency from '../displayCurrancy'
- import { FaRegCopy } from "react-icons/fa";
+ import { FaRegCopy,FaHistory } from "react-icons/fa";
  import {useNavigate}  from 'react-router-dom'
  import {ContestContext} from '../api/ContestContext'
  import NoContent from '../components/noContent'
- import SpeechMessage from '../components/speechMessage'
+ import SpeechMessage from '../components/speechMessage' 
 const MyOrder = ()=>{
  const {userDetails,lodding} = useContext(ContestContext) 
  const navigate = useNavigate()
@@ -34,10 +34,11 @@ useEffect(()=>{
 },[]) 
 
 // cancel order functionaliti
-const cancelOrder = async(id)=>{
+const cancelOrder = async(item)=>{
+   
  const grant = confirm('Are You sure You Want To Cancel This Order')
 if(!grant){
-  SpeechMessage('you are Cancel this process')
+  toast.error('you are Cancel this process')
   return false
 }
   try{ 
@@ -46,16 +47,15 @@ const response = await fetch(`${DomainUrl.url}updateDeleverType`,{
      headers: { 
           "Content-type": "application/json",
         },
-      body: JSON.stringify({id:id,type:'cancel'}),
+      body: JSON.stringify({id:item?._id,type:'cancel',productQuantity:item?.productDetails}),
     })
     const data = await response.json()
     if(!data.success){
-     toast.success(data?.message)
+     toast.error(data?.message)
       return false
     }
     toast.success(data.message)
-    userOrderProductApi() 
-    toast.success(data?.message)
+    userOrderProductApi()  
   }catch(error){
     toast.error(error?.message)
   }
@@ -74,6 +74,11 @@ const orderidcoppyhandler = async (id)=>{
    toast.error(e.message)
  }
 }
+
+const orderProcessList = userOrderProduct.filter((item)=>  item?.orderType === 'default')
+const orderCancelAndDoneList = userOrderProduct.filter((item)=>  item?.orderType !== 'default')
+
+const [opanviewhistory,setviewhistory] = useState(false)
   return(
      <div className="m-1 flex flex-col gap-2">
       {
@@ -132,7 +137,14 @@ const orderidcoppyhandler = async (id)=>{
               )
           })  
         ):(
-           userOrderProduct?.length == 0 ?( 
+         <>
+         <div className=" p-2 flex justify-end">
+          <button onClick={()=>setviewhistory(!opanviewhistory)} className=" font-bold uppercase px-3 cursor-pointer hover:bg-green-500  hover:text-white text-sm rounded  border border-green-500 text-gray-500">{opanviewhistory ? "close history" : "view history"}</button>
+         </div>
+          {
+        
+        opanviewhistory ? 
+        orderCancelAndDoneList?.length == 0 ?( 
           <div className="text-center ">
           <NoContent message="No Order Products" />
           <button onClick={()=>{
@@ -142,88 +154,180 @@ const orderidcoppyhandler = async (id)=>{
           </div>
        
          ):(
-          userOrderProduct?.map((item,index)=>{
+       
+        orderCancelAndDoneList?.map((item,index)=>{
           let ordertypeFunction 
           
           if(item?.orderType == 'cancel'){
-            ordertypeFunction = <p className= "flex items-center select-none text-red-600 text-[14px]"> <span className="font-bold">Delever : </span><span className="ml-3"><MdCancel /></span></p>
+            ordertypeFunction = <p className= "flex items-center select-none text-red-600 text-[14px]"> <span className="font-bold">Status : Canceled</span></p>
           }else if(item?.orderType == 'done'){
-            ordertypeFunction = <p className= "flex items-center select-none text-green-600 text-[14px]"> <span className="font-bold">Delever : </span><span className="ml-3"><IoCheckmarkDoneCircleSharp /></span></p>
+            ordertypeFunction = <p className= "flex items-center select-none text-green-600 text-[14px]"> <span className="font-bold">Status : Success</span></p>
           }else{
-             ordertypeFunction = <p className= "flex items-center select-none text-blue-600 text-[14px]"> <span className="font-bold">Delever : </span><span className="ml-3">underOrder</span></p>
+            ordertypeFunction = <p className= "flex items-center select-none text-blue-600 text-[14px]"> <span className="font-bold">Status : </span><span className="ml-3">Proccess</span></p>
           }
       const totalquatity = item?.productDetails?.reduce((prev,curent)=>{
             return prev + curent.quantity
           },0)
       
       const TotalPrice = item?.productDetails?.reduce((prev,curent)=>{
-     return prev + (curent?.quantity * curent?.productId?.newPrice)
+    return prev + (curent?.quantity * curent?.productId?.newPrice)
           },0)
-       const date = new Date(item?.createdAt).toLocaleDateString()
-       const time = new Date(item?.createdAt).toLocaleTimeString()
-       
-         return(
-       <div key={index} className="select-none border border-green-500 p-2">
-           <div className="flex gap-3">
+      const date = new Date(item?.createdAt).toLocaleDateString()
+      const time = new Date(item?.createdAt).toLocaleTimeString()
+      console.log(item?.paymentMethod)
+      
+        return(
+      <div key={index} className="select-none border border-green-500 p-2">
+          <div className="flex gap-3">
             <p className="select-none text-slate-600 text-[12px]"><span className="text-slate-800 font-bold">Date : </span>{date}</p>
            
-           <p className="select-none text-slate-600 text-[12px]"><span className="text-slate-800 font-bold">Time : </span>{time}</p>
-           </div>
+          <p className="select-none text-slate-600 text-[12px]"><span className="text-slate-800 font-bold">Time : </span>{time}</p>
+          </div>
            
-           <div className="flex items-center my-2 gap-2 text-sm"><strong>Order Id : </strong><span>{item?._id}</span> <span onClick={()=>orderidcoppyhandler(item?._id)} className={`flex justify-center ${coppyproduct == item?._id ? 'ring-2 ring-green-300 bg-green-500 text-white': ''} hover:ring-2 cursor-pointer items-center p-1 border`} >{coppyproduct == item?._id ? 'Copied !' : <FaRegCopy />}</span></div>
+          <div className="flex items-center my-2 gap-2 text-sm"><strong>Order Id : </strong><span>{item?._id}</span> <span onClick={()=>orderidcoppyhandler(item?._id)} className={`flex justify-center ${coppyproduct == item?._id ? 'ring-2 ring-green-300 bg-green-500 text-white': ''} hover:ring-2 cursor-pointer items-center p-1 border`} >{coppyproduct == item?._id ? 'Copied !' : <FaRegCopy />}</span></div>
         
           <div className="flex flex-col gap-1">
-             {
-               item?.productDetails.map((product,index)=>{
+            {
+              item?.productDetails.map((product,index)=>{
               
-                 return(
+                return(
                     <div key={index} className="flex items-center justify-between p-1 bg-slate-100"> 
                     
-                     <div className="border border-green-500 bg-white w-24 h-20"> 
+                    <div className="border border-green-500 bg-white w-24 h-20"> 
                       <img className="w-full h-full object-contain" src={product?.productId?.image[0]?.img}/>
-                     </div>
+                    </div>
                       
                       <div className="p-2 w-56 bg-white">
-                       <p className="text-nowrap text-ellipsis overflow-hidden  text-[10px] text-slate-800"><span className="font-bold">Name : </span>{product?.productId?.name}</p>
-                       <p className="text-[10px] text-slate-800"><span className="font-bold">Price : </span>{product?.productId?.newPrice}</p>
+                      <p className="text-nowrap text-ellipsis overflow-hidden  text-[10px] text-slate-800"><span className="font-bold">Name : </span>{product?.productId?.name}</p>
+                      <p className="text-[10px] text-slate-800"><span className="font-bold">Price : </span>{product?.productId?.newPrice}</p>
                         <p className="text-[10px] text-slate-800"><span className="font-bold">Quantity : </span>{product?.quantity}</p>
                         {
                           product?.size &&(
-                           <p className="text-[10px] text-slate-800"><span className="font-bold">Size : </span>{product?.size}</p>
+                          <p className="text-[10px] text-slate-800"><span className="font-bold">Size : </span>{product?.size}</p>
                           )
                         }
                       </div>
                     </div>
-                 )
-               })
-             }
-             <div className="flex gap-2">
-               <div>
-               <p className="select-none text-pink-500 text-[14px]"><span className="font-bold">Total Quantity : </span>{totalquatity}</p>
+                )
+              })
+            }
+            <div className="flex gap-2">
+              <div>
+              <p className="select-none text-pink-500 text-[14px]"><span className="font-bold">Total Quantity : </span>{totalquatity}</p>
               <p className="select-none text-green-600 text-[14px]"><span className="font-bold">Total Price : </span> {DisplayCurrency(TotalPrice)}</p></div>
-               <div>
+              <div>
                   
-                   {
-                     ordertypeFunction
-                   }
+                  {
+                    ordertypeFunction
+                  }
                   
-                  <p className="select-none text-yellow-500 text-[14px]"><span className="font-bold">Payment Type : </span>COD</p>
-               </div>
-             </div>
-             <div className="flex flex-row-reverse mt-3">
-              <button disabled={item.orderType == 'cancel' || item.orderType == 'done' ? true : false}   onClick={ ()=> cancelOrder(item._id)} className={`${item.orderType == 'cancel' || item.orderType == 'done' ? 'border border-slate-200 bg-slate-100  text-slate-400':'border border-red-700 hover:bg-red-500 hover:text-white'} font-bold uppercase rounded px-3 py-1`}>Cancel Order</button>
-             </div>
+                  <p className="select-none text-yellow-500 text-[14px]"><span className="font-bold">Payment Type : </span>{item?.paymentMethod}</p>
+              </div>
+            </div>
+            <div className="flex flex-row-reverse mt-3">
+              <button disabled={item.orderType == 'cancel' || item.orderType == 'done' ? true : false}   onClick={ ()=> cancelOrder(item)} className={`${item.orderType == 'cancel' || item.orderType == 'done' ? 'border border-slate-200 bg-slate-100  text-slate-400':'border border-red-700 hover:bg-red-500 hover:text-white'} font-bold uppercase rounded px-3 py-1`}>Cancel Order</button>
+            </div>
           </div>
       </div>
-         )
-       })
-         )
         )
+      })
       
+         )
+         :
+           orderProcessList?.length == 0 ?( 
+          <div className="text-center ">
+          <NoContent message="No Order Products" />
+          <button onClick={()=>{
+          navigate('/cart')
+            
+          }} className="px-3 py-1 border border-green-500 rounded hover:bg-green-500 hover:text-white">Order Now</button>
+          </div>
+       
+         ):(
+       
+        orderProcessList?.map((item,index)=>{
+          let ordertypeFunction 
+          
+          if(item?.orderType == 'cancel'){
+            ordertypeFunction = <p className= "flex items-center select-none text-red-600 text-[14px]"> <span className="font-bold">Status : Canceled</span></p>
+          }else if(item?.orderType == 'done'){
+            ordertypeFunction = <p className= "flex items-center select-none text-green-600 text-[14px]"> <span className="font-bold">Status : Success</span></p>
+          }else{
+            ordertypeFunction = <p className= "flex items-center select-none text-blue-600 text-[14px]"> <span className="font-bold">Status : </span><span className="ml-3">Proccess</span></p>
+          }
+      const totalquatity = item?.productDetails?.reduce((prev,curent)=>{
+            return prev + curent.quantity
+          },0)
+      
+      const TotalPrice = item?.productDetails?.reduce((prev,curent)=>{
+    return prev + (curent?.quantity * curent?.productId?.newPrice)
+          },0)
+      const date = new Date(item?.createdAt).toLocaleDateString()
+      const time = new Date(item?.createdAt).toLocaleTimeString()
+      console.log(item?.paymentMethod)
+      
+        return(
+      <div key={index} className="select-none border border-green-500 p-2">
+          <div className="flex gap-3">
+            <p className="select-none text-slate-600 text-[12px]"><span className="text-slate-800 font-bold">Date : </span>{date}</p>
+           
+          <p className="select-none text-slate-600 text-[12px]"><span className="text-slate-800 font-bold">Time : </span>{time}</p>
+          </div>
+           
+          <div className="flex items-center my-2 gap-2 text-sm"><strong>Order Id : </strong><span>{item?._id}</span> <span onClick={()=>orderidcoppyhandler(item?._id)} className={`flex justify-center ${coppyproduct == item?._id ? 'ring-2 ring-green-300 bg-green-500 text-white': ''} hover:ring-2 cursor-pointer items-center p-1 border`} >{coppyproduct == item?._id ? 'Copied !' : <FaRegCopy />}</span></div>
+        
+          <div className="flex flex-col gap-1">
+            {
+              item?.productDetails.map((product,index)=>{
+              
+                return(
+                    <div key={index} className="flex items-center justify-between p-1 bg-slate-100"> 
+                    
+                    <div className="border border-green-500 bg-white w-24 h-20"> 
+                      <img className="w-full h-full object-contain" src={product?.productId?.image[0]?.img}/>
+                    </div>
+                      
+                      <div className="p-2 w-56 bg-white">
+                      <p className="text-nowrap text-ellipsis overflow-hidden  text-[10px] text-slate-800"><span className="font-bold">Name : </span>{product?.productId?.name}</p>
+                      <p className="text-[10px] text-slate-800"><span className="font-bold">Price : </span>{product?.productId?.newPrice}</p>
+                        <p className="text-[10px] text-slate-800"><span className="font-bold">Quantity : </span>{product?.quantity}</p>
+                        {
+                          product?.size &&(
+                          <p className="text-[10px] text-slate-800"><span className="font-bold">Size : </span>{product?.size}</p>
+                          )
+                        }
+                      </div>
+                    </div>
+                )
+              })
+            }
+            <div className="flex gap-2">
+              <div>
+              <p className="select-none text-pink-500 text-[14px]"><span className="font-bold">Total Quantity : </span>{totalquatity}</p>
+              <p className="select-none text-green-600 text-[14px]"><span className="font-bold">Total Price : </span> {DisplayCurrency(TotalPrice)}</p></div>
+              <div>
+                  
+                  {
+                    ordertypeFunction
+                  }
+                  
+                  <p className="select-none text-yellow-500 text-[14px]"><span className="font-bold">Payment Type : </span>{item?.paymentMethod}</p>
+              </div>
+            </div>
+            <div className="flex flex-row-reverse mt-3">
+              <button disabled={item.orderType == 'cancel' || item.orderType == 'done' ? true : false}   onClick={ ()=> cancelOrder(item)} className={`${item.orderType == 'cancel' || item.orderType == 'done' ? 'border border-slate-200 bg-slate-100  text-slate-400':'border border-red-700 hover:bg-red-500 hover:text-white'} font-bold uppercase rounded px-3 py-1`}>Cancel Order</button>
+            </div>
+          </div>
+      </div>
         )
-      )
+      })
       
-      } 
+         )
+         
+          }
+         </> 
+       
+         )))} 
      </div>
     )
 }

@@ -20,6 +20,7 @@ import ForgetePassword from '../pages/forgetePassword'
 import OrderSuccess from '../pages/Ordersuccessfullpage'
 import AllUsersOrderProduct from '../pages/allusersOrderProducts'
 import Ludo from '../pages/ludo'
+import OrderConformation from '../pages/orderconformation'
 const router = createBrowserRouter([
   { 
     path: "/", 
@@ -112,10 +113,15 @@ const router = createBrowserRouter([
          path:"myOrderProducts",
          element:<MyOrder />
        },
-       {
+      {
          path:'about',
          element:<About />
        },
+      {
+        path:'orderconformation',
+        element:<OrderConformation />,
+         
+      },
        ]
   },
   {

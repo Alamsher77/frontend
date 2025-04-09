@@ -52,37 +52,8 @@ const cartProductViewFetch = async ()=>{
   // procide to cheqoutAndPayment
 const checkOutHandler = async(e)=>{
   try{
-    setIsVisible(false) 
-    if(!userDetails?.phone || !userDetails?.currentAddress || !userDetails?.deleverAddress || !userDetails?.block || !userDetails?.city || !userDetails?.state || !userDetails?.country){
- 
-      navigate('/userDetails')
-      return false
-    }  
-    setcheckoutlodding(true)
-     
-  const response = await fetch(`${DomainUrl.url}cheqoutAndPayment`,{
-      method: 'POST',
-       credentials:'include',
-        headers: {
-          Accept: 'application/json',
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(cartProductView),
-    })
-  
-  const data = await response.json()
-  setcheckoutlodding(false)
-   if(!data.success){
-    toast.error(data?.message) 
-    return false
-   }
-   toast.success(data?.message) 
-  // navigate('/myOrderProducts')
-   coutCartFetchApi()
-   cartProductViewFetch()
-   
-  }catch(error){
-    setcheckoutlodding(false)
+    userDetails ?  navigate("/orderconformation",{state:cartProductView}) : navigate('/login') 
+  }catch(error){ 
     toast.error(error?.message) 
   }
 } 

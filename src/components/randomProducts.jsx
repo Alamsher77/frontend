@@ -8,9 +8,6 @@ const RandomProducts = ()=>{
   
   return(
     <>
-    <div className="">
-    <h1 className="font-bold text-pink-400 ">RANDOM PRODUCTS</h1>
-    </div>
    <div  style={{ scrollbarWidth: "none"}} className="select-none  flex w-full overflow-scroll flex-wrap justify-center gap-1"> 
      {
        randomProduct.length == 0 && lodding ? (
