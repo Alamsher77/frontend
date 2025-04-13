@@ -37,6 +37,45 @@ const UploadProductForm = ({submitproductlodding,setFormBox,updateForm,categProd
      }
         
   }
+  
+  // productDescripsionHandler functions
+  const [discriptiontext,stetdiscriptiontext] = useState('')
+  const [productdescriptiondata,setproductdescriptiondata] = useState({
+    name:'',
+    list:[]
+  })
+  const [showproductdescriptionbutton,setshowproductdescriptionbutton] = useState(false)
+  const productDescripsionHandler = ()=>{
+   
+  try {
+      if(productdescriptiondata?.list == [] || productdescriptiondata?.name == ''){
+        toast.error('please type any text')
+        return false 
+      }
+      
+      setProducts((prev)=>({...prev,productInfo:[...prev.productInfo,productdescriptiondata]}))
+      
+    localStorage.setItem('products',JSON.stringify({...products}))
+    
+    setproductdescriptiondata({ name:'',
+    list:[]})
+    
+    toast.success('product list added')
+    setshowproductdescriptionbutton(false)
+  } catch (e) {
+    toast.error(e.message)
+  }
+   
+  }
+   const productDescripsionsetvaluehandler = ()=>{
+          if(discriptiontext){
+            setproductdescriptiondata((prev)=>({...prev,list:[...prev.list,discriptiontext]}))
+           stetdiscriptiontext('')
+          }
+          
+  }
+  
+  console.log(products)
   return(
     
      <div className='AddProductForm'>
@@ -66,7 +105,7 @@ const UploadProductForm = ({submitproductlodding,setFormBox,updateForm,categProd
          
          
          
-           <div className="inputfields">
+         <div className="inputfields">
          <label>product sizale</label>
          <select value={products.sizable} onChange={productValue} name="sizable">
            <option>select product sizable</option>
@@ -105,7 +144,7 @@ const UploadProductForm = ({submitproductlodding,setFormBox,updateForm,categProd
            }
            </div>
          }
-           <div className="inputfields">
+         <div className="inputfields">
          <label>Stock</label>
           <input type="number"  value={products.stock} onChange={productValue} name='stock' placeholder="ProductName"/>
          </div>
@@ -156,8 +195,58 @@ const UploadProductForm = ({submitproductlodding,setFormBox,updateForm,categProd
          </div>
           <div className="textarea">
           <label>Description</label>
-          <textarea type="text"  value={products.productInfo} onChange={productValue} name='productInfo' placeholder="type heare...." />
+          <textarea type="text"  value={products?.productdiscription} onChange={productValue}    name='productdiscription' placeholder="type heare...." />
+            <div className="inputfields">
+         <label>add keyfeuter discription</label>
+         
+         <select value={products.keyfeuter} onChange={productValue} name="keyfeuter"> 
+           <option value={false}>false</option>
+           <option value={true}>true</option>
+         </select>
          </div>
+         { 
+         products?.keyfeuter == 'true' &&(
+         <>
+          <div className="inputfields"> 
+          <input type="text"  value={productdescriptiondata.name} onChange={(e)=>setproductdescriptiondata({...productdescriptiondata,name:e.target.value})}   placeholder="type a discriptioni name"/>
+         </div>
+       
+         <div>
+          {
+     
+            products?.productInfo?.map((iteams,index)=>{
+            
+              return(
+              <div key={index}>
+               <p onClick={()=>{
+               products?.productInfo?.splice(index,1)
+              setProducts({...products})
+              localStorage.setItem('products',JSON.stringify({...products}))
+             }} >{iteams?.name}</p>
+               <ul style={{ listStyleType: "disc",
+  paddingLeft: "30px"}} >
+               {iteams?.list?.map((iteams,index)=> {return (<li key={index} >{iteams}</li> )})}
+               </ul>
+                </div>
+              )
+            })
+            
+          }
+         </div>
+         
+          <textarea type="text" onFocus={()=>setshowproductdescriptionbutton(true)} value={discriptiontext} onChange={(e)=>stetdiscriptiontext(e.target.value)}    name='productInfo' placeholder="type heare...." />
+          </>
+          )
+         }
+          {
+               products?.keyfeuter == 'true' &&
+            showproductdescriptionbutton &&(
+              <div className="mt-2"> <span onClick={productDescripsionsetvaluehandler} className="px-2 py-1 cursor-pointer border-green-600 rounded hover:text-white hover:bg-green-500 border">add data</span> <span onClick={productDescripsionHandler} className="px-2 py-1 cursor-pointer border-green-600 rounded hover:text-white hover:bg-green-500 border">add records</span></div>
+              )
+          }
+          
+         </div>
+         
          <div className="button" >
          <button type="submit">{submitproductlodding ? <LoddingButton />: formHeader ? 'update' : 'add'}</button>
          </div>

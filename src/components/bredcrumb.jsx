@@ -1,7 +1,10 @@
 import {Link} from 'react-router-dom'
 const Bredcrumb = (props)=>{
-  return(
-     <div className="text-sm p-2 text-slate-500 select-none border-y-2 border-slate-500"><Link to="/">Home</Link>/Product /{props.categry} /{props.name}</div> 
+  console.log(props)
+  return( 
+      <div className="text-sm text-gray-500 mb-3 ">
+        Home / Product / {props?.categry} / <span className="text-black font-semibold">{props?.name}</span>
+      </div>
     )
 }
 export default Bredcrumb

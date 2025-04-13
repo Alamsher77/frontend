@@ -11,9 +11,10 @@ import DisplayCurrency from '../displayCurrancy'
 import ZoomImage from './zoomimage'
 import Conformation from './conformation'
 import { FaCartPlus } from "react-icons/fa"; 
+import Card from './Card'
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
-const ProductDisplay = ({result,similarproduct})=>{
-  const [sizeselect,setsizeselect] = useState(null)
+const ProductDisplay = ({result,visible})=>{
+   
   const [lodding,setlodding] = useState(false)
 const [viewProduct,setViewProduct] = useState({
   close:false,
@@ -21,10 +22,19 @@ const [viewProduct,setViewProduct] = useState({
 })
 const [productviwindex,setproductviewindex] = useState(0)
   const navigate = useNavigate();
-   const {setIsPopUp,userDetails,coutCartFetchApi,cartProduct,addToCart}= useContext(ContestContext)
-   const p = Number(result?.oldPrice)
- const l = Number(result?.newPrice)
- const m = 100 - (Math.floor(l / p * 100))   
+   const {setIsPopUp,allProduct,userDetails,coutCartFetchApi,cartProduct,addToCart}= useContext(ContestContext)
+   
+   const similarproduct = allProduct?.filter((e)=>{
+    // console.log(e.similarName)
+    if(e?.similarName){
+        return e?.similarName === result?.similarName
+    }
+  
+  })
+  
+   const oldprice = Number(result?.oldPrice)
+ const newprice = Number(result?.newPrice)
+ const discount = 100 - (Math.floor(newprice/ oldprice* 100))   
  const [bysingleproduct,setsingleproduct] = useState([{
    userId:userDetails?._id,
    productId:result,
@@ -48,9 +58,9 @@ const [productviwindex,setproductviewindex] = useState(0)
  },[scroll])
  
  useEffect(()=>{
-   setsizeselect(result?.size[0])
+   
    setsingleproduct((preve)=>[{...preve[0],size:result?.size[0]}])
- },[])
+ },[result])
  
  
 // buy singale product 
@@ -103,26 +113,7 @@ const singleproductbuyhandler = async()=>{
   try {
     
   userDetails ?  navigate("/orderconformation",{state:bysingleproduct}) : navigate('/login')
-    return false
-    setlodding(true)
- const response = await fetch(`${DomainUrl.url}cheqoutAndPayment`,{
-      method: 'POST',
-       credentials:'include',
-        headers: {
-          Accept: 'application/json',
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(bysingleproduct),
-    })
-    setlodding(false)
- const data  = await response.json()
- 
- if(!data?.success){
-   toast.error(data?.message)
-   return false
- }
- toast.success(data?.message)
-  // navigate('/myOrderProducts')
+  
   } catch (e) {
     setlodding(false)
   toast.error(e.message)
@@ -161,7 +152,7 @@ const [conteint,setconteint] = useState(false)
   }
    
  },[])
- 
+   
    return(
      <div className="relative md:flex " >
       {
@@ -178,7 +169,7 @@ const [conteint,setconteint] = useState(false)
          </div> 
         </div>
          {
-           result?.sizable === "true" ? <p className="font-bold text-yellow-800">product Size : ( {sizeselect ? sizeselect : result?.size[0]} )</p> : null
+           result?.sizable === "true" ? <p className="font-bold text-yellow-800">product Size : ( { bysingleproduct[0]?.size} )</p> : null
          }
        </div>
       </Conformation>
@@ -193,6 +184,7 @@ const [conteint,setconteint] = useState(false)
       </Conformation>
         )
       }
+      
      { /*big screen container iamge */ }
        <div className="hidden border md:flex p-1 m-1 md:block max-h-[350px] min-w-[550px]">
       <div style={{ scrollbarWidth: "none"}} className="w-[130px]  p-0.5 max-h-[350px]  overflow-scroll border border-slate-700">
@@ -206,6 +198,8 @@ const [conteint,setconteint] = useState(false)
          })
        }
       </div>
+      
+      
       <div className="h-[330px] w-[380px] m-auto" >
        <img className="w-full object-contain h-full" src={result?.image[productviwindex]?.img} />
       </div>
@@ -213,27 +207,28 @@ const [conteint,setconteint] = useState(false)
      </div>
    
       { /*big mobile screen container iamge */ }
-       <div className={`md:hidden flex w-full gap-1 relative max-w-full max-h-[300px] ${!result?.stock <= 0 ? "overflow-x-scroll" : "overflow-x-hidden left-0"}`} style={{scrollbarWidth:'none'}}>
-       
-          {result?.image.map((image,indes)=>{
-            return( 
-            <div key={indes} className='min-w-full h-[300px]'> 
-              <img onClick={()=>{
+       <Card className="md:hidden flex w-full gap-1 relative max-w-full  flex flex-col " >
+         <img onClick={()=>{
               setViewProduct({data:image.img,close:true})
                 setIsPopUp(true)
-              }} className="duration-500 ease-in-out transition-transform hover:scale-110 w-[100%] h-full object-contain" src={image.img} />  
-            </div>
-            )
-          })}
+              }} className="rounded-xl " src={result?.image[productviwindex]?.img} />  
+          <div className="mt-4 text-center text-gray-600 text-sm font-medium">Similar Product ({similarproduct?.length})</div>
+             <div className="flex justify-center" >
+               {
+       similarproduct?.length == 0 ? null :  
+         
+           similarproduct?.map((item,index)=>{ 
+           
+          return( 
+          <Link to={`/product/${item._id}`} key={index} className="flex h-28 cursor-pointer justify-center mt-3">
+           <img className="p-1 w-full h-full  object-contain" src={item?.image[0]?.img}  />
           
-        {
-        //   result?.stock <= 0 &&(
-        //     <div className="absolute  select-none text-3xl font-bold flex items-center text-white justify-center w-full h-full opacity-70 bg-slate-800">
-        //       <h1>Out Of Stock</h1>
-        //   </div>
-        //   )
-        }
-       </div>
+          </Link> 
+          )
+        }) 
+       } 
+              </div>
+       </Card>
        
        {
       viewProduct.close &&(
@@ -249,69 +244,78 @@ const [conteint,setconteint] = useState(false)
       )
          
        }
-        {
-       similarproduct?.length == 0 ? null : 
-       <div className="">
-       <p className="px-2 text-sm"><strong>similarproduct</strong> <span>( {similarproduct?.length} )</span></p>
-       <div className="px-2 justify-center gap-2 items-center flex my-1 w-full h-28 border border-yellow-600">
-        {
-           similarproduct?.map((item,index)=>{ 
-          return( 
-          <Link to={`/product/${item._id}`} key={index} className="w-24 h-24 relative border border-yellow-600">
-           <img className="p-1 w-full h-full object-contain" src={item?.image[0]?.img}  />
-          
-          </Link> 
-          )
-        })
-        }
-       </div>
-       </div>
-       }
+       
      
     
-        <div className="md:flex border md:p-2   md:m-1 md:flex-col md:gap-5">
+        <div className="md:flex   md:p-2   md:m-1 md:flex-col md:gap-5">
        {
           result?.stock <= 5 ?
            <div className="px-2 font-bold text-red-600">{result?.stock <= 0 ? <p>Currently unavailable this product </p> : <p>In Stock left : {result.stock}</p>}</div>
          : ''
        }
-        <div className="product-info">
-           <div className="ProductName">
-       <p> <b className="text-slate-700">Product-Name : </b><span> {result?.name} </span></p>
-       </div>  
-       
-        <div className="">
-        <p className="line-through text-gray-400">{DisplayCurrency(result?.oldPrice)}</p>
-       <strong className="text-2xl text-red-600">{DisplayCurrency(result?.newPrice)}</strong> <span className="text-green-600">-{m}%</span>
-     
-      </div>
-      
-     
-        {
-        result?.sizable != 'true' ? null:
-         <div className="w-full select-none p-2"  >
-       <p className="py-2 text-slate-600">Select Size</p>
-       <div className="flex items-center gap-2 flex-wrap">
-       {
-          result?.size?.map((item,index)=>{
-            return (
-             <p onClick={()=>{
-               setsizeselect(item)
-               setsingleproduct((preve)=>[{...preve[0],size:item}])}} className={`text-[12px] ${sizeselect == item ? "text-white bg-yellow-600":''} flex hover:text-white font-bold hover:bg-yellow-600 border-yellow-600 cursor-pointer justify-center items-center w-8 h-8 border rounded-full`} key={index}>{item}</p>
-            )
-          })
-        }
-       </div>
-      </div>
-        }
- </div>
+      <Card  >
+          <div className="p-6 space-y-5">
+            <h2 className="text-2xl font-semibold text-gray-800">{result?.name}</h2>
+            <div className="flex items-center space-x-3">
+              <span className="line-through text-gray-400">{DisplayCurrency(result?.oldPrice)}</span>
+              <span className="text-red-600 text-xl font-bold">{DisplayCurrency(result?.newPrice)}</span>
+              <span className="text-green-600 font-semibold">-{discount}%</span>
+            </div>
+            <div>
+            {
+              result?.sizable == 'true' &&
+              <>
+              <span className="font-semibold text-gray-700">Select Size:</span>
+              <div className="mt-2 flex gap-3">
+              
+              {
+                result?.size?.map((productsize)=>{
+                const activeColor = bysingleproduct[0]?.size === productsize 
+                  return  <button onClick={()=> setsingleproduct((preve)=>[{...preve[0],size:productsize}])}  className={`rounded-full border-red-600 ${activeColor && "bg-red-300"} uppercase  hover:text-white hover:bg-black border px-5 py-1 text-sm`}>{productsize}</button>
+                })
+              }
+                
+              </div>
+              </>
+            }
+            </div>
+           
+          </div>
+        </Card>
  
- <div className="product-description">
-    <b  className="text-slate-700">Product Description :</b>
-    <p>{result?.productInfo}</p>
- </div>
  
-  <div className="md:block md:flex md:gap-3 hidden">
+  <Card  >
+        <div className="p-6">
+          <h3 className="text-xl font-semibold mb-3 text-gray-800">Product Description</h3>
+          <p className="text-gray-700 leading-relaxed">{result?.productdiscription}</p>
+          {
+          result?.keyfeuter == 'true' &&
+            result?.productInfo?.map((iteams,index)=>{
+              return(
+            <div key={index}>
+          <h4 className="text-lg font-semibold mt-5 text-gray-800">{iteams?.name}</h4>
+          <ul className="list-disc pl-6 text-gray-700 mt-2 space-y-1">
+           {
+             iteams?.list?.map((iteam,index)=>{ 
+             return <li key={index}>{iteam}</li> 
+               
+             })
+           }
+            
+            
+          </ul>
+          </div>
+              )
+            })
+          }
+        </div>
+      </Card>
+ 
+ {/* if screen is bigger then show this container and if this product was in addproduct then not show this container and show when product display   */}
+ 
+ {
+   !visible && 
+    <div className="md:block md:flex md:gap-3 hidden">
     <button  onClick={addToCartController}  className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
       <FaCartPlus /> <span>cart</span>
      </button>
@@ -320,13 +324,15 @@ const [conteint,setconteint] = useState(false)
       <TbPlayerTrackNextFilled className="text-2xl" /> <span>Buy</span>
      </button>
   </div>
+ }
  </div>
    
  
  { /* button for addtocard and bay*/ }
     {
+    visible ? null : // if preivew mode this hidden add to cart and buy proudcts
       result?.stock <= 0 ? null : (
-        <div className={`md:hidden fixed ${scroll < 600 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>
+        <div className={`md:hidden fixed ${scroll < 600 ? 'bottom-0': '-bottom-20'} transition ease-in-out delay-200 bg-white left-0 flex justify-between  shadow rounded-t-2xl shadow-black z-[1000] w-full py-2 pb-5 px-4`}>
      
      <button   onClick={addToCartController} className="py-1 transition ease-in-out delay-150 hover:bg-white hover:text-pink-400 border-pink-400 flex tracking-widest font-bold uppercase bg-pink-400 text-white justify-center items-center text-[18px] px-8 rounded-md  border gap-3">
       <FaCartPlus /> <span>cart</span>

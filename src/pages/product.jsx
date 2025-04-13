@@ -4,6 +4,7 @@ import {ContestContext} from '../api/ContestContext'
 import ProductDisplay from '../components/productdisplay'
 import Bredcrumb from '../components/bredcrumb' 
 import { IoStarSharp } from "react-icons/io5";  
+import { FaCircleUser } from "react-icons/fa6";
 import DomainUrl from '../Configuration/Index'
 import{ toast } from 'react-hot-toast';
 import NoContent from '../components/noContent' 
@@ -19,15 +20,7 @@ const navigate = useNavigate();
     const result = allProduct.find((e)=>{ 
     return e?._id === productId
     })
-  
-  const similarproduct = allProduct?.filter((e)=>{
-    // console.log(e.similarName)
-    if(e?.similarName){
-        return e?.similarName === result?.similarName
-    }
-  
-  })
-  
+   
 // reviews and reattings functionality
 
  const [rating, setRating] = useState(4);
@@ -193,10 +186,10 @@ const [imageurlerror,setimageurlerror ] = useState(null)
    </div>
    :
   // product iteams components
-     <>
+     <div className="p-4">
       <Bredcrumb name={result?.name} categry={result?.categry}/>
       
-      <ProductDisplay similarproduct={similarproduct} result={result}/>
+      <ProductDisplay   result={result}/>
   
       <div className="mt-3  border md:max-w-[450px] py-6 select-none">
       
@@ -378,7 +371,7 @@ const [imageurlerror,setimageurlerror ] = useState(null)
       </div>
       
       </div>
-        </>    
+        </div>    
    )
 }
 export default Product

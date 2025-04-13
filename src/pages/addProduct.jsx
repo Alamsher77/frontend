@@ -11,6 +11,7 @@ import DeleteImageCloudnary from '../helpers/deleteImageCloudnary'
 import NoContent from '../components/noContent'
 import LoddingCardComponent from '../components/loddingCardComponent'
 import SpeechMessage from '../components/speechMessage' 
+import ProductDisplay from '../components/productdisplay'
 const AddProduct = ()=>{
 
   const [formBox,setFormBox] = useState(false)
@@ -20,13 +21,15 @@ const AddProduct = ()=>{
   const [products,setProducts] = useState({ 
       categry:'',
       name:'',
-      productInfo:'',
+      productInfo:[],
+      productdiscription:'',
       oldPrice:'',
       newPrice:'',
       similarName:'',
       image:[],
       size:[],
       sizable:'',
+      keyfeuter:'',
       stock:'',
   })
   const [image,setImage] = useState('')
@@ -79,7 +82,9 @@ const AddProduct = ()=>{
         image:getproduct?.image,
         stock:getproduct?.stock, 
         size:getproduct?.size,
-        sizable:getproduct?.sizable
+        sizable:getproduct?.sizable,
+        keyfeuter:getproduct?.keyfeuter,
+        productdiscription:getproduct?.productdiscription
     }) 
       }
        
@@ -106,7 +111,7 @@ const AddProduct = ()=>{
        toast.success(data?.message)
         fetchApi()
         localStorage?.removeItem('products')
-        setProducts({  name:'',similarName:'',stock:'',sizable:'',oldPrice:'',newPrice:'',size:[],image:[],categry:'', productInfo:'',})
+        setProducts({  name:'',similarName:'',stock:'',sizable:'',keyfeuter:'',oldPrice:'',newPrice:'',size:[],image:[],categry:'', productInfo:[],productdiscription:''})
     }catch(error){
       setaddproductlodding(false)
      toast.error(error?.message) 
@@ -135,7 +140,9 @@ const AddProduct = ()=>{
     stock:data?.data?.stock,
     size:data?.data?.size,
     sizable:data?.data?.sizable,
+    keyfeuter:data?.data?.keyfeuter,
     productInfo:data?.data?.productInfo,
+    productdiscription:data?.data?.productdiscription,
      }) 
      setProductId(e)
      setUpdateForm(true)
@@ -170,7 +177,7 @@ const AddProduct = ()=>{
      toast.success(data.message)
        fetchApi()
         localStorage.removeItem('products')
-        setProducts({sizable:"",size:[],stock:"",name:'',similarName:'',oldPrice:'',newPrice:'',image:[],categry:'',productInfo:'',})
+        setProducts({sizable:"",keyfeuter:'',size:[],stock:"",name:'',similarName:'',oldPrice:'',newPrice:'',image:[],categry:'',productInfo:[],productdiscription:''})
  
   }catch(error){
     setupdateproductlodding()
@@ -218,13 +225,18 @@ const AddProduct = ()=>{
   }
   }
   
- 
+  const [productpreview,setproductpreview] = useState(true)
   
   return(
      <> 
+     <div className="flex px-2"><button onClick={()=>setproductpreview(!productpreview)} className="p-2 text-slate-700  my-2 px-12 cursor-pointer uppercase font-bold  bg-yellow-200 hover:text-white hover:bg-yellow-500">{!productpreview ? "close preview" :"open preview"}</button></div>
+     {
+       productpreview && 
       <div className="flex flex-col items-center ">
         <h5 className="p-2 text-slate-700 my-2 px-12 uppercase font-bold bg-yellow-300">AddProducts</h5>
+        
          <div className="flex mb-2 justify-center gap-2">
+         
              <div 
         className="px-8 font-bold hover:bg-green-600 hover:text-white cursor-pointer py-1 bg-green-100 text-green-700"
         onClick={()=> { 
@@ -232,28 +244,34 @@ const AddProduct = ()=>{
         setFormHeader(false)
         setFormBox(true)
           
-        }}>Add</div> <div className="px-8 font-bold cursor-pointer hover:bg-green-600 hover:text-white py-1 bg-green-100 text-green-700" onClick={()=> {
+        }}>Add</div>
+        
+        <div className="px-8 font-bold cursor-pointer hover:bg-green-600 hover:text-white py-1 bg-green-100 text-green-700" onClick={()=> {
         setUpdateForm(true)
         setFormHeader(true)
         setFormBox(false)
         }}>Update</div>
          </div>
       </div>
-      
-       {
+     }
+     
+     {
+         productpreview &&
          formBox && (
              <UploadProductForm submitproductlodding={addproductlodding} fetchApi={fetchApi} formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} setProducts={setProducts} submitHandler={submitHandler} categProduct={allProductsCategry} updateForm={setUpdateForm} setFormBox={setFormBox}/>
            )
             
        }
        
-       {
+     {
+         productpreview &&
          updateForm && (
              <UploadProductForm submitproductlodding={updateproductlodding} formHeader={formHeader} imageHandler={imageHandler} productValue={productValue} products={products} image={logo5} submitHandler={updateHandler} setProducts={setProducts} categProduct={allProductsCategry} updateForm={setUpdateForm}  setFormBox={setFormBox}/>
            ) 
        }
        
-       {
+     {
+         !productpreview ? null : 
          lodding ?(
            <div className=" w-full justify-center flex flex-wrap overflow-hidden">
            {[0,1,2,3,4,5,2,34,5,2,5,2].map(()=> <LoddingCardComponent />)}
@@ -279,6 +297,12 @@ const AddProduct = ()=>{
                 }
                    </div>
                  ))} 
+    
+    {
+     ! productpreview &&
+      <ProductDisplay visible={true} result={products} />
+    }           
+     
      </>
     )
 }
