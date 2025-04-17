@@ -13,6 +13,7 @@ import Conformation from './conformation'
 import { FaCartPlus } from "react-icons/fa"; 
 import Card from './Card'
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
+import ProductImageGallery from "./ProductImageGallery";
 const ProductDisplay = ({result,visible})=>{
    
   const [lodding,setlodding] = useState(false)
@@ -184,34 +185,13 @@ const [conteint,setconteint] = useState(false)
       </Conformation>
         )
       }
-      
+    
      { /*big screen container iamge */ }
-       <div className="hidden border md:flex p-1 m-1 md:block max-h-[350px] min-w-[550px]">
-      <div style={{ scrollbarWidth: "none"}} className="w-[130px]  p-0.5 max-h-[350px]  overflow-scroll border border-slate-700">
-       {
-         result?.image?.map((item,index)=>{
-           return(
-             <div onClick={()=> setproductviewindex(index)}  key={index} className="h-[130px] mb-0.5  w-full bg-white">
-              <img className="w-full h-full object-cover" src={item?.img} />
-             </div>
-           )
-         })
-       }
-      </div>
-      
-      
-      <div className="h-[330px] w-[380px] m-auto" >
-       <img className="w-full object-contain h-full" src={result?.image[productviwindex]?.img} />
-      </div>
-      
-     </div>
+     
    
       { /*big mobile screen container iamge */ }
        <Card className="md:hidden flex w-full gap-1 relative max-w-full  flex flex-col " >
-         <img onClick={()=>{
-              setViewProduct({data:image.img,close:true})
-                setIsPopUp(true)
-              }} className="rounded-xl " src={result?.image[productviwindex]?.img} />  
+          <ProductImageGallery images={result?.image}/>
           <div className="mt-4 text-center text-gray-600 text-sm font-medium">Similar Product ({similarproduct?.length})</div>
              <div className="flex justify-center" >
                {

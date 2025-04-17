@@ -2,8 +2,8 @@ import React from "react";
 import logo3 from '../asetes/logo3.webp'
 const About = () => {
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-md rounded-lg p-8 md:p-16 max-w-xl">
+    <div className="flex flex-col items-center justify-center bg-gray-600">
+      <div className="bg-white shadow-md  p-8 md:p-16 max-w-xl">
         <div className="text-center">
           <img
             src={logo3} alt="Profile"
@@ -18,12 +18,7 @@ const About = () => {
           </p>
         </div>
         
-        <div className='mt-8 m-[auto] flex flex-col gap-3'>
-         <h1 className="text-4xl font-semibold text-center text-gray-800">Contact Me</h1> 
-         <p> <strong>Name</strong> Alamsher Ansari</p>
-         <p> <strong>Email</strong> alamsheransari15@gmail.com</p>
-          <p> <strong>Mobile</strong> 8252637157</p>
-        </div>
+       
         
       </div> 
     </div>

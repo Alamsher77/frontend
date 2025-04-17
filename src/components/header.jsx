@@ -70,9 +70,9 @@ export const Headers = ()=> {
        <div className="menu-iteam"></div>
        </div>
        
-       <NavLink  className="w-32 overflow-hidden bg-slate-200 ml-14 rounded" to="/" onClick={()=> 
+       <NavLink  className="w-32 overflow-hidden  ml-14 rounded" to="/" onClick={()=> 
        document.body.removeAttribute('class','close')}>
-       <img className="mix-blend-multiply "  src={logo} />
+       <div className="text-white uppercase " ><span className="text-pink-400 font-bold " >Easy</span> <span className="text-sm text-pink-300" >Shope</span></div>
       </NavLink>  
       
         {

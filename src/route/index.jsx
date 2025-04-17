@@ -21,6 +21,12 @@ import OrderSuccess from '../pages/Ordersuccessfullpage'
 import AllUsersOrderProduct from '../pages/allusersOrderProducts'
 import Ludo from '../pages/ludo'
 import OrderConformation from '../pages/orderconformation'
+import Shope from '../pages/shope'
+import Contact from '../pages/contact'
+import Fact from '../pages/fact'
+import Returns from '../pages/returns'
+import ShippingInfo from '../pages/shippinginfo'
+import PrivacyPolicy from '../pages/privacypolicy'
 const router = createBrowserRouter([
   { 
     path: "/", 
@@ -31,7 +37,31 @@ const router = createBrowserRouter([
         element:<OrderSuccess />
       },
       {
-         path : "",
+        path:'shop',
+        element:<Shope />
+      },
+      {
+        path:'contact',
+        element:<Contact />
+      },
+      {
+        path:'faq',
+        element:<Fact />
+      },
+      {
+        path:'returns',
+        element:<Returns />
+      },
+      {
+        path:'shipping',
+        element:<ShippingInfo />
+      },
+      {
+        path:'privacy',
+        element:<PrivacyPolicy />
+      },
+      {
+         path : "/",
          element: <Home />
        }, 
       {
